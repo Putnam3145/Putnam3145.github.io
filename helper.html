@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+Mat name: <input type="text" id="mat_name" placeholder="lithium" oninput="makeMat()"> Should have no capitals <br>
+Melting point (celcius): <input type="number" id="melting_c" placeholder="180" oninput="celciusConversion('melting')"><br>
+Boiling point (celcius): <input type="number" id="boiling_c" placeholder="1347" oninput="celciusConversion('boiling')"><br>
+Melting point (fahrenheit): <input type="number" id="melting" placeholder="356" oninput="fahrenheitConversion('melting')"><br>
+Boiling point (fahrenheit): <input type="number" id="boiling" placeholder="2457" oninput="fahrenheitConversion('boiling')"><br>
+Specific heat: <input type="number" id="spec_heat" placeholder="3560" oninput="makeMat()"> Joules per kilokelvin (J/K * 1000)<br>
+Color: <input type="text" id="color" placeholder="SILVER" oninput="makeMat()"> DF colors; see <a href=http://dwarffortresswiki.org/index.php/DF2014:Color>here.</a><br>
+Value: <input type="number" id="mat_value" placeholder="1" oninput="makeMat()"> DF value; 30 is steel.<br>
+Solid density: <input type="number" id="solid_density" placeholder="534" oninput="makeMat()"> kg/m<sup>3</sup><br>
+Liquid density: <input type="number" id="liquid_density" placeholder="512" oninput="makeMat()">kg/m<sup>3</sup><br>
+Molar mass: <input type="number" id="molar" placeholder="6941" oninput="makeMat()"> kg/mole<br>
+Ultimate tensile strength: <input type="number" id="ultimate" placeholder="15000" oninput="makeMat()">KPa<br>
+Young's modulus: <input type="number" id="young" placeholder="4900" oninput="makeMat()"> MPa<br>
+Shear modulus: <input type="number" id="shear" placeholder="4200" oninput="makeMat()"> MPa<br>
+Bulk modulus: <input type="number" id="bulk" placeholder="11000" oninput="makeMat()"> MPa<br>
+
+<pre id='result'></pre>
+
+<script>
+function celciusConversion(nameOfThing) {
+
+    var celcius=document.getElementById(nameOfThing+"_c").value
+    var fahrenheit=Math.round((1.8*celcius)+32)
+    document.getElementById(nameOfThing).value=fahrenheit
+    makeMat()
+}
+function fahrenheitConversion(nameOfThing) {
+    var fahrenheit=document.getElementById(nameOfThing).value
+    document.getElementById(nameOfThing+'_c').value=Math.round((5*(fahrenheit-32))/9)
+    makeMat()
+}
+
+function getValue(id) {
+    return document.getElementById(id).value
+}
+
+function getElasticity(type){
+    switch(type) {
+        case 'young':
+            return Math.round(parseInt(getValue('ultimate')*100)/parseInt((getValue('young'))))
+            break;
+        case 'bulk':
+            return Math.round(parseInt(getValue('ultimate'))*350/(parseInt(getValue('bulk'))))
+            break;
+        case 'shear':
+            return Math.round(parseInt(getValue('ultimate')*100)/parseInt((getValue('shear'))))
+            break;
+        default:
+            return Math.round(getValue('ultimate')/(getValue('shear')*10))
+            break;
+    }
+}
+function tempName(state) {
+    switch(state) {
+        case 'solid':
+            if (getValue('melting')<64) {
+                return 'frozen '+getValue('mat_name')
+            } else {
+                return getValue('mat_name')
+            }
+            break;
+        case 'liquid':
+            if (getValue('melting')>64) {
+                return 'molten '+getValue('mat_name')
+            } else {
+                return getValue('mat_name')
+            }
+            break;
+        case 'gas':
+            if (getValue('boiling')>64) {
+                return 'boiling '+getValue('mat_name')
+            } else {
+                return getValue('mat_name')
+            }
+            break;
+        default:
+            break;
+    }
+}
+function makeMat() {
+    var holyCrapABigString="[INORGANIC:"+getValue('mat_name').toUpperCase()+"]\n" + //would you believe that this whole segment was copied from python and only minorly edited?
+                "    [USE_MATERIAL_TEMPLATE:METAL_TEMPLATE]\n" +
+                "    [STATE_NAME_ADJ:ALL_SOLID:"+tempName('solid')+"]\n" +
+                "    [STATE_NAME_ADJ:LIQUID:"+tempName('liquid')+"]\n" + 
+                "    [STATE_NAME_ADJ:GAS:"+tempName('gas')+"]\n" +
+                "    [DISPLAY_COLOR:0:7:1]\n" +
+                "    [BUILD_COLOR:0:7:1]\n" +
+                "    [MATERIAL_VALUE:"+getValue('mat_value')+"]\n" +
+                "    [SPEC_HEAT:"+getValue('spec_heat')+"]\n" +
+                "    [MELTING_POINT:"+(parseInt(getValue('melting'))+9968)+"]\n" +
+                "    [BOILING_POINT:"+(parseInt(getValue('boiling'))+9968)+"]\n" +
+                "    [SOLID_DENSITY:"+getValue('solid_density')+"]\n" +
+                "    [LIQUID_DENSITY:"+getValue('liquid_density')+"]\n" +
+                "    [MOLAR_MASS:"+getValue('molar')+"]\n" +
+                "    [IMPACT_YIELD:"+(parseInt(getValue('ultimate'))*3.5)+"]\n" +
+	            "    [IMPACT_FRACTURE:"+(parseInt(getValue('ultimate'))*7)+"]\n" +
+	            "    [IMPACT_STRAIN_AT_YIELD:"+getElasticity('bulk')+"]\n" +
+	            "    [COMPRESSIVE_YIELD:"+(parseInt(getValue('ultimate'))*3.5)+"]\n" +
+	            "    [COMPRESSIVE_FRACTURE:"+(parseInt(getValue('ultimate'))*7)+"]\n" +
+	            "    [COMPRESSIVE_STRAIN_AT_YIELD:"+getElasticity('bulk')+"] bulk modulus "+ parseInt(getValue('bulk'))/1000 + " GPa\n" +
+	            "    [TENSILE_YIELD:"+getValue('ultimate')+"]\n" +
+	            "    [TENSILE_FRACTURE:"+(parseInt(getValue('ultimate'))*2)+"]\n" +
+	            "    [TENSILE_STRAIN_AT_YIELD:"+getElasticity('young')+"] young's modulus "+ parseInt(getValue('young'))/1000 + " GPa\n" +
+	            "    [TORSION_YIELD:"+getValue('ultimate')+"]\n" +
+	            "    [TORSION_FRACTURE:"+(parseInt(getValue('ultimate'))*2)+"]\n" +
+                "    [TORSION_STRAIN_AT_YIELD:"+getElasticity('young')+"]\n" +
+	            "    [SHEAR_YIELD:"+getValue('ultimate')+"]\n" +
+	            "    [SHEAR_FRACTURE:"+(parseInt(getValue('ultimate'))*2)+"]\n" +
+	            "    [SHEAR_STRAIN_AT_YIELD:"+getElasticity('shear')+"] shear modulus " +parseInt(getValue('shear'))/1000+ " GPa\n" +
+	            "    [BENDING_YIELD:"+getValue('ultimate')+"]\n" +
+	            "    [BENDING_FRACTURE:"+(parseInt(getValue('ultimate'))*2)+"]\n" +
+	            "    [BENDING_STRAIN_AT_YIELD:"+getElasticity('shear')+"]\n" +
+	            "    [MAX_EDGE:10000]\n" +
+                "    [STATE_COLOR:ALL:"+getValue('color')+"]"
+    document.getElementById('result').innerHTML=holyCrapABigString
+}
+</script>
+
+</body>
+</html>
