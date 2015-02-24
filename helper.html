@@ -4,6 +4,13 @@
 <title>DF Material Helper</title>
 </head>
 <body>
+Good sources for data on materials are:<br><br>
+<a href="http://www.matweb.com/index.aspx">Matweb</a><br>
+<a href="http://www.wolframalpha.com/">Wolfram Alpha</a><br>
+<a href="https://en.wikipedia.org/wiki/Main_Page">Wikipedia</a><br>
+<a href="http://www.webelements.com/">WebElements</a><br>
+<a href="http://dwarffortresswiki.org/index.php/Main_Page">Dwarf fortress wiki (for DF-specific values)</a><br><br>
+If any properties are unavailable the game will use placeholders. However, if those properties happen to be one of the last four (strength or stress/strain), it would be best to include a placeholder value equal to that of the "nearest" material you can find; for example, if you were not able to find the Young's modulus of Iron, using Cobalt would do just fine.<br><br>
 
 Mat name: <input type="text" id="mat_name" placeholder="iron" oninput="makeMat()"> Should have no capitals <br>
 Melting point (celcius): <input type="number" id="melting_c" placeholder="1538" oninput="celciusConversion('melting')"><br>
@@ -11,7 +18,7 @@ Boiling point (celcius): <input type="number" id="boiling_c" placeholder="2862" 
 Melting point (fahrenheit): <input type="number" id="melting" placeholder="2800" oninput="fahrenheitConversion('melting')"><br>
 Boiling point (fahrenheit): <input type="number" id="boiling" placeholder="5184" oninput="fahrenheitConversion('boiling')"><br>
 Specific heat: <input type="number" id="spec_heat" placeholder="450" oninput="makeMat()"> Joules per kilokelvin (J/K * 1000)<br>
-Color: <input type="text" id="color" placeholder="SILVER" oninput="makeMat()"> DF colors; see <a href=http://dwarffortresswiki.org/index.php/DF2014:Color>here.</a><br>
+Color: <input type="text" id="color" placeholder="SILVER" oninput="makeMat()"> DF colors
 Value: <input type="number" id="mat_value" placeholder="10" oninput="makeMat()"> DF value; 30 is steel.<br>
 Solid density: <input type="number" id="solid_density" placeholder="7850" oninput="makeMat()"> kg/m<sup>3</sup><br>
 Liquid density: <input type="number" id="liquid_density" placeholder="6980" oninput="makeMat()">kg/m<sup>3</sup><br>
