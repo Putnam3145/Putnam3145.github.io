@@ -10,9 +10,9 @@ Good sources for data on materials are:<br><br>
 <a href="https://en.wikipedia.org/wiki/Main_Page">Wikipedia</a><br>
 <a href="http://www.webelements.com/">WebElements</a><br>
 <a href="http://dwarffortresswiki.org/index.php/Main_Page">Dwarf fortress wiki (for DF-specific values)</a><br><br>
-If any properties are unavailable the game will use placeholders. However, if those properties happen to be one of the last four (strength or stress/strain), it would be best to include a placeholder value equal to that of the "nearest" material you can find; for example, if you were not able to find the Young's modulus of Iron, using Cobalt would do just fine. If yield is not available, use ultimate tensile strength divided by two; if ultimate tensile strength is not available, use yield strength times two.<br><br>
+If any properties are unavailable the game will use placeholders. However, if those properties happen to be one of the last four (strength or stress/strain), it would be best to include a placeholder value equal to that of the "nearest" material you can find; for example, if you were not able to find the Young's modulus of Iron, using Cobalt would do just fine. Some data will automatically fill out even though better data may be available; this is primarily for ease of use and can be safely ignored if all data is available. This is unlikely, however, and the placeholders will do just fine (all the vanilla materials use the same ones).<br><br>
 
-Mat name: <input type="text" id="mat_name" placeholder="iron" oninput="makeMat()"> Should have no capitals <br>
+Material name: <input type="text" id="mat_name" placeholder="iron" oninput="makeMat()"> Should have no capitals <br>
 Melting point (celcius): <input type="number" id="melting_c" placeholder="1538" oninput="celciusConversion('melting')"><br>
 Boiling point (celcius): <input type="number" id="boiling_c" placeholder="2862" oninput="celciusConversion('boiling')"><br>
 Melting point (fahrenheit): <input type="number" id="melting" placeholder="2800" oninput="fahrenheitConversion('melting')"><br>
@@ -23,8 +23,12 @@ Value: <input type="number" id="mat_value" placeholder="10" oninput="makeMat()">
 Solid density: <input type="number" id="solid_density" placeholder="7850" oninput="makeMat()"> kg/m<sup>3</sup><br>
 Liquid density: <input type="number" id="liquid_density" placeholder="6980" oninput="makeMat()">kg/m<sup>3</sup><br>
 Molar mass: <input type="number" id="molar" placeholder="55845" oninput="makeMat()"> kg/mole<br>
-Tensile yield strength: <input type="number" id="yield" placeholder="155000" oninput="makeMat()"> KPa<br>
-Ultimate tensile strength: <input type="number" id="ultimate" placeholder="310000" oninput="makeMat()"> KPa<br>
+Tensile yield strength: <input type="number" id="tensile_yield" placeholder="155000" oninput="tensileYield()"> KPa<br>
+Ultimate tensile strength: <input type="number" id="ultimate_tensile" placeholder="310000" oninput="makeMat()"> KPa<br>
+Shear yield strength: <input type="number" id="shear_yield" placeholder="248000" oninput="makeMat()"> KPa<br>
+Ultimate shear strength: <input type="number" id="ultimate_shear" placeholder="496000" oninput="makeMat()"> KPa<br>
+Compressive yield strength: <input type="number" id="compressive_yield" placeholder="620000" oninput="makeMat()"> KPa<br>
+Ultimate compressive strength: <input type="number" id="ultimate_compressive" placeholder="1240000" oninput="makeMat()"> KPa<br>
 Young's modulus: <input type="number" id="young" placeholder="211000" oninput="makeMat()"> MPa<br>
 Shear modulus: <input type="number" id="shear" placeholder="82000" oninput="makeMat()"> MPa<br>
 Bulk modulus: <input type="number" id="bulk" placeholder="170000" oninput="makeMat()"> MPa<br>
@@ -32,33 +36,48 @@ Bulk modulus: <input type="number" id="bulk" placeholder="170000" oninput="makeM
 <pre id='result'></pre>
 
 <script>
-function celciusConversion(nameOfThing) {
+function getValue(id) {
+    var curValue=document.getElementById(id).value
+    return parseInt(curValue) ? parseInt(curValue) : curValue
+}
 
-    var celcius=document.getElementById(nameOfThing+"_c").value
+function setValue(id,value) {
+    document.getElementById(id).value=value
+    return id
+}
+
+function celciusConversion(nameOfThing) {
+    var celcius=getValue(nameOfThing+"_c")
     var fahrenheit=Math.round((1.8*celcius)+32)
-    document.getElementById(nameOfThing).value=fahrenheit
+    setValue(nameOfThing,fahrenheit)
     makeMat()
 }
 function fahrenheitConversion(nameOfThing) {
-    var fahrenheit=document.getElementById(nameOfThing).value
-    document.getElementById(nameOfThing+'_c').value=Math.round((5*(fahrenheit-32))/9)
+    var fahrenheit=getValue(nameOfThing)
+    setValue(nameOfThing+'_c',Math.round((5*(fahrenheit-32))/9))
     makeMat()
 }
 
-function getValue(id) {
-    return document.getElementById(id).value
+function tensileYield() {
+    var yield=getValue('tensile_yield')
+    setValue('shear_yield',yield)
+    setValue('compressive_yield',yield*3.5)
+    setValue('ultimate_tensile',yield*2)
+    setValue('ultimate_shear',yield*2)
+    setValue('ultimate_compressive',yield*7)
+    makeMat()
 }
 
 function getElasticity(type){
     switch(type) {
         case 'young':
-            return Math.round(parseInt(getValue('yield')*100)/parseInt((getValue('young'))))
+            return Math.round(getValue('tensile_yield')*100/(getValue('young')))
             break;
         case 'bulk':
-            return Math.round(parseInt(getValue('yield'))*350/(parseInt(getValue('bulk'))))
+            return Math.round((100*getValue('compressive_yield'))/(getValue('bulk')))
             break;
         case 'shear':
-            return Math.round(parseInt(getValue('yield')*100)/parseInt((getValue('shear'))))
+            return Math.round((100*getValue('shear_yield'))/(getValue('shear')))
             break;
         default:
             return Math.round(getValue('yield')/(getValue('shear')*10))
@@ -93,6 +112,18 @@ function tempName(state) {
     }
 }
 function makeMat() {
+    var young=getElasticity('young')
+    var bulk=getElasticity('bulk')
+    var shear=getElasticity('shear')
+    var tensileYield=getValue('tensile_yield')
+    var compressiveYield=getValue('compressive_yield')
+    var shearYield=getValue('shear_yield')
+    var ultimateTensile=getValue('ultimate_tensile')
+    var ultimateCompressive=getValue('ultimate_compressive')
+    var ultimateShear=getValue('ultimate_shear')
+    var bendingYield=Math.min(tensileYield,compressiveYield)
+    var bendingFracture=Math.min(ultimateTensile,ultimateCompressive)
+    var bendingStrainAtYield=tensileYield<compressiveYield ? young : bulk
     var holyCrapABigString="[INORGANIC:"+getValue('mat_name').toUpperCase()+"]\n" + //would you believe that this whole segment was copied from python and only minorly edited?
                 "    [USE_MATERIAL_TEMPLATE:METAL_TEMPLATE]\n" +
                 "    [STATE_NAME_ADJ:ALL_SOLID:"+tempName('solid')+"]\n" +
@@ -102,29 +133,29 @@ function makeMat() {
                 "    [BUILD_COLOR:0:7:1]\n" +
                 "    [MATERIAL_VALUE:"+getValue('mat_value')+"]\n" +
                 "    [SPEC_HEAT:"+getValue('spec_heat')+"]\n" +
-                "    [MELTING_POINT:"+(parseInt(getValue('melting'))+9968)+"]\n" +
-                "    [BOILING_POINT:"+(parseInt(getValue('boiling'))+9968)+"]\n" +
+                "    [MELTING_POINT:"+(getValue('melting')+9968)+"]\n" +
+                "    [BOILING_POINT:"+(getValue('boiling')+9968)+"]\n" +
                 "    [SOLID_DENSITY:"+getValue('solid_density')+"]\n" +
                 "    [LIQUID_DENSITY:"+getValue('liquid_density')+"]\n" +
                 "    [MOLAR_MASS:"+getValue('molar')+"]\n" +
-                "    [IMPACT_YIELD:"+(parseInt(getValue('yield'))*3.5)+"]\n" +
-	            "    [IMPACT_FRACTURE:"+(parseInt(getValue('ultimate'))*3.5)+"]\n" +
-	            "    [IMPACT_STRAIN_AT_YIELD:"+getElasticity('bulk')+"]\n" +
-	            "    [COMPRESSIVE_YIELD:"+(parseInt(getValue('yield'))*3.5)+"]\n" +
-	            "    [COMPRESSIVE_FRACTURE:"+(parseInt(getValue('ultimate'))*3.5)+"]\n" +
-	            "    [COMPRESSIVE_STRAIN_AT_YIELD:"+getElasticity('bulk')+"] bulk modulus "+ parseInt(getValue('bulk'))/1000 + " GPa\n" +
-	            "    [TENSILE_YIELD:"+getValue('yield')+"]\n" +
-	            "    [TENSILE_FRACTURE:"+(parseInt(getValue('ultimate')))+"]\n" +
-	            "    [TENSILE_STRAIN_AT_YIELD:"+getElasticity('young')+"] young's modulus "+ parseInt(getValue('young'))/1000 + " GPa\n" +
-	            "    [TORSION_YIELD:"+getValue('yield')+"]\n" +
-	            "    [TORSION_FRACTURE:"+(parseInt(getValue('ultimate'))*2)+"]\n" +
-                "    [TORSION_STRAIN_AT_YIELD:"+getElasticity('young')+"]\n" +
-	            "    [SHEAR_YIELD:"+getValue('yield')+"]\n" +
-	            "    [SHEAR_FRACTURE:"+(parseInt(getValue('ultimate')))+"]\n" +
-	            "    [SHEAR_STRAIN_AT_YIELD:"+getElasticity('shear')+"] shear modulus " +parseInt(getValue('shear'))/1000+ " GPa\n" +
-	            "    [BENDING_YIELD:"+getValue('yield')+"]\n" +
-	            "    [BENDING_FRACTURE:"+(parseInt(getValue('ultimate')))+"]\n" +
-	            "    [BENDING_STRAIN_AT_YIELD:"+getElasticity('shear')+"]\n" +
+                "    [IMPACT_YIELD:"+compressiveYield+"]\n" +
+	            "    [IMPACT_FRACTURE:"+ultimateCompressive+"]\n" +
+	            "    [IMPACT_STRAIN_AT_YIELD:"+bulk+"]\n" +
+	            "    [COMPRESSIVE_YIELD:"+compressiveYield+"]\n" +
+	            "    [COMPRESSIVE_FRACTURE:"+ultimateCompressive+"]\n" +
+	            "    [COMPRESSIVE_STRAIN_AT_YIELD:"+bulk+"] bulk modulus "+ getValue('bulk')/1000 + " GPa\n" +
+	            "    [TENSILE_YIELD:"+tensileYield+"]\n" +
+	            "    [TENSILE_FRACTURE:"+ultimateTensile+"]\n" +
+	            "    [TENSILE_STRAIN_AT_YIELD:"+young+"] young's modulus "+ getValue('young')/1000 + " GPa\n" +
+	            "    [TORSION_YIELD:"+tensileYield+"]\n" +
+	            "    [TORSION_FRACTURE:"+ultimateTensile+"]\n" +
+                "    [TORSION_STRAIN_AT_YIELD:"+young+"]\n" +
+	            "    [SHEAR_YIELD:"+shearYield+"]\n" +
+	            "    [SHEAR_FRACTURE:"+ultimateShear+"]\n" +
+	            "    [SHEAR_STRAIN_AT_YIELD:"+shear+"] shear modulus " +getValue('shear')/1000+ " GPa\n" +
+	            "    [BENDING_YIELD:"+bendingYield+"]\n" +
+	            "    [BENDING_FRACTURE:"+bendingFracture+"]\n" +
+	            "    [BENDING_STRAIN_AT_YIELD:"+bendingStrainAtYield+"]\n" +
 	            "    [MAX_EDGE:10000]\n" +
                 "    [STATE_COLOR:ALL:"+getValue('color')+"]"
     document.getElementById('result').innerHTML=holyCrapABigString
@@ -132,4 +163,4 @@ function makeMat() {
 </script>
 
 </body>
-</html>
+</html
