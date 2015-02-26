@@ -10,7 +10,7 @@ Good sources for data on materials are:<br><br>
 <a href="https://en.wikipedia.org/wiki/Main_Page">Wikipedia</a><br>
 <a href="http://www.webelements.com/">WebElements</a><br>
 <a href="http://dwarffortresswiki.org/index.php/Main_Page">Dwarf fortress wiki (for DF-specific values)</a><br><br>
-If any properties are unavailable the game will use placeholders. However, if those properties happen to be one of the last four (strength or stress/strain), it would be best to include a placeholder value equal to that of the "nearest" material you can find; for example, if you were not able to find the Young's modulus of Iron, using Cobalt would do just fine.<br><br>
+If any properties are unavailable the game will use placeholders. However, if those properties happen to be one of the last four (strength or stress/strain), it would be best to include a placeholder value equal to that of the "nearest" material you can find; for example, if you were not able to find the Young's modulus of Iron, using Cobalt would do just fine. If yield is not available, use ultimate tensile strength divided by two; if ultimate tensile strength is not available, use yield strength times two.<br><br>
 
 Mat name: <input type="text" id="mat_name" placeholder="iron" oninput="makeMat()"> Should have no capitals <br>
 Melting point (celcius): <input type="number" id="melting_c" placeholder="1538" oninput="celciusConversion('melting')"><br>
@@ -23,7 +23,8 @@ Value: <input type="number" id="mat_value" placeholder="10" oninput="makeMat()">
 Solid density: <input type="number" id="solid_density" placeholder="7850" oninput="makeMat()"> kg/m<sup>3</sup><br>
 Liquid density: <input type="number" id="liquid_density" placeholder="6980" oninput="makeMat()">kg/m<sup>3</sup><br>
 Molar mass: <input type="number" id="molar" placeholder="55845" oninput="makeMat()"> kg/mole<br>
-Ultimate tensile strength: <input type="number" id="ultimate" placeholder="155000" oninput="makeMat()">KPa<br>
+Tensile yield strength: <input type="number" id="yield" placeholder="155000" oninput="makeMat()"> KPa<br>
+Ultimate tensile strength: <input type="number" id="ultimate" placeholder="310000" oninput="makeMat()"> KPa<br>
 Young's modulus: <input type="number" id="young" placeholder="211000" oninput="makeMat()"> MPa<br>
 Shear modulus: <input type="number" id="shear" placeholder="82000" oninput="makeMat()"> MPa<br>
 Bulk modulus: <input type="number" id="bulk" placeholder="170000" oninput="makeMat()"> MPa<br>
@@ -51,16 +52,16 @@ function getValue(id) {
 function getElasticity(type){
     switch(type) {
         case 'young':
-            return Math.round(parseInt(getValue('ultimate')*100)/parseInt((getValue('young'))))
+            return Math.round(parseInt(getValue('yield')*100)/parseInt((getValue('young'))))
             break;
         case 'bulk':
-            return Math.round(parseInt(getValue('ultimate'))*350/(parseInt(getValue('bulk'))))
+            return Math.round(parseInt(getValue('yield'))*350/(parseInt(getValue('bulk'))))
             break;
         case 'shear':
-            return Math.round(parseInt(getValue('ultimate')*100)/parseInt((getValue('shear'))))
+            return Math.round(parseInt(getValue('yield')*100)/parseInt((getValue('shear'))))
             break;
         default:
-            return Math.round(getValue('ultimate')/(getValue('shear')*10))
+            return Math.round(getValue('yield')/(getValue('shear')*10))
             break;
     }
 }
@@ -106,23 +107,23 @@ function makeMat() {
                 "    [SOLID_DENSITY:"+getValue('solid_density')+"]\n" +
                 "    [LIQUID_DENSITY:"+getValue('liquid_density')+"]\n" +
                 "    [MOLAR_MASS:"+getValue('molar')+"]\n" +
-                "    [IMPACT_YIELD:"+(parseInt(getValue('ultimate'))*3.5)+"]\n" +
-	            "    [IMPACT_FRACTURE:"+(parseInt(getValue('ultimate'))*7)+"]\n" +
+                "    [IMPACT_YIELD:"+(parseInt(getValue('yield'))*3.5)+"]\n" +
+	            "    [IMPACT_FRACTURE:"+(parseInt(getValue('ultimate'))*3.5)+"]\n" +
 	            "    [IMPACT_STRAIN_AT_YIELD:"+getElasticity('bulk')+"]\n" +
-	            "    [COMPRESSIVE_YIELD:"+(parseInt(getValue('ultimate'))*3.5)+"]\n" +
-	            "    [COMPRESSIVE_FRACTURE:"+(parseInt(getValue('ultimate'))*7)+"]\n" +
+	            "    [COMPRESSIVE_YIELD:"+(parseInt(getValue('yield'))*3.5)+"]\n" +
+	            "    [COMPRESSIVE_FRACTURE:"+(parseInt(getValue('ultimate'))*3.5)+"]\n" +
 	            "    [COMPRESSIVE_STRAIN_AT_YIELD:"+getElasticity('bulk')+"] bulk modulus "+ parseInt(getValue('bulk'))/1000 + " GPa\n" +
-	            "    [TENSILE_YIELD:"+getValue('ultimate')+"]\n" +
-	            "    [TENSILE_FRACTURE:"+(parseInt(getValue('ultimate'))*2)+"]\n" +
+	            "    [TENSILE_YIELD:"+getValue('yield')+"]\n" +
+	            "    [TENSILE_FRACTURE:"+(parseInt(getValue('ultimate')))+"]\n" +
 	            "    [TENSILE_STRAIN_AT_YIELD:"+getElasticity('young')+"] young's modulus "+ parseInt(getValue('young'))/1000 + " GPa\n" +
-	            "    [TORSION_YIELD:"+getValue('ultimate')+"]\n" +
+	            "    [TORSION_YIELD:"+getValue('yield')+"]\n" +
 	            "    [TORSION_FRACTURE:"+(parseInt(getValue('ultimate'))*2)+"]\n" +
                 "    [TORSION_STRAIN_AT_YIELD:"+getElasticity('young')+"]\n" +
-	            "    [SHEAR_YIELD:"+getValue('ultimate')+"]\n" +
-	            "    [SHEAR_FRACTURE:"+(parseInt(getValue('ultimate'))*2)+"]\n" +
+	            "    [SHEAR_YIELD:"+getValue('yield')+"]\n" +
+	            "    [SHEAR_FRACTURE:"+(parseInt(getValue('ultimate')))+"]\n" +
 	            "    [SHEAR_STRAIN_AT_YIELD:"+getElasticity('shear')+"] shear modulus " +parseInt(getValue('shear'))/1000+ " GPa\n" +
-	            "    [BENDING_YIELD:"+getValue('ultimate')+"]\n" +
-	            "    [BENDING_FRACTURE:"+(parseInt(getValue('ultimate'))*2)+"]\n" +
+	            "    [BENDING_YIELD:"+getValue('yield')+"]\n" +
+	            "    [BENDING_FRACTURE:"+(parseInt(getValue('ultimate')))+"]\n" +
 	            "    [BENDING_STRAIN_AT_YIELD:"+getElasticity('shear')+"]\n" +
 	            "    [MAX_EDGE:10000]\n" +
                 "    [STATE_COLOR:ALL:"+getValue('color')+"]"
