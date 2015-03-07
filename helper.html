@@ -68,22 +68,6 @@ function tensileYield() {
     makeMat()
 }
 
-function getElasticity(type){
-    switch(type) {
-        case 'young':
-            return Math.round(getValue('tensile_yield')*100/(getValue('young')))
-            break;
-        case 'bulk':
-            return Math.round((100*getValue('compressive_yield'))/(getValue('bulk')))
-            break;
-        case 'shear':
-            return Math.round((100*getValue('shear_yield'))/(getValue('shear')))
-            break;
-        default:
-            return Math.round(getValue('yield')/(getValue('shear')*10))
-            break;
-    }
-}
 function tempName(state) {
     switch(state) {
         case 'solid':
@@ -112,21 +96,22 @@ function tempName(state) {
     }
 }
 function makeMat() {
-    var young=getElasticity('young')
-    var bulk=getElasticity('bulk')
-    var shear=getElasticity('shear')
+    var young=Math.round(getValue('tensile_yield')*100/(getValue('young')))
+    var bulk=Math.round((100*getValue('compressive_yield'))/(getValue('bulk')))
+    var shear=Math.round((100*getValue('shear_yield'))/(getValue('shear')))
     var tensileYield=getValue('tensile_yield')
     var compressiveYield=getValue('compressive_yield')
     var shearYield=getValue('shear_yield')
     var ultimateTensile=getValue('ultimate_tensile')
     var ultimateCompressive=getValue('ultimate_compressive')
     var ultimateShear=getValue('ultimate_shear')
-    var bendingYield=Math.min(tensileYield,compressiveYield)
-    var bendingFracture=Math.min(ultimateTensile,ultimateCompressive)
-    var bendingStrainAtYield=tensileYield<compressiveYield ? young : bulk
-    var holyCrapABigString="[INORGANIC:"+getValue('mat_name').toUpperCase()+"]\n" + //would you believe that this whole segment was copied from python and only minorly edited?
-                "    [USE_MATERIAL_TEMPLATE:METAL_TEMPLATE]\n" +
-                "    [STATE_NAME_ADJ:ALL_SOLID:"+tempName('solid')+"]\n" +
+    var impactYield=Math.min(tensileYield,compressiveYield)
+    var impactFracture=Math.min(ultimateTensile,ultimateCompressive)
+    var bendingYield=Math.min(tensileYield,compressiveYield,shearYield)
+    var bendingFracture=Math.min(ultimateTensile,ultimateCompressive,ultimateShear)
+    var torsionYield=shearYield<0.5*impactYield ? shearYield : impactYield //wikipedia is confusing... and unsourced.
+    var torsionFracture=ultimateShear<0.5*impactFracture ? ultimateShear : impactFracture
+    var holyCrapABigString="    [STATE_NAME_ADJ:ALL_SOLID:"+tempName('solid')+"]\n" + //would you believe that this whole segment was copied from python and only minorly edited?
                 "    [STATE_NAME_ADJ:LIQUID:"+tempName('liquid')+"]\n" + 
                 "    [STATE_NAME_ADJ:GAS:"+tempName('gas')+"]\n" +
                 "    [DISPLAY_COLOR:0:7:1]\n" +
@@ -138,8 +123,8 @@ function makeMat() {
                 "    [SOLID_DENSITY:"+getValue('solid_density')+"]\n" +
                 "    [LIQUID_DENSITY:"+getValue('liquid_density')+"]\n" +
                 "    [MOLAR_MASS:"+getValue('molar')+"]\n" +
-                "    [IMPACT_YIELD:"+compressiveYield+"]\n" +
-	            "    [IMPACT_FRACTURE:"+ultimateCompressive+"]\n" +
+                "    [IMPACT_YIELD:"+bendingYield+"]\n" +
+	            "    [IMPACT_FRACTURE:"+bendingFracture+"]\n" +
 	            "    [IMPACT_STRAIN_AT_YIELD:"+bulk+"]\n" +
 	            "    [COMPRESSIVE_YIELD:"+compressiveYield+"]\n" +
 	            "    [COMPRESSIVE_FRACTURE:"+ultimateCompressive+"]\n" +
@@ -147,15 +132,15 @@ function makeMat() {
 	            "    [TENSILE_YIELD:"+tensileYield+"]\n" +
 	            "    [TENSILE_FRACTURE:"+ultimateTensile+"]\n" +
 	            "    [TENSILE_STRAIN_AT_YIELD:"+young+"] young's modulus "+ getValue('young')/1000 + " GPa\n" +
-	            "    [TORSION_YIELD:"+tensileYield+"]\n" +
-	            "    [TORSION_FRACTURE:"+ultimateTensile+"]\n" +
-                "    [TORSION_STRAIN_AT_YIELD:"+young+"]\n" +
+	            "    [TORSION_YIELD:"+torsionYield+"]\n" +
+	            "    [TORSION_FRACTURE:"+torsionFracture+"]\n" +
+                "    [TORSION_STRAIN_AT_YIELD:"+shear+"]\n" +
 	            "    [SHEAR_YIELD:"+shearYield+"]\n" +
 	            "    [SHEAR_FRACTURE:"+ultimateShear+"]\n" +
 	            "    [SHEAR_STRAIN_AT_YIELD:"+shear+"] shear modulus " +getValue('shear')/1000+ " GPa\n" +
 	            "    [BENDING_YIELD:"+bendingYield+"]\n" +
 	            "    [BENDING_FRACTURE:"+bendingFracture+"]\n" +
-	            "    [BENDING_STRAIN_AT_YIELD:"+bendingStrainAtYield+"]\n" +
+	            "    [BENDING_STRAIN_AT_YIELD:"+shear+"]\n" +
 	            "    [MAX_EDGE:10000]\n" +
                 "    [STATE_COLOR:ALL:"+getValue('color')+"]"
     document.getElementById('result').innerHTML=holyCrapABigString
