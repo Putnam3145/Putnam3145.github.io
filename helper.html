@@ -14,7 +14,7 @@ If any properties are unavailable the game will use placeholders. However, if th
 
 Materials in dwarf fortress are made with the assumption that IMPACT values should be equal to COMPRESSIVE, which is incorrect; YIELD and FRACTURE should be equal to BENDING or COMPRESSIVE, whichever's less (which is always BENDING in vanilla DF). However, forcing this on whoever makes the materials would be dumb, since it is the game that we're talking about. So: <br><br>
 
-Realistic: <input type="checkbox" id="realistic" onChange="makeMat()"> <br><br>
+Realistic IMPACT values: <input type="checkbox" id="realistic_impact" onChange="makeMat()"> <br><br>
 
 Material name: <input type="text" id="mat_name" placeholder="iron" oninput="makeMat()"> Should have no capitals <br>
 Melting point (celcius): <input type="number" id="melting_c" placeholder="1538" oninput="celciusConversion('melting')"><br>
@@ -109,8 +109,8 @@ function makeMat() {
     var ultimateTensile=getValue('ultimate_tensile')
     var ultimateCompressive=getValue('ultimate_compressive')
     var ultimateShear=getValue('ultimate_shear')
-    var impactYield=document.getElementById('realistic').checked ? Math.min(tensileYield,compressiveYield) : compressiveYield
-    var impactFracture=document.getElementById('realistic').checked ? Math.min(ultimateTensile,ultimateCompressive) : ultimateCompressive
+    var impactYield=document.getElementById('realistic_impact').checked ? Math.min(tensileYield,compressiveYield) : compressiveYield
+    var impactFracture=document.getElementById('realistic_impact').checked ? Math.min(ultimateTensile,ultimateCompressive) : ultimateCompressive
     var bendingYield=Math.min(tensileYield,compressiveYield,shearYield)
     var bendingFracture=Math.min(ultimateTensile,ultimateCompressive,ultimateShear)
     var torsionYield=shearYield<0.5*impactYield ? shearYield : impactYield //wikipedia is confusing... and unsourced.
