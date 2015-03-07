@@ -12,6 +12,10 @@ Good sources for data on materials are:<br><br>
 <a href="http://dwarffortresswiki.org/index.php/Main_Page">Dwarf fortress wiki (for DF-specific values)</a><br><br>
 If any properties are unavailable the game will use placeholders. However, if those properties happen to be one of the last four (strength or stress/strain), it would be best to include a placeholder value equal to that of the "nearest" material you can find; for example, if you were not able to find the Young's modulus of Iron, using Cobalt would do just fine. Some data will automatically fill out even though better data may be available; this is primarily for ease of use and can be safely ignored if all data is available. This is unlikely, however, and the placeholders will do just fine (all the vanilla materials use the same ones).<br><br>
 
+Materials in dwarf fortress are made with the assumption that IMPACT values should be equal to COMPRESSIVE, which is incorrect; YIELD and FRACTURE should be equal to BENDING or COMPRESSIVE, whichever's less (which is always BENDING in vanilla DF). However, forcing this on whoever makes the materials would be dumb, since it is the game that we're talking about. So: <br><br>
+
+Realistic: <input type="checkbox" id="realistic" onChange="makeMat()"> <br><br>
+
 Material name: <input type="text" id="mat_name" placeholder="iron" oninput="makeMat()"> Should have no capitals <br>
 Melting point (celcius): <input type="number" id="melting_c" placeholder="1538" oninput="celciusConversion('melting')"><br>
 Boiling point (celcius): <input type="number" id="boiling_c" placeholder="2862" oninput="celciusConversion('boiling')"><br>
@@ -105,8 +109,8 @@ function makeMat() {
     var ultimateTensile=getValue('ultimate_tensile')
     var ultimateCompressive=getValue('ultimate_compressive')
     var ultimateShear=getValue('ultimate_shear')
-    var impactYield=Math.min(tensileYield,compressiveYield)
-    var impactFracture=Math.min(ultimateTensile,ultimateCompressive)
+    var impactYield=document.getElementById('realistic').checked ? Math.min(tensileYield,compressiveYield) : compressiveYield
+    var impactFracture=document.getElementById('realistic').checked ? Math.min(ultimateTensile,ultimateCompressive) : ultimateCompressive
     var bendingYield=Math.min(tensileYield,compressiveYield,shearYield)
     var bendingFracture=Math.min(ultimateTensile,ultimateCompressive,ultimateShear)
     var torsionYield=shearYield<0.5*impactYield ? shearYield : impactYield //wikipedia is confusing... and unsourced.
@@ -123,8 +127,8 @@ function makeMat() {
                 "    [SOLID_DENSITY:"+getValue('solid_density')+"]\n" +
                 "    [LIQUID_DENSITY:"+getValue('liquid_density')+"]\n" +
                 "    [MOLAR_MASS:"+getValue('molar')+"]\n" +
-                "    [IMPACT_YIELD:"+bendingYield+"]\n" +
-	            "    [IMPACT_FRACTURE:"+bendingFracture+"]\n" +
+                "    [IMPACT_YIELD:"+impactYield+"]\n" +
+	            "    [IMPACT_FRACTURE:"+impactFracture+"]\n" +
 	            "    [IMPACT_STRAIN_AT_YIELD:"+bulk+"]\n" +
 	            "    [COMPRESSIVE_YIELD:"+compressiveYield+"]\n" +
 	            "    [COMPRESSIVE_FRACTURE:"+ultimateCompressive+"]\n" +
