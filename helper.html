@@ -3,39 +3,71 @@
 <head>
 <title>DF Material Helper</title>
 </head>
+<style>
+body {
+    color: white;
+    background-color: #0a0500;
+}
+a:link {
+    color: #5050F0;
+}
+a:visited {
+    color: #7F7FD0;
+    
+}
+input[type=text] {
+    background-color: #191715;
+    border:solid 1px #a0a0a0;
+    color: #FFF5F0;
+}
+input[type=number] {
+    background-color: #191715;
+    border:solid 1px #a0a0a0;
+    color: #FFF5F0;
+}
+</style>
 <body>
 Good sources for data on materials are:<br><br>
 <a href="http://www.matweb.com/index.aspx">Matweb</a><br>
 <a href="http://www.wolframalpha.com/">Wolfram Alpha</a><br>
 <a href="https://en.wikipedia.org/wiki/Main_Page">Wikipedia</a><br>
 <a href="http://www.webelements.com/">WebElements</a><br>
-<a href="http://dwarffortresswiki.org/index.php/Main_Page">Dwarf fortress wiki (for DF-specific values)</a><br><br>
-If any properties are unavailable the game will use placeholders. However, if those properties happen to be one of the last four (strength or stress/strain), it would be best to include a placeholder value equal to that of the "nearest" material you can find; for example, if you were not able to find the Young's modulus of Iron, using Cobalt would do just fine. Some data will automatically fill out even though better data may be available; this is primarily for ease of use and can be safely ignored if all data is available. This is unlikely, however, and the placeholders will do just fine (all the vanilla materials use the same ones).<br><br>
+If any properties are unavailable the game will use placeholders. However, if those properties happen to be one strength or elasticity, it would be best to include a placeholder value equal to that of the "nearest" material you can find; for example, if you were not able to find the Young's modulus of Iron, using Cobalt would do just fine. Some data will automatically fill out even though better data may be available; this is primarily for ease of use and can be safely ignored if all data is available. This is unlikely, however, and the placeholders will do just fine (all the vanilla materials use the same ones).<br><br>
 
-Materials in dwarf fortress are made with the assumption that IMPACT values should be equal to COMPRESSIVE, which is incorrect; YIELD and FRACTURE should be equal to BENDING or COMPRESSIVE, whichever's less (which is always BENDING in vanilla DF). However, forcing this on whoever makes the materials would be dumb, since it is the game that we're talking about. So: <br><br>
-
+Materials in dwarf fortress are made with the assumption that IMPACT values should be equal to COMPRESSIVE, which is incorrect; YIELD and FRACTURE should be equal to BENDING or COMPRESSIVE, whichever's less (which is always BENDING in vanilla DF). However, forcing this on whoever makes the materials would be dumb, since it is the game that we're talking about. So: <br>
 Realistic IMPACT values: <input type="checkbox" id="realistic_impact" onChange="makeMat()"> <br><br>
-
-Material name: <input type="text" id="mat_name" placeholder="iron" oninput="makeMat()"> Should have no capitals <br>
-Melting point (celcius): <input type="number" id="melting_c" placeholder="1538" oninput="celciusConversion('melting')"><br>
-Boiling point (celcius): <input type="number" id="boiling_c" placeholder="2862" oninput="celciusConversion('boiling')"><br>
-Melting point (fahrenheit): <input type="number" id="melting" placeholder="2800" oninput="fahrenheitConversion('melting')"><br>
-Boiling point (fahrenheit): <input type="number" id="boiling" placeholder="5184" oninput="fahrenheitConversion('boiling')"><br>
-Specific heat: <input type="number" id="spec_heat" placeholder="450" oninput="makeMat()"> Joules per kilokelvin (J/K * 1000)<br>
-Color: <input type="text" id="color" placeholder="SILVER" oninput="makeMat()"> DF colors <br>
-Value: <input type="number" id="mat_value" placeholder="10" oninput="makeMat()"> DF value; 30 is steel.<br>
-Solid density: <input type="number" id="solid_density" placeholder="7850" oninput="makeMat()"> kg/m<sup>3</sup><br>
-Liquid density: <input type="number" id="liquid_density" placeholder="6980" oninput="makeMat()">kg/m<sup>3</sup><br>
-Molar mass: <input type="number" id="molar" placeholder="55845" oninput="makeMat()"> kg/mole<br>
-Tensile yield strength: <input type="number" id="tensile_yield" placeholder="155000" oninput="tensileYield()"> KPa<br>
-Ultimate tensile strength: <input type="number" id="ultimate_tensile" placeholder="310000" oninput="makeMat()"> KPa<br>
-Shear yield strength: <input type="number" id="shear_yield" placeholder="248000" oninput="makeMat()"> KPa<br>
-Ultimate shear strength: <input type="number" id="ultimate_shear" placeholder="496000" oninput="makeMat()"> KPa<br>
-Compressive yield strength: <input type="number" id="compressive_yield" placeholder="620000" oninput="makeMat()"> KPa<br>
-Ultimate compressive strength: <input type="number" id="ultimate_compressive" placeholder="1240000" oninput="makeMat()"> KPa<br>
-Young's modulus: <input type="number" id="young" placeholder="211000" oninput="makeMat()"> MPa<br>
-Shear modulus: <input type="number" id="shear" placeholder="82000" oninput="makeMat()"> MPa<br>
-Bulk modulus: <input type="number" id="bulk" placeholder="170000" oninput="makeMat()"> MPa<br>
+<a href="https://en.wikipedia.org/wiki/Melting_point">Melting point</a><br>
+<input type="number" id="melting_c" placeholder="1538" oninput="celciusConversion('melting')"> (celcius)<br>
+<input type="number" id="melting" placeholder="2800" oninput="fahrenheitConversion('melting')"> (fahrenheit)<br>
+<a href="https://en.wikipedia.org/wiki/Boiling_point">Boiling point</a><br>
+<input type="number" id="boiling_c" placeholder="2862" oninput="celciusConversion('boiling')"> (celcius)<br>
+<input type="number" id="boiling" placeholder="5184" oninput="fahrenheitConversion('boiling')"> (fahrenheit)<br>
+<a href="https://en.wikipedia.org/wiki/Autoignition_temperature">Ignition point</a><br>
+<input type="checkbox" id="ignition_point_exists" onChange="makeMat()"> Has ignition point<br>
+<input type="number" id="ignition_c" placeholder="-1" oninput="celciusConversion('ignition')"> (celcius)<br>
+<input type="number" id="ignition" placeholder="-1" oninput="fahrenheitConversion('ignition')"> (fahrenheit)<br>
+<a href="https://en.wikipedia.org/wiki/Heat_capacity">Specific Heat</a><br>
+<input type="number" id="spec_heat" placeholder="450" oninput="makeMat()"> (Joules per kilokelvin)<br>
+<a href="http://dwarffortresswiki.org/index.php/DF2014:Material_definition_token">DF Values</a><br>
+<input type="text" id="mat_name" placeholder="iron" oninput="makeMat()"> Name<br>
+<input type="text" id="color" placeholder="SILVER" oninput="makeMat()"> <a href="http://dwarffortresswiki.org/index.php/DF2014:Color#Color_tokens">Color</a><br>
+<input type="number" id="mat_value" placeholder="10" oninput="makeMat()"> <a href="http://dwarffortresswiki.org/index.php/DF2014:Item_value#Material_multipliers">Value</a><br>
+<a href="https://en.wikipedia.org/wiki/Density">Density</a> (kilogram/meter<sup>3</sup>):<br>
+<input type="number" id="solid_density" placeholder="7850" oninput="makeMat()"> Solid <br>
+<input type="number" id="liquid_density" placeholder="6980" oninput="makeMat()"> Liquid<br>
+<a href="https://en.wikipedia.org/wiki/Molar_mass">Molar mass</a><br>
+<input type="number" id="molar" placeholder="55845" oninput="makeMat()"> (kg/mole)<br>
+<a href="https://en.wikipedia.org/wiki/Strength_of_materials">Strength</a>:<br>
+<input type="number" id="tensile_yield" placeholder="155000" oninput="tensileYield()"> <a href="https://en.wikipedia.org/wiki/Yield_(engineering)">Tensile yield</a> (KPa)<br>
+<input type="number" id="ultimate_tensile" placeholder="310000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Ultimate_tensile_strength">Ultimate tensile strength</a> (KPa)<br>
+<input type="number" id="shear_yield" placeholder="248000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Yield_(engineering)">Shear yield</a> (KPa)<br>
+<input type="number" id="ultimate_shear" placeholder="496000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Shear_strength">Shear strength</a> (KPa)<br>
+<input type="number" id="compressive_yield" placeholder="620000" oninput="makeMat()"><a href="https://en.wikipedia.org/wiki/Yield_(engineering)"> Compressive yield</a> (KPa)<br>
+<input type="number" id="ultimate_compressive" placeholder="1240000" oninput="makeMat()"><a href="https://en.wikipedia.org/wiki/Compressive_strength"> Compressive strength</a> (KPa)<br>
+<a href="https://en.wikipedia.org/wiki/Elastic_modulus">Elasticity</a>:<br>
+<input type="number" id="young" placeholder="211000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Young%27s_modulus">Young's modulus</a> (MPa)<br>
+<input type="number" id="shear" placeholder="82000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Shear_modulus">Shear modulus</a> (MPa)<br>
+<input type="number" id="bulk" placeholder="170000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Bulk_modulus">Bulk modulus</a> (MPa)<br>
 
 <pre id='result'></pre>
 
@@ -52,8 +84,7 @@ function setValue(id,value) {
 
 function celciusConversion(nameOfThing) {
     var celcius=getValue(nameOfThing+"_c")
-    var fahrenheit=Math.round((1.8*celcius)+32)
-    setValue(nameOfThing,fahrenheit)
+    setValue(nameOfThing,Math.round((1.8*celcius)+32))
     makeMat()
 }
 function fahrenheitConversion(nameOfThing) {
@@ -115,7 +146,7 @@ function makeMat() {
     var bendingFracture=Math.min(ultimateTensile,ultimateCompressive,ultimateShear)
     var torsionYield=shearYield<0.5*impactYield ? shearYield : impactYield //wikipedia is confusing... and unsourced.
     var torsionFracture=ultimateShear<0.5*impactFracture ? ultimateShear : impactFracture
-    var holyCrapABigString="    [STATE_NAME_ADJ:ALL_SOLID:"+tempName('solid')+"]\n" + //would you believe that this whole segment was copied from python and only minorly edited?
+    var holyCrapABigStringOne="    [STATE_NAME_ADJ:ALL_SOLID:"+tempName('solid')+"]\n" + //would you believe that this whole segment was copied from python and only minorly edited?
                 "    [STATE_NAME_ADJ:LIQUID:"+tempName('liquid')+"]\n" + 
                 "    [STATE_NAME_ADJ:GAS:"+tempName('gas')+"]\n" +
                 "    [DISPLAY_COLOR:0:7:1]\n" +
@@ -123,8 +154,8 @@ function makeMat() {
                 "    [MATERIAL_VALUE:"+getValue('mat_value')+"]\n" +
                 "    [SPEC_HEAT:"+getValue('spec_heat')+"]\n" +
                 "    [MELTING_POINT:"+(getValue('melting')+9968)+"]\n" +
-                "    [BOILING_POINT:"+(getValue('boiling')+9968)+"]\n" +
-                "    [SOLID_DENSITY:"+getValue('solid_density')+"]\n" +
+                "    [BOILING_POINT:"+(getValue('boiling')+9968)+"]\n"
+    var holyCrapABigStringTwo="    [SOLID_DENSITY:"+getValue('solid_density')+"]\n" +
                 "    [LIQUID_DENSITY:"+getValue('liquid_density')+"]\n" +
                 "    [MOLAR_MASS:"+getValue('molar')+"]\n" +
                 "    [IMPACT_YIELD:"+impactYield+"]\n" +
@@ -147,7 +178,8 @@ function makeMat() {
 	            "    [BENDING_STRAIN_AT_YIELD:"+shear+"]\n" +
 	            "    [MAX_EDGE:10000]\n" +
                 "    [STATE_COLOR:ALL:"+getValue('color')+"]"
-    document.getElementById('result').innerHTML=holyCrapABigString
+    var igniteString=(!document.getElementById("ignition_point_exists").checked) ? "" : ("    [IGNITE_POINT:"+(getValue('ignition')+9968+"]\n"))
+    document.getElementById('result').innerHTML=holyCrapABigStringOne+igniteString+holyCrapABigStringTwo
 }
 </script>
 
