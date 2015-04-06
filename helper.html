@@ -2,6 +2,8 @@
 <html>
 <head>
 <title>DF Material Helper</title>
+<meta charset="UTF-8">
+<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
 </head>
 <style>
 body {
@@ -36,6 +38,8 @@ If any properties are unavailable the game will use placeholders. However, if th
 
 Materials in dwarf fortress are made with the assumption that IMPACT values should be equal to COMPRESSIVE, which is incorrect; YIELD and FRACTURE should be equal to BENDING or COMPRESSIVE, whichever's less (which is always BENDING in vanilla DF). However, forcing this on whoever makes the materials would be dumb, since it is the game that we're talking about. So: <br>
 Realistic IMPACT values: <input type="checkbox" id="realistic_impact" onChange="makeMat()"> <br><br>
+Similarly, <a href="https://en.wikipedia.org/wiki/Von_Mises_yield_criterion#Reduced_von_Mises_equation_for_different_stress_conditions">shear stress at yield is √3 times lower than tensile stress</a> while the game considers it to be 1:1, so another checkbox: <br>
+Realistic SHEAR values: <input type="checkbox" id="realistic_shear" onChange="makeMat()"><br><br>
 <a href="https://en.wikipedia.org/wiki/Melting_point">Melting point</a><br>
 <input type="number" id="melting_c" placeholder="1538" oninput="celciusConversion('melting')"> (celcius)<br>
 <input type="number" id="melting" placeholder="2800" oninput="fahrenheitConversion('melting')"> (fahrenheit)<br>
@@ -60,14 +64,19 @@ Realistic IMPACT values: <input type="checkbox" id="realistic_impact" onChange="
 <a href="https://en.wikipedia.org/wiki/Strength_of_materials">Strength</a>:<br>
 <input type="number" id="tensile_yield" placeholder="155000" oninput="tensileYield()"> <a href="https://en.wikipedia.org/wiki/Yield_(engineering)">Tensile yield</a> (KPa)<br>
 <input type="number" id="ultimate_tensile" placeholder="310000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Ultimate_tensile_strength">Ultimate tensile strength</a> (KPa)<br>
-<input type="number" id="shear_yield" placeholder="248000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Yield_(engineering)">Shear yield</a> (KPa)<br>
-<input type="number" id="ultimate_shear" placeholder="496000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Shear_strength">Shear strength</a> (KPa)<br>
-<input type="number" id="compressive_yield" placeholder="620000" oninput="makeMat()"><a href="https://en.wikipedia.org/wiki/Yield_(engineering)"> Compressive yield</a> (KPa)<br>
-<input type="number" id="ultimate_compressive" placeholder="1240000" oninput="makeMat()"><a href="https://en.wikipedia.org/wiki/Compressive_strength"> Compressive strength</a> (KPa)<br>
-<a href="https://en.wikipedia.org/wiki/Elastic_modulus">Elasticity</a>:<br>
-<input type="number" id="young" placeholder="211000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Young%27s_modulus">Young's modulus</a> (MPa)<br>
-<input type="number" id="shear" placeholder="82000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Shear_modulus">Shear modulus</a> (MPa)<br>
+<input type="number" id="shear_yield" placeholder="155000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Yield_(engineering)">Shear yield</a> (KPa)<br>
+<input type="number" id="ultimate_shear" placeholder="310000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Shear_strength">Shear strength</a> (KPa)<br>
+<input type="number" id="compressive_yield" placeholder="542500" oninput="makeMat()"><a href="https://en.wikipedia.org/wiki/Yield_(engineering)"> Compressive yield</a> (KPa)<br>
+<input type="number" id="ultimate_compressive" placeholder="1085000" oninput="makeMat()"><a href="https://en.wikipedia.org/wiki/Compressive_strength"> Compressive strength</a> (KPa)<br>
+<a href="https://en.wikipedia.org/wiki/Elastic_modulus">Elastic moduli</a> (only need to fill in two, the rest will be filled in when you press the button):<br>
 <input type="number" id="bulk" placeholder="170000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Bulk_modulus">Bulk modulus</a> (MPa)<br>
+<input type="number" id="young" placeholder="211000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Young%27s_modulus">Young's modulus</a> (MPa)<br>
+<input type="number" id="lamé" placeholder="115000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Lam%C3%A9_parameters">Lamé's First Parameter</a> (MPa) <br>
+<input type="number" id="shear" placeholder="82000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Shear_modulus">Shear modulus</a> (MPa)<br>
+<input type="number" id="poisson" placeholder="0.293" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Poisson%27s_ratio">Poisson's Ratio</a> (ratio) <br>
+<input type="number" id="p-wave" placeholder="279000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/P-wave_modulus">P-wave modulus</a> (MPa) <br>
+<button onclick="convertElasticModuli()">Fill in the rest</button>
+
 
 <pre id='result'></pre>
 
@@ -78,6 +87,33 @@ function getValue(id) {
     return parseInt(curValue) ? parseInt(curValue) : curValue
 }
 
+function isChecked(id) {
+    return document.getElementById(id).checked
+}
+
+function getSigFig(num) {
+    if (Math.abs(num)>1) {
+        zeroes=0
+        while(Math.floor(num/Math.pow(10,zeroes))==num/Math.pow(10,zeroes)) {
+            zeroes++
+        }
+        return Math.floor(Math.log10(num))-(zeroes-2)
+    }
+    else {
+        trailers=0
+        while(Math.floor(num*Math.pow(10,trailers))!=num*Math.pow(10,trailers)) {
+            trailers++
+       }
+       return trailers
+    }
+}
+
+function sigFigs(n, sig) { //http://blog.magnetiq.com/post/497605344/rounding-to-a-certain-significant-figures-in
+    var mult = Math.pow(10,
+        sig - Math.floor(Math.log(n) / Math.LN10) - 1);
+    return Math.round(n * mult) / mult;
+}
+    
 function setValue(id,value) {
     document.getElementById(id).value=value
     return id
@@ -96,11 +132,139 @@ function fahrenheitConversion(nameOfThing) {
 
 function tensileYield() {
     var yield=getValue('tensile_yield')
-    setValue('shear_yield',yield)
+    var shearYield=isChecked("realistic_shear") ? sigFigs(yield*(1/Math.sqrt(3)),getSigFig(yield)) : yield
+    setValue('shear_yield',shearYield)
     setValue('compressive_yield',yield*3.5)
     setValue('ultimate_tensile',yield*2)
-    setValue('ultimate_shear',yield*2)
+    setValue('ultimate_shear',shearYield*2)
     setValue('ultimate_compressive',yield*7)
+    makeMat()
+}
+
+function convertElasticModuli() {
+    var K=getValue("bulk") //silly variable names primarily to make math slightly more readable
+    var E=getValue("young") //also because that's actually how they're usually notated
+    var L=getValue("lamé") //technically should be lambda but ILLEGAL
+    var G=getValue("shear") 
+    var v=getValue("poisson") //okay so technically it should be ν but I'm not that evil
+    var M=getValue("p-wave")
+    if (K) {
+        if (E) {
+            var sigfig=Math.min(getSigFig(K),getSigFig(E))
+            setValue("lamé",sigFigs((3*K*(3*K-E))/(9*K-E),sigfig))
+            setValue("shear",sigFigs((3*K*E)/(9*K-E),sigfig))
+            setValue("poisson",sigFigs((3*K-E)/(6*K),sigfig))
+            setValue("p-wave",sigFigs((3*K*(3*K+E))/(9*K-E),sigfig))
+        }
+        else if (L) {
+            var sigfig=Math.min(getSigFig(K),getSigFig(L))
+            setValue("young",sigFigs((9*K*(K-L))/(3*K-L),sigfig))
+            setValue("shear",sigFigs((3*(K-L))/2,sigfig))
+            setValue("poisson",sigFigs(L/(3*K-L),sigfig))
+            setValue("p-wave",sigFigs(3*K-2*L,sigfig))
+        }
+        else if (G) {
+            var sigfig=Math.min(getSigFig(K),getSigFig(G))
+            setValue("young",sigFigs((9*K*G)/(3*K+G),sigfig))
+            setValue("lamé",sigFigs(K-((2*G)/3),sigfig))
+            setValue("poisson",sigFigs((3*K-2*g)/(2*(3*K+G)),sigfig))
+            setValue("p-wave",sigFigs(K+((4*G)/3),sigfig))
+        }
+        else if (v) {
+            var sigfig=Math.min(getSigFig(K),getSigFig(v))
+            setValue("young",sigFigs(3*K*(1-2*v),sigfig))
+            setValue("lamé",sigFigs((3*K*v)/(1+v),sigfig))
+            setValue("shear",sigFigs((3*K*(1-2*v))/(2*(1+v)),sigfig))
+            setValue("p-wave",sigFigs((3*K*(1-v))/(1+v),sigfig))
+        }
+        else if (M) {
+            var sigfig=Math.min(getSigFig(K),getSigFig(M))
+            setValue("young",sigFigs((9*K*(M-K))/(3*K+M),sigfig))
+            setValue("lamé",sigFigs((3*K-M)/2,sigfig))
+            setValue("shear",sigFigs((3*(M-K))/4,sigfig))
+            setValue("poisson",sigFigs((3*K-M)/(3*K+M),sigfig))
+        }
+    }
+    else if (E) {
+        if (L) {
+            var sigfig=Math.min(getSigFig(E),getSigFig(L))
+            var R=Math.sqrt(Math.pow(E,2)+9*Math.pow(L,2)+2*E*L)
+            setValue("bulk",sigFigs((E+3*L+R)/6,sigfig))
+            setValue("shear",sigFigs((E-3*L+R)/4,sigfig))
+            setValue("poisson",sigFigs((2*L)/(E+L+R),sigfig))
+            setValue("p-wave",sigFigs((E-L+R)/2,sigfig))
+        }
+        else if (G) {
+            var sigfig=Math.min(getSigFig(E),getSigFig(G))
+            setValue("bulk",sigFigs((E*G)/(3*(3*G-E)),sigfig))
+            setValue("lamé",sigFigs((G*(E-2*G))/(3*G-E),sigfig))
+            setValue("poisson",sigFigs((E/(2*G))-1,sigfig))
+            setValue("p-wave",sigFigs((G*(4*G-E))/(3*G-E),sigfig))
+        }
+        else if (v) {
+            var sigfig=Math.min(getSigFig(E),getSigFig(v))
+            setValue("bulk",sigFigs(E/(3*(1-2*v)),sigfig))
+            setValue("lamé",sigFigs((E*v)/((1+v)*(1-2*v)),sigfig))
+            setValue("shear",sigFigs(E/(2*(1+v)),sigfig))
+            setValue("p-wave",sigFigs((E*(1-v))/((1+v)*(1-2*v)),sigfig))
+        }
+        else if (M) {
+            var sigfig=Math.min(getSigFig(E),getSigFig(M))
+            var S=Math.sqrt(Math.pow(E,2)+9*Math.pow(M,2)-10*E*M)
+            setValue("bulk",sigFigs((3*M-E+S)/6,sigfig))
+            setValue("lamé",sigFigs((M-E+S)/4,sigfig))
+            setValue("shear",sigFigs((3*M+E-S)/8,sigfig))
+            setValue("poisson",sigFigs((E-M+S)/(4*M),sigfig))
+        }
+    }
+    else if (L) {
+        if (G){
+            var sigfig=Math.min(getSigFig(L),getSigFig(G))
+            setValue("bulk",sigFigs(L+((2*G)/3),sigfig))
+            setValue("young",sigFigs((G*(3*L+2*G))/(L+G),sigfig))
+            setValue("poisson",sigFigs(L/(2*(L+G)),sigfig))
+            setValue("p-wave",sigFigs((L*(1-v))/v,sigfig))
+        }
+        else if (v){
+            var sigfig=Math.min(getSigFig(L),getSigFig(v))
+            setValue("bulk",sigFigs((L*(1+v))/(3*v),sigfig))
+            setValue("young",sigFigs((L*(1+v)*(1-2*v))/v,sigfig))
+            setValue("shear",sigFigs((L*(1-2*v))/(2*v),sigfig))
+            setValue("p-wave",sigFigs((L*(1-v))/v,sigfig))
+        }
+        else if (M){
+            var sigfig=Math.min(getSigFig(L),getSigFig(M))
+            setValue("bulk",sigFigs((M+2*L)/3,sigfig))
+            setValue("young",sigFigs(((M-L)*(M+2*L))/(M+L),sigfig))
+            setValue("shear",sigFigs((M-L)/2,sigfig))
+            setValue("poisson",sigFigs(L/(M+L),sigfig))
+        }
+    }
+    else if (G) {
+        if (v){
+            var sigfig=Math.min(getSigFig(G),getSigFig(v))
+            setValue("bulk",sigFigs((2*G*(1+v))/(3*(1-2*v)),sigfig))
+            setValue("young",sigFigs(2*G*(1+v),sigfig))
+            setValue("lamé",sigFigs((2*G*v)/(1-2*v),sigfig))
+            setValue("p-wave",sigFigs((2*G*(1-v))/(1-2*v),sigfig))
+            }
+        else if (M){
+            var sigfig=Math.min(getSigFig(G),getSigFig(M))
+            setValue("bulk",sigFigs(M-((4*G)/3),sigfig))
+            setValue("young",sigFigs((G*(3*M-4*G))/(M-G),sigfig))
+            setValue("lamé",sigFigs(M-2*G,sigfig))
+            setValue("poisson",sigFigs((M-2*G)/(2*M-2*G),sigfig))
+        }
+    }
+    else if (v) {
+        if (M) {
+            var sigfig=Math.min(getSigFig(v),getSigFig(M))
+            setValue("bulk",sigFigs((M*(1+v))/(3*(1-v)),sigfig))
+            setValue("young",sigFigs((M*(1+v)*(1-2*v))/(1-v),sigfig))
+            setValue("lamé",sigFigs((M*v)/(1-v),sigfig))
+            setValue("shear",sigFigs((M*(1-2*v))/(2*(1-v)),sigfig))
+        }
+    }
     makeMat()
 }
 
@@ -141,8 +305,8 @@ function makeMat() {
     var ultimateTensile=getValue('ultimate_tensile')
     var ultimateCompressive=getValue('ultimate_compressive')
     var ultimateShear=getValue('ultimate_shear')
-    var impactYield=document.getElementById('realistic_impact').checked ? Math.min(tensileYield,compressiveYield) : compressiveYield
-    var impactFracture=document.getElementById('realistic_impact').checked ? Math.min(ultimateTensile,ultimateCompressive) : ultimateCompressive
+    var impactYield=isChecked('realistic_impact') ? Math.min(tensileYield,compressiveYield) : compressiveYield
+    var impactFracture=isChecked('realistic_impact') ? Math.min(ultimateTensile,ultimateCompressive) : ultimateCompressive
     var bendingYield=Math.min(tensileYield,compressiveYield,shearYield)
     var bendingFracture=Math.min(ultimateTensile,ultimateCompressive,ultimateShear)
     var torsionYield=shearYield<0.5*impactYield ? shearYield : impactYield //wikipedia is confusing... and unsourced.
@@ -179,7 +343,7 @@ function makeMat() {
 	            "    [BENDING_STRAIN_AT_YIELD:"+shear+"]\n" +
 	            "    [MAX_EDGE:10000]\n" +
                 "    [STATE_COLOR:ALL:"+getValue('color')+"]"
-    var igniteString=(!document.getElementById("ignition_point_exists").checked) ? "" : ("    [IGNITE_POINT:"+(getValue('ignition')+9968+"]\n"))
+    var igniteString=(!isChecked("ignition_point_exists")) ? "" : ("    [IGNITE_POINT:"+(getValue('ignition')+9968+"]\n"))
     document.getElementById('result').innerHTML=holyCrapABigStringOne+igniteString+holyCrapABigStringTwo
 }
 
