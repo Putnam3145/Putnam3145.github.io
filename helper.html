@@ -56,6 +56,7 @@ Realistic SHEAR values: <input type="checkbox" id="realistic_shear" onChange="ma
 <input type="text" id="mat_name" placeholder="iron" oninput="makeMat()"> Name<br>
 <input type="text" id="color" placeholder="SILVER" oninput="makeMat()"> <a href="http://dwarffortresswiki.org/index.php/DF2014:Color#Color_tokens">Color</a><br>
 <input type="number" id="mat_value" placeholder="10" oninput="makeMat()"> <a href="http://dwarffortresswiki.org/index.php/DF2014:Item_value#Material_multipliers">Value</a><br>
+<input type="number" id="max_edge" placeholder="10000" oninput="makeMat()"> MAX_EDGE<br>
 <a href="https://en.wikipedia.org/wiki/Density">Density</a> (kilogram/meter<sup>3</sup>):<br>
 <input type="number" id="solid_density" placeholder="7850" oninput="makeMat()"> Solid <br>
 <input type="number" id="liquid_density" placeholder="6980" oninput="makeMat()"> Liquid<br>
@@ -341,7 +342,7 @@ function makeMat() {
 	            "    [BENDING_YIELD:"+bendingYield+"]\n" +
 	            "    [BENDING_FRACTURE:"+bendingFracture+"]\n" +
 	            "    [BENDING_STRAIN_AT_YIELD:"+shear+"]\n" +
-	            "    [MAX_EDGE:10000]\n" +
+	            "    [MAX_EDGE:"+getValue("max_edge")+"]\n" +
                 "    [STATE_COLOR:ALL:"+getValue('color')+"]"
     var igniteString=(!isChecked("ignition_point_exists")) ? "" : ("    [IGNITE_POINT:"+(getValue('ignition')+9968+"]\n"))
     document.getElementById('result').innerHTML=holyCrapABigStringOne+igniteString+holyCrapABigStringTwo
