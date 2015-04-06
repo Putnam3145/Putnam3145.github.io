@@ -72,6 +72,7 @@ Realistic IMPACT values: <input type="checkbox" id="realistic_impact" onChange="
 <pre id='result'></pre>
 
 <script>
+//The programming proper
 function getValue(id) {
     var curValue=document.getElementById(id).value
     return parseInt(curValue) ? parseInt(curValue) : curValue
@@ -181,6 +182,16 @@ function makeMat() {
     var igniteString=(!document.getElementById("ignition_point_exists").checked) ? "" : ("    [IGNITE_POINT:"+(getValue('ignition')+9968+"]\n"))
     document.getElementById('result').innerHTML=holyCrapABigStringOne+igniteString+holyCrapABigStringTwo
 }
+
+//Google analytics code snippet
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-61577221-1', 'auto');
+  ga('send', 'pageview');
+
 </script>
 
 </body>
