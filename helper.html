@@ -72,8 +72,8 @@ Realistic SHEAR values: <input type="checkbox" id="realistic_shear" onChange="ma
 <a href="https://en.wikipedia.org/wiki/Elastic_modulus">Elastic moduli</a> (Only bulk modulus, young's modulus and shear modulus are taken into account by DF; if any cannot be found, the rest can be filled in with any two):<br>
 <input type="number" id="bulk" placeholder="170000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Bulk_modulus">Bulk modulus</a> (MPa)<br>
 <input type="number" id="young" placeholder="211000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Young%27s_modulus">Young's modulus</a> (MPa)<br>
-<input type="number" id="lamé" placeholder="115000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Lam%C3%A9_parameters">Lamé's First Parameter</a> (MPa) <br>
 <input type="number" id="shear" placeholder="82000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Shear_modulus">Shear modulus</a> (MPa)<br>
+<input type="number" id="lamé" placeholder="115000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Lam%C3%A9_parameters">Lamé's First Parameter</a> (MPa) <br>
 <input type="number" id="poisson" placeholder="0.293" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Poisson%27s_ratio">Poisson's Ratio</a> (ratio) <br>
 <input type="number" id="p-wave" placeholder="279000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/P-wave_modulus">P-wave modulus</a> (MPa) <br>
 <button onclick="convertElasticModuli()">Fill in the rest</button>
@@ -85,7 +85,7 @@ Realistic SHEAR values: <input type="checkbox" id="realistic_shear" onChange="ma
 //The programming proper
 function getValue(id) {
     var curValue=document.getElementById(id).value
-    return parseInt(curValue) ? parseInt(curValue) : curValue
+    return parseInt(curValue) ? parseInt(curValue) : parseFloat(curValue) ? parseFloat(curValue) : curValue
 }
 
 function isChecked(id) {
