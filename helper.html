@@ -63,12 +63,13 @@ Realistic SHEAR values: <input type="checkbox" id="realistic_shear" onChange="ma
 <a href="https://en.wikipedia.org/wiki/Molar_mass">Molar mass</a><br>
 <input type="number" id="molar" placeholder="55845" oninput="makeMat()"> (kg/mole)<br>
 <a href="https://en.wikipedia.org/wiki/Strength_of_materials">Strength</a>:<br>
-<input type="number" id="tensile_yield" placeholder="155000" oninput="tensileYield()"> <a href="https://en.wikipedia.org/wiki/Yield_(engineering)">Tensile yield</a> (KPa)<br>
+<input type="number" id="tensile_yield" placeholder="155000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Yield_(engineering)">Tensile yield</a> (KPa)<br>
 <input type="number" id="ultimate_tensile" placeholder="310000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Ultimate_tensile_strength">Ultimate tensile strength</a> (KPa)<br>
 <input type="number" id="shear_yield" placeholder="155000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Yield_(engineering)">Shear yield</a> (KPa)<br>
 <input type="number" id="ultimate_shear" placeholder="310000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Shear_strength">Shear strength</a> (KPa)<br>
 <input type="number" id="compressive_yield" placeholder="542500" oninput="makeMat()"><a href="https://en.wikipedia.org/wiki/Yield_(engineering)"> Compressive yield</a> (KPa)<br>
 <input type="number" id="ultimate_compressive" placeholder="1085000" oninput="makeMat()"><a href="https://en.wikipedia.org/wiki/Compressive_strength"> Compressive strength</a> (KPa)<br>
+<button onclick="strengthPlaceholders()">Fill in the rest with placeholders</button><br>
 <a href="https://en.wikipedia.org/wiki/Elastic_modulus">Elastic moduli</a> (Only bulk modulus, young's modulus and shear modulus are taken into account by DF; if any cannot be found, the rest can be filled in with any two):<br>
 <input type="number" id="bulk" placeholder="170000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Bulk_modulus">Bulk modulus</a> (MPa)<br>
 <input type="number" id="young" placeholder="211000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Young%27s_modulus">Young's modulus</a> (MPa)<br>
@@ -93,6 +94,9 @@ function isChecked(id) {
 }
 
 function getSigFig(num) {
+    if (!num) {
+        return num
+    }
     if (Math.abs(num)>1) {
         zeroes=0
         while(Math.floor(num/Math.pow(10,zeroes))==num/Math.pow(10,zeroes)) {
@@ -120,6 +124,12 @@ function setValue(id,value) {
     return id
 }
 
+function setIfNotAlreadySet(id,value) {
+    if (!getValue(id)) {
+        setValue(id,value)
+    }
+}
+
 function celciusConversion(nameOfThing) {
     var celcius=getValue(nameOfThing+"_c")
     setValue(nameOfThing,Math.round((1.8*celcius)+32))
@@ -131,15 +141,45 @@ function fahrenheitConversion(nameOfThing) {
     makeMat()
 }
 
-function tensileYield() {
-    var yield=getValue('tensile_yield')
-    var shearYield=isChecked("realistic_shear") ? sigFigs(yield*(1/Math.sqrt(3)),getSigFig(yield)) : yield
-    setValue('shear_yield',shearYield)
-    setValue('compressive_yield',yield*3.5)
-    setValue('ultimate_tensile',yield*2)
-    setValue('ultimate_shear',shearYield*2)
-    setValue('ultimate_compressive',yield*7)
-    makeMat()
+function strengthPlaceholders(not_again) {
+    var tensileYield=getValue('tensile_yield')
+    var shearYield=getValue('shear_yield')
+    var compressiveYield=getValue('compressive_yield')
+    var ultimateTensile=getValue('ultimate_tensile')
+    var ultimateShear=getValue('ultimate_shear')
+    var ultimateCompressive=getValue('ultimate_compressive')
+    var shearCoefficient = isChecked('realistic_shear') ? Math.sqrt(3) : 1
+    if (tensileYield) {
+        setIfNotAlreadySet('shear_yield',sigFigs(tensileYield/shearCoefficient,getSigFig(tensileYield)))
+        setIfNotAlreadySet('compressive_yield',tensileYield*3.5)
+        if (ultimateTensile) {
+            setIfNotAlreadySet('ultimate_shear',sigFigs(ultimateTensile/shearCoefficient,getSigFig(ultimateTensile)))
+            setIfNotAlreadySet('ultimate_compressive',ultimateTensile*3.5)
+        }
+        else {        
+            setIfNotAlreadySet('ultimate_tensile',tensileYield*2)
+            setIfNotAlreadySet('ultimate_shear',getValue('shear_yield')*2)
+            setIfNotAlreadySet('ultimate_compressive',tensileYield*7)
+        }
+    }
+    else if (shearYield) {
+        setIfNotAlreadySet('tensile_yield',sigFigs(shearYield*shearCoefficient,getSigFig(shearYield)))
+    }
+    else if (compressiveYield) {
+        setIfNotAlreadySet('tensile_yield',compressiveYield/3.5)
+    }
+    else if (ultimateTensile) {
+        setIfNotAlreadySet('tensile_yield',ultimateTensile/2)
+    }
+    else if (ultimateShear) {
+        setIfNotAlreadySet('tensile_yield',sigFigs(ultimateShear*(shearCoefficient/2),getSigFig(ultimateShear)))
+    }
+    else if (ultimateCompressive) {
+        setIfNotAlreadySet('tensile_yield',ultimateCompressive/7)
+    }
+    if (!not_again) {
+        strengthPlaceholders(true)
+    }
 }
 
 function convertElasticModuli() {
