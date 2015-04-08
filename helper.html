@@ -54,7 +54,7 @@ Realistic SHEAR values: <input type="checkbox" id="realistic_shear" onChange="ma
 <input type="number" id="spec_heat" placeholder="450" oninput="makeMat()"> (Joules per kilokelvin)<br>
 <a href="http://dwarffortresswiki.org/index.php/DF2014:Material_definition_token">DF Values</a><br>
 <input type="text" id="mat_name" placeholder="iron" oninput="makeMat()"> <a href="http://dwarffortresswiki.org/index.php/DF2014:Material_definition_token#STATE_NAME_ADJ">Name</a><br>
-<input type="text" id="color" placeholder="SILVER" oninput="makeMat()"> <a href="http://dwarffortresswiki.org/index.php/DF2014:Color#Color_tokens">Color</a><br>
+<input type="text" id="color" placeholder="GRAY" oninput="makeMat()"> <a href="http://dwarffortresswiki.org/index.php/DF2014:Color#Color_tokens">Color</a><br>
 <input type="number" id="mat_value" placeholder="10" oninput="makeMat()"> <a href="http://dwarffortresswiki.org/index.php/DF2014:Item_value#Material_multipliers">Value</a><br>
 <input type="number" id="max_edge" placeholder="10000" oninput="makeMat()"> <a href="http://dwarffortresswiki.org/index.php/DF2014:Material_definition_token#MAX_EDGE">MAX_EDGE</a><br>
 <a href="https://en.wikipedia.org/wiki/Density">Density</a> (kilogram/meter<sup>3</sup>):<br>
@@ -348,10 +348,8 @@ function makeMat() {
     var ultimateShear=getValue('ultimate_shear')
     var impactYield=isChecked('realistic_impact') ? Math.min(tensileYield,compressiveYield) : compressiveYield
     var impactFracture=isChecked('realistic_impact') ? Math.min(ultimateTensile,ultimateCompressive) : ultimateCompressive
-    var bendingYield=Math.min(tensileYield,compressiveYield,shearYield)
-    var bendingFracture=Math.min(ultimateTensile,ultimateCompressive,ultimateShear)
-    var torsionYield=shearYield<0.5*impactYield ? shearYield : impactYield //wikipedia is confusing... and unsourced.
-    var torsionFracture=ultimateShear<0.5*impactFracture ? ultimateShear : impactFracture
+    var bendingYield=Math.min(tensileYield,compressiveYield)
+    var bendingFracture=Math.min(ultimateTensile,ultimateCompressive)
     var holyCrapABigStringOne="    [STATE_NAME_ADJ:ALL_SOLID:"+tempName('solid')+"]\n" + //would you believe that this whole segment was copied from python and only minorly edited?
                 "    [STATE_NAME_ADJ:LIQUID:"+tempName('liquid')+"]\n" + 
                 "    [STATE_NAME_ADJ:GAS:"+tempName('gas')+"]\n" +
@@ -373,15 +371,15 @@ function makeMat() {
 	            "    [TENSILE_YIELD:"+tensileYield+"]\n" +
 	            "    [TENSILE_FRACTURE:"+ultimateTensile+"]\n" +
 	            "    [TENSILE_STRAIN_AT_YIELD:"+young+"] young's modulus "+ getValue('young')/1000 + " GPa\n" +
-	            "    [TORSION_YIELD:"+torsionYield+"]\n" +
-	            "    [TORSION_FRACTURE:"+torsionFracture+"]\n" +
+	            "    [TORSION_YIELD:"+shearYield+"]\n" +
+	            "    [TORSION_FRACTURE:"+ultimateShear+"]\n" +
                 "    [TORSION_STRAIN_AT_YIELD:"+shear+"]\n" +
 	            "    [SHEAR_YIELD:"+shearYield+"]\n" +
 	            "    [SHEAR_FRACTURE:"+ultimateShear+"]\n" +
 	            "    [SHEAR_STRAIN_AT_YIELD:"+shear+"] shear modulus " +getValue('shear')/1000+ " GPa\n" +
 	            "    [BENDING_YIELD:"+bendingYield+"]\n" +
 	            "    [BENDING_FRACTURE:"+bendingFracture+"]\n" +
-	            "    [BENDING_STRAIN_AT_YIELD:"+shear+"]\n" +
+	            "    [BENDING_STRAIN_AT_YIELD:"+young+"]\n" +
 	            "    [MAX_EDGE:"+getValue("max_edge")+"]\n" +
                 "    [STATE_COLOR:ALL:"+getValue('color')+"]"
     var igniteString=(!isChecked("ignition_point_exists")) ? "" : ("    [IGNITE_POINT:"+(getValue('ignition')+9968+"]\n"))
