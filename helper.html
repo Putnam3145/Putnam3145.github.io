@@ -469,6 +469,24 @@ function animate() {
         var poisson=getValue('poisson')
         var ends=[100-deformation,250+deformation]
         var middles=[100+(deformation*poisson),200-(deformation*poisson)]
+        if (ends[0]>ends[1]) {
+            setValue('ultimate_compressive',mat_shower.forces[1])
+            makeMat()
+            setTimeout(function() {requestAnimFrame( animate )}, 100)
+            mat_shower.forces[1]=0
+            mat_shower.mode=2
+            mat_shower.step=Math.floor(getValue('ultimate_shear')/100)
+            return
+        }
+        if (middles[0]>middles[1]) {
+            setValue('ultimate_tensile',mat_shower.forces[0])
+            makeMat()
+            mat_shower.forces[0]=0
+            mat_shower.mode=1
+            mat_shower.step=Math.floor(getValue('ultimate_compressive')/100)
+            setTimeout(function() {requestAnimFrame( animate )}, 100)
+            return
+        }
         mat_shower.graphics.beginFill(0xa6a6a6)
         mat_shower.graphics.moveTo(100,ends[0])
         mat_shower.graphics.bezierCurveTo(100,ends[0],middles[0],200,100,ends[1])
