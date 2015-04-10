@@ -85,7 +85,7 @@ Realistic SHEAR values: <input type="checkbox" id="realistic_shear" onChange="ma
 
 <br><br>
 
-The below graphic depicts what the material will look like up through its breaking point. (Warning: will probably be exceedingly boring for most sufficiently strong materials) <br><p id="cur_force"></p> <p id="cur_type"></p>
+The below graphic depicts what the material will look like up to its yield point. (Warning: will probably be exceedingly boring for most sufficiently inelastic materials) <br><p id="cur_force"></p> <p id="cur_type"></p>
 
 <script>
 //The programming proper
@@ -439,22 +439,22 @@ function calculateForceDeformation() {
 
 function animate() {
     mat_shower.graphics.clear()
-    if (mat_shower.forces[0]>getValue('ultimate_tensile')) {
+    if (mat_shower.forces[0]>getValue('tensile_yield')) {
         mat_shower.forces[0]=0
         mat_shower.mode=1
-        mat_shower.step=Math.floor(getValue('ultimate_compressive')/100)
+        mat_shower.step=Math.floor(getValue('compressive_yield')/100)
         setTimeout(function() {requestAnimFrame( animate )}, 100)
     }
-    else if (mat_shower.forces[1]>getValue('ultimate_compressive')) {
+    else if (mat_shower.forces[1]>getValue('compressive_yield')) {
         mat_shower.forces[1]=0
         mat_shower.mode=2
-        mat_shower.step=Math.floor(getValue('ultimate_tensile')/100)
+        mat_shower.step=Math.floor(getValue('shear_yield')/100)
         setTimeout(function() {requestAnimFrame( animate )}, 100)
     } 
-    else if (mat_shower.forces[2]>getValue('ultimate_shear')) {
+    else if (mat_shower.forces[2]>getValue('shear_yield')) {
         mat_shower.forces[2]=0
         mat_shower.mode=0
-        mat_shower.step=Math.floor(getValue('ultimate_shear')/100)
+        mat_shower.step=Math.floor(getValue('tensile_yield')/100)
         setTimeout(function() {requestAnimFrame( animate )}, 100)
     }
     else if (mat_shower.step<1) {
@@ -469,24 +469,6 @@ function animate() {
         var poisson=getValue('poisson')
         var ends=[100-deformation,250+deformation]
         var middles=[100+(deformation*poisson),200-(deformation*poisson)]
-        if (ends[0]>ends[1]) {
-            setValue('ultimate_compressive',mat_shower.forces[1])
-            makeMat()
-            setTimeout(function() {requestAnimFrame( animate )}, 100)
-            mat_shower.forces[1]=0
-            mat_shower.mode=2
-            mat_shower.step=Math.floor(getValue('ultimate_shear')/100)
-            return
-        }
-        if (middles[0]>middles[1]) {
-            setValue('ultimate_tensile',mat_shower.forces[0])
-            makeMat()
-            mat_shower.forces[0]=0
-            mat_shower.mode=1
-            mat_shower.step=Math.floor(getValue('ultimate_compressive')/100)
-            setTimeout(function() {requestAnimFrame( animate )}, 100)
-            return
-        }
         mat_shower.graphics.beginFill(0xa6a6a6)
         mat_shower.graphics.moveTo(100,ends[0])
         mat_shower.graphics.bezierCurveTo(100,ends[0],middles[0],200,100,ends[1])
