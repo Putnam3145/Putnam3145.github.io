@@ -85,7 +85,7 @@ Realistic SHEAR values: <input type="checkbox" id="realistic_shear" onChange="ma
 
 <br><br>
 
-The below graphic depicts what the material will look like up through its breaking point. (Warning: will probably be exceedingly boring for most materials) <br><p id="cur_force"></p> <p id="cur_type"></p>
+The below graphic depicts what the material will look like up through its breaking point. (Warning: will probably be exceedingly boring for most sufficiently strong materials) <br><p id="cur_force"></p> <p id="cur_type"></p>
 
 <script>
 //The programming proper
@@ -430,6 +430,9 @@ function calculateForceDeformation() {
     else if (mat_shower.forces[1]>0){
         strain_at_yield=Math.round((100*getValue('compressive_yield'))/(getValue('bulk')))
         deformation=-(mat_shower.forces[1]/getValue('compressive_yield'))*(strain_at_yield/50000)
+    } else {
+        strain_at_yield=Math.round((100*getValue('shear_yield'))/(getValue('shear')))
+        deformation=(mat_shower.forces[2]/getValue('shear_yield'))*(strain_at_yield/50000)
     }
     return deformation*100
 }
@@ -444,17 +447,24 @@ function animate() {
     }
     else if (mat_shower.forces[1]>getValue('ultimate_compressive')) {
         mat_shower.forces[1]=0
-        mat_shower.mode=0
+        mat_shower.mode=2
         mat_shower.step=Math.floor(getValue('ultimate_tensile')/100)
         setTimeout(function() {requestAnimFrame( animate )}, 100)
     } 
+    else if (mat_shower.forces[2]>getValue('ultimate_shear')) {
+        mat_shower.forces[2]=0
+        mat_shower.mode=0
+        mat_shower.step=Math.floor(getValue('ultimate_shear')/100)
+        setTimeout(function() {requestAnimFrame( animate )}, 100)
+    }
     else if (mat_shower.step<1) {
         mat_shower.step=1000000
         setTimeout(function() {requestAnimFrame( animate )}, 100)
     } 
     else if (!getValue('bulk') || !getValue('young') || !getValue('compressive_yield') || !getValue('tensile_yield')) {
         setTimeout(function() {requestAnimFrame( animate )}, 100)
-    } else {
+    }
+    else if (mat_shower.mode==0 || mat_shower.mode==1) {
         var deformation=calculateForceDeformation()
         var poisson=getValue('poisson')
         var ends=[100-deformation,250+deformation]
@@ -470,6 +480,20 @@ function animate() {
         mat_shower.forces[mat_shower.mode]+=mat_shower.step
         setValueInnerHTML('cur_force',mat_shower.mode==0 ? mat_shower.forces[0] + ' kilopascals' : mat_shower.forces[1] + ' kilopascals')
         setValueInnerHTML('cur_type',mat_shower.mode==0 ? 'Tensile force' : 'Compressive force')
+        setTimeout(function() {requestAnimFrame( animate )}, 100)
+    } else {
+        var deformation=calculateForceDeformation()
+        var ends=[100+deformation,200+deformation]
+        mat_shower.graphics.beginFill(0xa6a6a6)
+        mat_shower.graphics.moveTo(100,250)
+        mat_shower.graphics.lineTo(ends[0],100)
+        mat_shower.graphics.lineTo(ends[1],100)
+        mat_shower.graphics.lineTo(200,250)
+        // render the stage   
+        mat_shower.renderer.render(mat_shower.stage)
+        mat_shower.forces[mat_shower.mode]+=mat_shower.step
+        setValueInnerHTML('cur_force',mat_shower.forces[2] + ' kilopascals')
+        setValueInnerHTML('cur_type','Shear force')
         setTimeout(function() {requestAnimFrame( animate )}, 100)
     }
 }
