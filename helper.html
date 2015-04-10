@@ -4,6 +4,7 @@
 <title>DF Material Helper</title>
 <meta charset="UTF-8">
 <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+<script src="pixi.js"></script>
 </head>
 <style>
 body {
@@ -82,6 +83,10 @@ Realistic SHEAR values: <input type="checkbox" id="realistic_shear" onChange="ma
 
 <pre id='result'></pre>
 
+<br><br>
+
+The below graphic depicts what the material will look like up through its breaking point. (Warning: will probably be exceedingly boring for most materials) <br><p id="cur_force"></p> <p id="cur_type"></p>
+
 <script>
 //The programming proper
 function getValue(id) {
@@ -121,6 +126,11 @@ function sigFigs(n, sig) { //http://blog.magnetiq.com/post/497605344/rounding-to
     
 function setValue(id,value) {
     document.getElementById(id).value=value
+    return id
+}
+
+function setValueInnerHTML(id,value) {
+    document.getElementById(id).innerHTML=value
     return id
 }
 
@@ -384,7 +394,7 @@ function makeMat() {
 	            "    [MAX_EDGE:"+getValue("max_edge")+"]\n" +
                 "    [STATE_COLOR:ALL:"+getValue('color')+"]"
     var igniteString=(!isChecked("ignition_point_exists")) ? "" : ("    [IGNITE_POINT:"+(getValue('ignition')+9968+"]\n"))
-    document.getElementById('result').innerHTML=holyCrapABigStringOne+igniteString+holyCrapABigStringTwo
+    setValueInnerHTML('result',holyCrapABigStringOne+igniteString+holyCrapABigStringTwo)
 }
 
 //Google analytics code snippet
@@ -395,6 +405,74 @@ function makeMat() {
 
   ga('create', 'UA-61577221-1', 'auto');
   ga('send', 'pageview');
+
+//rendering stuff
+
+var mat_shower = mat_shower || {}
+
+mat_shower.stage=new PIXI.Stage(0x0a0500,true)
+mat_shower.renderer=PIXI.autoDetectRenderer(500, 400)
+mat_shower.graphics=new PIXI.Graphics()
+mat_shower.stage.addChild(mat_shower.graphics)
+mat_shower.forces=[0,0,0] //tensile, shear, compression, all in kilopascals
+mat_shower.mode=1
+mat_shower.step=1000000
+document.body.appendChild(mat_shower.renderer.view)
+
+requestAnimFrame( animate );
+
+function calculateForceDeformation() {
+    var deformation=0
+    if (mat_shower.forces[0]>0){
+        strain_at_yield=Math.round((getValue('tensile_yield')*100)/getValue('young'))
+        deformation=(mat_shower.forces[0]/getValue('tensile_yield'))*(strain_at_yield/50000)
+    }
+    else if (mat_shower.forces[1]>0){
+        strain_at_yield=Math.round((100*getValue('compressive_yield'))/(getValue('bulk')))
+        deformation=-(mat_shower.forces[1]/getValue('compressive_yield'))*(strain_at_yield/50000)
+    }
+    return deformation*100
+}
+
+function animate() {
+    mat_shower.graphics.clear()
+    if (mat_shower.forces[0]>getValue('ultimate_tensile')) {
+        mat_shower.forces[0]=0
+        mat_shower.mode=1
+        mat_shower.step=Math.floor(getValue('ultimate_compressive')/100)
+        setTimeout(function() {requestAnimFrame( animate )}, 100)
+    }
+    else if (mat_shower.forces[1]>getValue('ultimate_compressive')) {
+        mat_shower.forces[1]=0
+        mat_shower.mode=0
+        mat_shower.step=Math.floor(getValue('ultimate_tensile')/100)
+        setTimeout(function() {requestAnimFrame( animate )}, 100)
+    } 
+    else if (mat_shower.step<1) {
+        mat_shower.step=1000000
+        setTimeout(function() {requestAnimFrame( animate )}, 100)
+    } 
+    else if (!getValue('bulk') || !getValue('young') || !getValue('compressive_yield') || !getValue('tensile_yield')) {
+        setTimeout(function() {requestAnimFrame( animate )}, 100)
+    } else {
+        var deformation=calculateForceDeformation()
+        var poisson=getValue('poisson')
+        var ends=[100-deformation,250+deformation]
+        var middles=[100+(deformation*poisson),200-(deformation*poisson)]
+        mat_shower.graphics.beginFill(0xa6a6a6)
+        mat_shower.graphics.moveTo(100,ends[0])
+        mat_shower.graphics.bezierCurveTo(100,ends[0],middles[0],200,100,ends[1])
+        mat_shower.graphics.lineTo(200,ends[1])
+        mat_shower.graphics.bezierCurveTo(200,ends[1],middles[1],200,200,ends[0])
+        mat_shower.graphics.lineTo(100,ends[0])
+        // render the stage   
+        mat_shower.renderer.render(mat_shower.stage)
+        mat_shower.forces[mat_shower.mode]+=mat_shower.step
+        setValueInnerHTML('cur_force',mat_shower.mode==0 ? mat_shower.forces[0] + ' kilopascals' : mat_shower.forces[1] + ' kilopascals')
+        setValueInnerHTML('cur_type',mat_shower.mode==0 ? 'Tensile force' : 'Compressive force')
+        setTimeout(function() {requestAnimFrame( animate )}, 100)
+    }
+}
 
 </script>
 
