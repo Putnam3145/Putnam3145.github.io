@@ -361,39 +361,39 @@ function makeMat() {
     var impactFracture=isChecked('realistic_impact') ? Math.min(ultimateTensile,ultimateCompressive) : ultimateCompressive
     var bendingYield=Math.min(tensileYield,compressiveYield)
     var bendingFracture=Math.min(ultimateTensile,ultimateCompressive)
-    var holyCrapABigStringOne="    [STATE_NAME_ADJ:ALL_SOLID:"+tempName('solid')+"]\n" + //would you believe that this whole segment was copied from python and only minorly edited?
-                "    [STATE_NAME_ADJ:LIQUID:"+tempName('liquid')+"]\n" + 
-                "    [STATE_NAME_ADJ:GAS:"+tempName('gas')+"]\n" +
-                "    [DISPLAY_COLOR:0:7:1]\n" +
-                "    [BUILD_COLOR:0:7:1]\n" +
-                "    [MATERIAL_VALUE:"+getValue('mat_value')+"]\n" +
-                "    [SPEC_HEAT:"+getValue('spec_heat')+"]\n" +
-                "    [MELTING_POINT:"+(getValue('melting')+9968)+"]\n" +
-                "    [BOILING_POINT:"+(getValue('boiling')+9968)+"]\n"
-    var holyCrapABigStringTwo="    [SOLID_DENSITY:"+getValue('solid_density')+"]\n" +
-                "    [LIQUID_DENSITY:"+getValue('liquid_density')+"]\n" +
-                "    [MOLAR_MASS:"+getValue('molar')+"]\n" +
-                "    [IMPACT_YIELD:"+impactYield+"]\n" +
-	            "    [IMPACT_FRACTURE:"+impactFracture+"]\n" +
-	            "    [IMPACT_STRAIN_AT_YIELD:"+bulk+"]\n" +
-	            "    [COMPRESSIVE_YIELD:"+compressiveYield+"]\n" +
-	            "    [COMPRESSIVE_FRACTURE:"+ultimateCompressive+"]\n" +
-	            "    [COMPRESSIVE_STRAIN_AT_YIELD:"+bulk+"] bulk modulus "+ getValue('bulk')/1000 + " GPa\n" +
-	            "    [TENSILE_YIELD:"+tensileYield+"]\n" +
-	            "    [TENSILE_FRACTURE:"+ultimateTensile+"]\n" +
-	            "    [TENSILE_STRAIN_AT_YIELD:"+young+"] young's modulus "+ getValue('young')/1000 + " GPa\n" +
-	            "    [TORSION_YIELD:"+shearYield+"]\n" +
-	            "    [TORSION_FRACTURE:"+ultimateShear+"]\n" +
-                "    [TORSION_STRAIN_AT_YIELD:"+shear+"]\n" +
-	            "    [SHEAR_YIELD:"+shearYield+"]\n" +
-	            "    [SHEAR_FRACTURE:"+ultimateShear+"]\n" +
-	            "    [SHEAR_STRAIN_AT_YIELD:"+shear+"] shear modulus " +getValue('shear')/1000+ " GPa\n" +
-	            "    [BENDING_YIELD:"+bendingYield+"]\n" +
-	            "    [BENDING_FRACTURE:"+bendingFracture+"]\n" +
-	            "    [BENDING_STRAIN_AT_YIELD:"+young+"]\n" +
-	            "    [MAX_EDGE:"+getValue("max_edge")+"]\n" +
-                "    [STATE_COLOR:ALL:"+getValue('color')+"]"
-    var igniteString=(!isChecked("ignition_point_exists")) ? "" : ("    [IGNITE_POINT:"+(getValue('ignition')+9968+"]\n"))
+    var holyCrapABigStringOne="	[STATE_NAME_ADJ:ALL_SOLID:"+tempName('solid')+"]\n" + //would you believe that this whole segment was copied from python and only minorly edited?
+                "	[STATE_NAME_ADJ:LIQUID:"+tempName('liquid')+"]\n" + 
+                "	[STATE_NAME_ADJ:GAS:"+tempName('gas')+"]\n" +
+                "	[DISPLAY_COLOR:0:7:1]\n" +
+                "	[BUILD_COLOR:0:7:1]\n" +
+                "	[MATERIAL_VALUE:"+getValue('mat_value')+"]\n" +
+                "	[SPEC_HEAT:"+getValue('spec_heat')+"]\n" +
+                "	[MELTING_POINT:"+(getValue('melting')+9968)+"]\n" +
+                "	[BOILING_POINT:"+(getValue('boiling')+9968)+"]\n"
+    var holyCrapABigStringTwo="	[SOLID_DENSITY:"+getValue('solid_density')+"]\n" +
+                "	[LIQUID_DENSITY:"+getValue('liquid_density')+"]\n" +
+                "	[MOLAR_MASS:"+getValue('molar')+"]\n" +
+                "	[IMPACT_YIELD:"+impactYield+"]\n" +
+	            "	[IMPACT_FRACTURE:"+impactFracture+"]\n" +
+	            "	[IMPACT_STRAIN_AT_YIELD:"+bulk+"]\n" +
+	            "	[COMPRESSIVE_YIELD:"+compressiveYield+"]\n" +
+	            "	[COMPRESSIVE_FRACTURE:"+ultimateCompressive+"]\n" +
+	            "	[COMPRESSIVE_STRAIN_AT_YIELD:"+bulk+"] bulk modulus "+ getValue('bulk')/1000 + " GPa\n" +
+	            "	[TENSILE_YIELD:"+tensileYield+"]\n" +
+	            "	[TENSILE_FRACTURE:"+ultimateTensile+"]\n" +
+	            "	[TENSILE_STRAIN_AT_YIELD:"+young+"] young's modulus "+ getValue('young')/1000 + " GPa\n" +
+	            "	[TORSION_YIELD:"+shearYield+"]\n" +
+	            "	[TORSION_FRACTURE:"+ultimateShear+"]\n" +
+                "	[TORSION_STRAIN_AT_YIELD:"+shear+"]\n" +
+	            "	[SHEAR_YIELD:"+shearYield+"]\n" +
+	            "	[SHEAR_FRACTURE:"+ultimateShear+"]\n" +
+	            "	[SHEAR_STRAIN_AT_YIELD:"+shear+"] shear modulus " +getValue('shear')/1000+ " GPa\n" +
+	            "	[BENDING_YIELD:"+bendingYield+"]\n" +
+	            "	[BENDING_FRACTURE:"+bendingFracture+"]\n" +
+	            "	[BENDING_STRAIN_AT_YIELD:"+young+"]\n" +
+	            "	[MAX_EDGE:"+getValue("max_edge")+"]\n" +
+                "	[STATE_COLOR:ALL:"+getValue('color')+"]"
+    var igniteString=(!isChecked("ignition_point_exists")) ? "" : ("	[IGNITE_POINT:"+(getValue('ignition')+9968+"]\n"))
     setValueInnerHTML('result',holyCrapABigStringOne+igniteString+holyCrapABigStringTwo)
 }
 
