@@ -2,6 +2,7 @@
 <html>
 <head>
 <title>Putnam's stuff</title>
+<script src="jquery-1.11.2.min.js"></script>
 </head>
 <style>
 body {
@@ -40,7 +41,12 @@ Stuff I've contributed to:<br>
 <a href="https://github.com/DFHack/dfhack">DFHack</a><br>
 <a href="http://lazynewbpack.com/">Lazy Newb Packs</a><br>
 <a href="http://www.bay12forums.com/smf/index.php?board=24.0">Masterwork Dwarf Fortress</a><br>
-<a href="http://www.bay12forums.com/smf/index.php?topic=83992.0">Nchardahrk (Elder Scrolls DF mod)</a>
+<a href="http://www.bay12forums.com/smf/index.php?topic=83992.0">Nchardahrk (Elder Scrolls DF mod)</a><br>
+<br>
+And social media:<br>
+<a href="https://www.youtube.com/user/putnamehere3146">Youtube</a><br>
+<a href="https://twitter.com/Putnam3145">Twitter</a><br>
+<a id="twitch" href="http://www.twitch.tv/putnam3145">Twitch</a>
 </body>
 
 <script>
@@ -51,4 +57,19 @@ Stuff I've contributed to:<br>
 
   ga('create', 'UA-61577221-1', 'auto');
   ga('send', 'pageview');
+  
+$.getJSON('https://api.twitch.tv/kraken/streams/putnam3145', function(channel) {
+
+    if (channel["stream"] == null) { 
+        document.getElementById('twitch').innerHTML='Twitch (Offline)'
+
+    } else {
+
+        document.getElementById('twitch').innerHTML='Twitch (Live)'
+    
+    }
+
+
+
+});
 </script>
