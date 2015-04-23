@@ -426,14 +426,14 @@ function calculateForceDeformation(force) {
     var deformation = deformation
     if (mat_shower.mode==0){
         strain_at_yield=Math.round((getValue('tensile_yield')*100)/getValue('young'))
-        deformation=(force/getValue('tensile_yield'))*(strain_at_yield/50000)
+        deformation=(force/getValue('tensile_yield'))*(strain_at_yield/100000)
     }
     else if (mat_shower.mode==1){
         strain_at_yield=Math.round((100*getValue('compressive_yield'))/(getValue('bulk')))
-        deformation=-(force/getValue('compressive_yield'))*(strain_at_yield/50000)
+        deformation=-(force/getValue('compressive_yield'))*(strain_at_yield/100000)
     } else {
         strain_at_yield=Math.round((100*getValue('shear_yield'))/(getValue('shear')))
-        deformation=(force/getValue('shear_yield'))*(strain_at_yield/50000)
+        deformation=(force/getValue('shear_yield'))*(strain_at_yield/100000)
     }
     return deformation*75
 }
