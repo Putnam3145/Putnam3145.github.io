@@ -47,16 +47,4 @@ A place to put the downloads for Fortbent so I don't have to edit the bay 12 pos
 
   ga('create', 'UA-61577221-1', 'auto');
   ga('send', 'pageview');
-  
-$.ajax({ 
-    url:'https://api.twitch.tv/kraken/streams/Putnam3145',
-    dataType:'jsonp',
-    success:function(channel) { 
-        if (channel["stream"] == null) { 
-            document.getElementById('twitch').innerHTML='Twitch (Offline)'
-        } else {
-            document.getElementById('twitch').innerHTML='Twitch (Live)'
-        }
-    }
-});
 </script>
