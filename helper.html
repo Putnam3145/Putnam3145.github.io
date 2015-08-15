@@ -27,6 +27,20 @@ input[type=number] {
     border:solid 1px #a0a0a0;
     color: #FFF5F0;
 }
+.input_category {
+    display: flex;
+	flex-flow: row wrap;
+	min-width: 240;
+	max-height: 30;
+	border:hidden 3px #a0a0a0;
+	margin: 0px;
+	padding: 5px;
+}
+.input_box {
+	border:inset 2px #a0a0a0;
+	margin: 3px;
+	padding: 3px;
+}
 </style>
 <body>
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -52,57 +66,127 @@ Good sources for data on materials are:<br><br>
 <a href="http://www.wolframalpha.com/">Wolfram Alpha</a><br>
 <a href="https://en.wikipedia.org/wiki/Main_Page">Wikipedia</a><br>
 <a href="http://www.webelements.com/">WebElements</a><br>
-If any properties are unavailable the game will use placeholders. However, if those properties happen to be strength, it would be best to estimate to the best of your ability, such as by using a similar material (E.G iron for cobalt). Even if you can find only one elastic modulus, this is no problem; Poisson's ratio can only be between -1 and 0.5 in DF terms, and a general rule of thumb can be followed: metals 0.32, woods 0.45, rock 0.25. Young's modulus tends to be available, but if it isn't... guess.<br><br>
+If any properties are unavailable the game will use placeholders. However, if those properties happen to be strength, it would be best to estimate to the best of your ability, such as by using a similar material (E.G iron for cobalt). Even if you can find only one elastic modulus, this is no problem; Poisson's ratio can only be between -1 and 0.5 in DF terms, and a general rule of thumb can be followed: metals 0.3, woods 0.45, rock 0.25. Young's modulus tends to be available, but if it isn't... guess.<br><br>
 
 Materials in dwarf fortress are made with the assumption that IMPACT values should be equal to COMPRESSIVE, which is incorrect; YIELD and FRACTURE should be equal to BENDING or COMPRESSIVE, whichever's less (which is always BENDING in vanilla DF). However, forcing this on whoever makes the materials would be dumb, since it is the game that we're talking about. So: <br>
-Realistic IMPACT values: <input type="checkbox" id="realistic_impact" onChange="makeMat()"> <br><br>
+Realistic IMPACT values: <input type="checkbox" id="realistic_impact" tabindex=1 onChange="makeMat()"> <br><br>
 Similarly, <a href="https://en.wikipedia.org/wiki/Von_Mises_yield_criterion#Reduced_von_Mises_equation_for_different_stress_conditions">shear stress at yield is √3 times lower than tensile stress</a> while the game considers it to be 1:1, so another checkbox: <br>
-Realistic SHEAR values: <input type="checkbox" id="realistic_shear" onChange="makeMat()"><br><br>
-<a href="https://en.wikipedia.org/wiki/Melting_point">Melting point</a><br>
-<input type="number" id="melting_c" placeholder="1538" oninput="celciusConversion('melting')"> (celcius)<br>
-<input type="number" id="melting" placeholder="2800" oninput="fahrenheitConversion('melting')"> (fahrenheit)<br>
-<a href="https://en.wikipedia.org/wiki/Boiling_point">Boiling point</a><br>
-<input type="number" id="boiling_c" placeholder="2862" oninput="celciusConversion('boiling')"> (celcius)<br>
-<input type="number" id="boiling" placeholder="5184" oninput="fahrenheitConversion('boiling')"> (fahrenheit)<br>
-<a href="https://en.wikipedia.org/wiki/Autoignition_temperature">Ignition point</a><br>
-<input type="checkbox" id="ignition_point_exists" onChange="makeMat()"> Has ignition point<br>
-<input type="number" id="ignition_c" placeholder="-1" oninput="celciusConversion('ignition')"> (celcius)<br>
-<input type="number" id="ignition" placeholder="-1" oninput="fahrenheitConversion('ignition')"> (fahrenheit)<br>
-<a href="https://en.wikipedia.org/wiki/Heat_capacity">Specific Heat</a><br>
-<input type="number" id="spec_heat" placeholder="450" oninput="makeMat()"> (Joules per kilokelvin)<br>
-<a href="http://dwarffortresswiki.org/index.php/DF2014:Material_definition_token">DF Values</a><br>
-<input type="text" id="mat_name" placeholder="iron" oninput="makeMat()"> <a href="http://dwarffortresswiki.org/index.php/DF2014:Material_definition_token#STATE_NAME_ADJ">Name</a><br>
-<input type="text" id="color" placeholder="GRAY" oninput="makeMat()"> <a href="http://dwarffortresswiki.org/index.php/DF2014:Color#Color_tokens">Color</a><br>
-<input type="number" id="mat_value" placeholder="10" oninput="makeMat()"> <a href="http://dwarffortresswiki.org/index.php/DF2014:Item_value#Material_multipliers">Value</a><br>
-<input type="number" id="max_edge" placeholder="10000" oninput="makeMat()"> <a href="http://dwarffortresswiki.org/index.php/DF2014:Material_definition_token#MAX_EDGE">MAX_EDGE</a><br>
-<a href="https://en.wikipedia.org/wiki/Density">Density</a> (kilogram/meter<sup>3</sup>):<br>
-<input type="number" id="solid_density" placeholder="7850" oninput="makeMat()"> Solid <br>
-<input type="number" id="liquid_density" placeholder="6980" oninput="makeMat()"> Liquid<br>
-<a href="https://en.wikipedia.org/wiki/Molar_mass">Molar mass</a><br>
-<input type="number" id="molar" placeholder="55845" oninput="makeMat()"> (kg/mole)<br>
-<a href="https://en.wikipedia.org/wiki/Strength_of_materials">Strength</a>:<br>
-<input type="number" id="tensile_yield" placeholder="155000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Yield_(engineering)">Tensile yield</a> (KPa)<br>
-<input type="number" id="ultimate_tensile" placeholder="310000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Ultimate_tensile_strength">Ultimate tensile strength</a> (KPa)<br>
-<input type="number" id="shear_yield" placeholder="155000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Yield_(engineering)">Shear yield</a> (KPa)<br>
-<input type="number" id="ultimate_shear" placeholder="310000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Shear_strength">Shear strength</a> (KPa)<br>
-<input type="number" id="compressive_yield" placeholder="542500" oninput="makeMat()"><a href="https://en.wikipedia.org/wiki/Yield_(engineering)"> Compressive yield</a> (KPa)<br>
-<input type="number" id="ultimate_compressive" placeholder="1085000" oninput="makeMat()"><a href="https://en.wikipedia.org/wiki/Compressive_strength"> Compressive strength</a> (KPa)<br>
-<button onclick="strengthPlaceholders()">Fill in the rest with placeholders</button><br>
+Realistic SHEAR values: <input type="checkbox" id="realistic_shear" tabindex=2 onChange="makeMat()"><br><br>
+<a href="https://en.wikipedia.org/wiki/Temperature">Temperature values</a>:
+<div class="input_category">
+  <div class="input_box">
+    <a href="https://en.wikipedia.org/wiki/Melting_point">Melting point</a><br>
+    <input type="number" id="melting_c" placeholder="1538" tabindex=3 oninput="celciusConversion('melting')"> (celcius)<br>
+    <input type="number" id="melting" placeholder="2800" oninput="fahrenheitConversion('melting')"> (fahrenheit)<br>
+  </div>
+  <div class="input_box">
+    <a href="https://en.wikipedia.org/wiki/Boiling_point">Boiling point</a><br>
+    <input type="number" id="boiling_c" placeholder="2862" tabindex=4 oninput="celciusConversion('boiling')"> (celcius)<br>
+    <input type="number" id="boiling" placeholder="5184" oninput="fahrenheitConversion('boiling')"> (fahrenheit)<br>
+  </div> 
+  <div class="input_box">
+    <a href="https://en.wikipedia.org/wiki/Autoignition_temperature">Ignition point</a><br>
+    <input type="number" id="ignition_c" placeholder="-1" tabindex=5 oninput="celciusConversion('ignition')"> (celcius)<br>
+    <input type="number" id="ignition" placeholder="-1" oninput="fahrenheitConversion('ignition')"> (fahrenheit)<br>
+    <input type="checkbox" id="ignition_point_exists" onChange="makeMat()"> Has ignition point
+  </div>
+  <div class="input_box">
+    <a href="https://en.wikipedia.org/wiki/Heat_capacity">Specific Heat</a><br>
+    <input type="number" id="spec_heat" placeholder="450" tabindex=6 oninput="makeMat()"> (Joules per kilokelvin)
+  </div>
+</div>
+<a href="http://dwarffortresswiki.org/index.php/DF2014:Material_definition_token">DF Values</a>:
+<div class="input_category">
+  <div class="input_box"> 
+    <a href="http://dwarffortresswiki.org/index.php/DF2014:Material_definition_token#STATE_NAME_ADJ">Name</a><br>
+	<input type="text" id="mat_name" placeholder="iron" tabindex=7 oninput="makeMat()">
+  </div>
+  <div class="input_box"> 
+     <a href="http://dwarffortresswiki.org/index.php/DF2014:Color#Color_tokens">Color<br>
+	 <input type="text" id="color" placeholder="GRAY" tabindex=8 oninput="makeMat()"></a>
+  </div>
+  <div class="input_box"> 
+    <a href="http://dwarffortresswiki.org/index.php/DF2014:Item_value#Material_multipliers">Value</a><br>
+    <input type="number" id="mat_value" placeholder="10" tabindex=9 oninput="makeMat()">
+  </div>
+  <div class="input_box"> 
+    <a href="http://dwarffortresswiki.org/index.php/DF2014:Material_definition_token#MAX_EDGE">MAX_EDGE</a><br>
+    <input type="number" id="max_edge" placeholder="10000" tabindex=10 oninput="makeMat()">
+  </div>
+</div>
+<a href="https://en.wikipedia.org/wiki/Mass">Mass values</a>:
+<div class="input_category">
+  <div class="input_box">
+	<a href="https://en.wikipedia.org/wiki/Density">Density</a> (kilogram/meter<sup>3</sup>):<br>
+    <input type="number" id="solid_density" placeholder="7850" tabindex=11 oninput="makeMat()"> Solid <br>
+    <input type="number" id="liquid_density" placeholder="6980" tabindex=12 oninput="makeMat()"> Liquid
+  </div>
+  <div class="input_box">
+    <a href="https://en.wikipedia.org/wiki/Molar_mass">Molar mass</a><br>
+    <input type="number" id="molar" placeholder="55845" tabindex=13 oninput="makeMat()"> (kg/mole)
+  </div>
+</div>
+<a href="https://en.wikipedia.org/wiki/Strength_of_materials">Strength values</a>:<br>
+<div class="input_category">
+  <div class="input_box">
+    <a href="https://en.wikipedia.org/wiki/Yield_(engineering)">Tensile yield</a> (KPa)<br>
+	<input type="number" id="tensile_yield" placeholder="155000" tabindex=14 oninput="makeMat()">
+  </div>
+  <div class="input_box">
+    <a href="https://en.wikipedia.org/wiki/Ultimate_tensile_strength">Ultimate tensile strength</a> (KPa)<br>
+	<input type="number" id="ultimate_tensile" placeholder="310000" tabindex=15 oninput="makeMat()">
+  </div>
+  <div class="input_box">
+    <a href="https://en.wikipedia.org/wiki/Yield_(engineering)">Shear yield</a> (KPa)<br>
+	<input type="number" id="shear_yield" placeholder="155000" tabindex=16 oninput="makeMat()">
+  </div>
+  <div class="input_box">
+    <a href="https://en.wikipedia.org/wiki/Shear_strength">Shear strength</a> (KPa)<br>
+    <input type="number" id="ultimate_shear" placeholder="310000" tabindex=17 oninput="makeMat()">
+  </div>
+  <div class="input_box">
+    <a href="https://en.wikipedia.org/wiki/Yield_(engineering)"> Compressive yield</a> (KPa)<br>
+	<input type="number" id="compressive_yield" placeholder="542500" tabindex=18 oninput="makeMat()">
+  </div>
+  <div class="input_box">
+    <a href="https://en.wikipedia.org/wiki/Compressive_strength"> Compressive strength</a> (KPa)<br>
+	<input type="number" id="ultimate_compressive" placeholder="1085000" tabindex=19 oninput="makeMat()">
+  </div>
+<button tabindex=20 onclick="strengthPlaceholders()">Fill in the rest with placeholders</button><br>
+</div>
 <a href="https://en.wikipedia.org/wiki/Elastic_modulus">Elastic moduli</a> (Only bulk modulus, young's modulus and shear modulus are taken into account by DF; if any cannot be found, the rest can be filled in with any two):<br>
-<input type="number" id="bulk" placeholder="170000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Bulk_modulus">Bulk modulus</a> (MPa)<br>
-<input type="number" id="young" placeholder="211000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Young%27s_modulus">Young's modulus</a> (MPa)<br>
-<input type="number" id="shear" placeholder="82000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Shear_modulus">Shear modulus</a> (MPa)<br>
-<input type="number" id="lamé" placeholder="115000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Lam%C3%A9_parameters">Lamé's First Parameter</a> (MPa) <br>
-<input type="number" id="poisson" placeholder="0.293" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/Poisson%27s_ratio">Poisson's Ratio</a> (ratio) <br>
-<input type="number" id="p-wave" placeholder="279000" oninput="makeMat()"> <a href="https://en.wikipedia.org/wiki/P-wave_modulus">P-wave modulus</a> (MPa) <br>
-<button onclick="convertElasticModuli()">Fill in the rest</button>
-
-
+<div class="input_category">
+  <div class="input_box">
+     <a href="https://en.wikipedia.org/wiki/Bulk_modulus">Bulk modulus</a> (MPa)<br>
+	 <input type="number" id="bulk" placeholder="170000" tabindex=21 oninput="makeMat()">
+  </div>
+  <div class="input_box">
+     <a href="https://en.wikipedia.org/wiki/Young%27s_modulus">Young's modulus</a> (MPa)<br>
+	 <input type="number" id="young" placeholder="211000" tabindex=22 oninput="makeMat()">
+  </div>
+  <div class="input_box">
+    <a href="https://en.wikipedia.org/wiki/Shear_modulus">Shear modulus</a> (MPa)<br>
+	<input type="number" id="shear" placeholder="82000" tabindex=23 oninput="makeMat()">
+  </div>
+  <div class="input_box">
+    <a href="https://en.wikipedia.org/wiki/Lam%C3%A9_parameters">Lamé's First Parameter</a> (MPa) <br>
+	<input type="number" id="lamé" placeholder="115000" tabindex=24 oninput="makeMat()">
+  </div>
+  <div class="input_box">
+    <a href="https://en.wikipedia.org/wiki/Poisson%27s_ratio">Poisson's Ratio</a> (ratio) <br>
+	<input type="number" id="poisson" placeholder="0.293" tabindex=25 oninput="makeMat()">
+  </div>
+  <div class="input_box">
+    <a href="https://en.wikipedia.org/wiki/P-wave_modulus">P-wave modulus</a> (MPa) <br>
+	<input type="number" id="p-wave" placeholder="279000" tabindex=26 oninput="makeMat()">
+  </div>
+  <button tabindex=27 onclick="convertElasticModuli()">Fill in the rest</button>
+</div>
 <pre id='result'></pre>
 
 <br><br>
 
-The below graphic depicts what the material will look like up to its yield point. (Warning: will probably be exceedingly boring for most sufficiently inelastic materials) <br><p id="cur_force"></p> <p id="cur_type"></p>
+The below graphic depicts what the material will look like up to its yield point. (Warning: will probably be exceedingly boring for most sufficiently stiff materials) <br><p id="cur_force"></p> <p id="cur_type"></p>
 
 <script src="pixi.js"></script>
 
