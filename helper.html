@@ -4,6 +4,7 @@
 <title>DF Material Helper</title>
 <meta charset="UTF-8">
 <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+<meta name=viewport content="width=device-width, initial-scale=1">
 </head>
 <style>
 body {
@@ -70,7 +71,7 @@ If any properties are unavailable the game will use placeholders. However, if th
 
 Materials in dwarf fortress are made with the assumption that IMPACT values should be equal to COMPRESSIVE, which is incorrect; YIELD and FRACTURE should be equal to BENDING or COMPRESSIVE, whichever's less (which is always BENDING in vanilla DF). However, forcing this on whoever makes the materials would be dumb, since it is the game that we're talking about. So: <br>
 Realistic IMPACT values: <input type="checkbox" id="realistic_impact" tabindex=1 onChange="makeMat()"> <br><br>
-Similarly, <a href="https://en.wikipedia.org/wiki/Von_Mises_yield_criterion#Reduced_von_Mises_equation_for_different_stress_conditions">shear stress at yield is √3 times lower than tensile stress</a> while the game considers it to be 1:1, so another checkbox: <br>
+Similarly, <a href="https://en.wikipedia.org/wiki/Von_Mises_yield_criterion#Reduced_von_Mises_equation_for_different_stress_conditions">shear stress at yield is v3 times lower than tensile stress</a> while the game considers it to be 1:1, so another checkbox: <br>
 Realistic SHEAR values: <input type="checkbox" id="realistic_shear" tabindex=2 onChange="makeMat()"><br><br>
 <a href="https://en.wikipedia.org/wiki/Temperature">Temperature values</a>:
 <div class="input_category">
@@ -196,11 +197,9 @@ function getValue(id) {
     var curValue=document.getElementById(id).value
     return parseInt(curValue) ? parseInt(curValue) : parseFloat(curValue) ? parseFloat(curValue) : curValue
 }
-
 function isChecked(id) {
     return document.getElementById(id).checked
 }
-
 function getSigFig(num) {
     if (!num) {
         return num
@@ -220,7 +219,6 @@ function getSigFig(num) {
        return trailers
     }
 }
-
 function sigFigs(n, sig) { //http://blog.magnetiq.com/post/497605344/rounding-to-a-certain-significant-figures-in
     var mult = Math.pow(10,
         sig - Math.floor(Math.log(n) / Math.LN10) - 1);
@@ -231,18 +229,15 @@ function setValue(id,value) {
     document.getElementById(id).value=value
     return id
 }
-
 function setValueInnerHTML(id,value) {
     document.getElementById(id).innerHTML=value
     return id
 }
-
 function setIfNotAlreadySet(id,value) {
     if (!getValue(id)) {
         setValue(id,value)
     }
 }
-
 function celciusConversion(nameOfThing) {
     var celcius=getValue(nameOfThing+"_c")
     setValue(nameOfThing,Math.round((1.8*celcius)+32))
@@ -253,7 +248,6 @@ function fahrenheitConversion(nameOfThing) {
     setValue(nameOfThing+'_c',Math.round((5*(fahrenheit-32))/9))
     makeMat()
 }
-
 function strengthPlaceholders(not_again) {
     var tensileYield=getValue('tensile_yield')
     var shearYield=getValue('shear_yield')
@@ -295,13 +289,12 @@ function strengthPlaceholders(not_again) {
     }
     makeMat()
 }
-
 function convertElasticModuli() {
     var K=getValue("bulk") //silly variable names primarily to make math slightly more readable
     var E=getValue("young") //also because that's actually how they're usually notated
     var L=getValue("lamé") //technically should be lambda but ILLEGAL
     var G=getValue("shear") 
-    var v=getValue("poisson") //okay so technically it should be ν but I'm not that evil
+    var v=getValue("poisson") //okay so technically it should be ? but I'm not that evil
     var M=getValue("p-wave")
     if (K) {
         if (E) {
@@ -422,7 +415,6 @@ function convertElasticModuli() {
     }
     makeMat()
 }
-
 function tempName(state) {
     switch(state) {
         case 'solid':
@@ -499,20 +491,15 @@ function makeMat() {
     var igniteString=(!isChecked("ignition_point_exists")) ? "" : ("	[IGNITE_POINT:"+(getValue('ignition')+9968+"]\n"))
     setValueInnerHTML('result',holyCrapABigStringOne+igniteString+holyCrapABigStringTwo)
 }
-
 //Google analytics code snippet
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
   ga('create', 'UA-61577221-1', 'auto');
   ga('send', 'pageview');
-
 //rendering stuff
-
 var mat_shower = mat_shower || {}
-
 mat_shower.stage=new PIXI.Stage(0x0a0500,true)
 mat_shower.renderer=PIXI.autoDetectRenderer(500, 400)
 mat_shower.graphics=new PIXI.Graphics()
@@ -521,9 +508,7 @@ mat_shower.force=0 //in kilopascals
 mat_shower.mode=1
 mat_shower.step=1000000
 document.body.appendChild(mat_shower.renderer.view)
-
 requestAnimFrame( animate );
-
 function calculateForceDeformation(force) {
     var force = force || mat_shower.force
     var deformation = deformation
@@ -540,7 +525,6 @@ function calculateForceDeformation(force) {
     }
     return deformation*75
 }
-
 function animate() {
     mat_shower.graphics.clear()
     if (mat_shower.mode==0 && mat_shower.force>getValue('tensile_yield')) {
@@ -601,8 +585,7 @@ function animate() {
         setTimeout(function() {requestAnimFrame( animate )}, 100)
     }
 }
-
 </script>
 
 </body>
-</html
+</html>
