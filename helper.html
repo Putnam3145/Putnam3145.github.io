@@ -466,8 +466,8 @@ function makeMat() {
                 "	[STATE_COLOR:ALL:"+getValue('color')+"]"
                 
     var igniteString=(!isChecked("ignition_point_exists")) ? "" : ("	[IGNITE_POINT:"+(getValue('ignition')+9968+"]\n"))
-    var heatdamString=(!isChecked("heatdam_point_exists")) ? "" : ("    [HEATDAM_POINT:"+(getValue('heatdam')+9968+"]\n"))
-    var colddamString=(!isChecked("colddam_point_exists")) ? "" : ("    [COLDDAM_POINT:"+(getValue('colddam')+9968+"]\n")) 
+    var heatdamString=(!isChecked("heatdam_point_exists")) ? "" : ("	[HEATDAM_POINT:"+(getValue('heatdam')+9968+"]\n"))
+    var colddamString=(!isChecked("colddam_point_exists")) ? "" : ("	[COLDDAM_POINT:"+(getValue('colddam')+9968+"]\n")) 
     var meltingString=(!isChecked("melting_point_exists")) ? "" : ("	[MELTING_POINT:"+(getValue('melting')+9968+"]\n"))
     var boilingString=(!isChecked("boiling_point_exists")) ? "" : ("	[BOILING_POINT:"+(getValue('boiling')+9968+"]\n"))
     setValueInnerHTML('result',holyCrapABigStringOne+meltingString+boilingString+igniteString+heatdamString+colddamString+holyCrapABigStringTwo)
