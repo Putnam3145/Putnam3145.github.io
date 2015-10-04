@@ -42,17 +42,31 @@ Realistic SHEAR values: <input type="checkbox" id="realistic_shear" tabindex=2 o
     <a href="https://en.wikipedia.org/wiki/Melting_point">Melting point</a><br>
     <input type="number" id="melting_c" placeholder="1538" tabindex=3 oninput="celciusConversion('melting')"> (celcius)<br>
     <input type="number" id="melting" placeholder="2800" oninput="fahrenheitConversion('melting')"> (fahrenheit)<br>
+    <input type="checkbox" checked id="melting_point_exists" onChange="makeMat()"> Has melting point
   </div>
   <div class="input_box">
     <a href="https://en.wikipedia.org/wiki/Boiling_point">Boiling point</a><br>
     <input type="number" id="boiling_c" placeholder="2862" tabindex=4 oninput="celciusConversion('boiling')"> (celcius)<br>
     <input type="number" id="boiling" placeholder="5184" oninput="fahrenheitConversion('boiling')"> (fahrenheit)<br>
+    <input type="checkbox" checked id="boiling_point_exists" onChange="makeMat()"> Has boiling point
   </div> 
   <div class="input_box">
     <a href="https://en.wikipedia.org/wiki/Autoignition_temperature">Ignition point</a><br>
     <input type="number" id="ignition_c" placeholder="-1" tabindex=5 oninput="celciusConversion('ignition')"> (celcius)<br>
     <input type="number" id="ignition" placeholder="-1" oninput="fahrenheitConversion('ignition')"> (fahrenheit)<br>
     <input type="checkbox" id="ignition_point_exists" onChange="makeMat()"> Has ignition point
+  </div>
+  <div class="input_box">
+    <a href="https://en.wikipedia.org/wiki/Thermal_degradation">Heat damage point</a><br>
+    <input type="number" id="heatdam_c" placeholder="-1" tabindex=5 oninput="celciusConversion('heatdam')"> (celcius)<br>
+    <input type="number" id="heatdam" placeholder="-1" oninput="fahrenheitConversion('heatdam')"> (fahrenheit)<br>
+    <input type="checkbox" id="heatdam_point_exists" onChange="makeMat()"> Has heat damage point
+  </div>
+  <div class="input_box">
+    <a href="https://en.wikipedia.org/wiki/Thermal_degradation">Cold damage point</a><br>
+    <input type="number" id="colddam_c" placeholder="-1" tabindex=5 oninput="celciusConversion('colddam')"> (celcius)<br>
+    <input type="number" id="colddam" placeholder="-1" oninput="fahrenheitConversion('colddam')"> (fahrenheit)<br>
+    <input type="checkbox" id="colddam_point_exists" onChange="makeMat()"> Has cold damage point
   </div>
   <div class="input_box">
     <a href="https://en.wikipedia.org/wiki/Heat_capacity">Specific Heat</a><br>
@@ -434,9 +448,7 @@ function makeMat() {
                 "	[DISPLAY_COLOR:0:7:1]\n" +
                 "	[BUILD_COLOR:0:7:1]\n" +
                 "	[MATERIAL_VALUE:"+getValue('mat_value')+"]\n" +
-                "	[SPEC_HEAT:"+getValue('spec_heat')+"]\n" +
-                "	[MELTING_POINT:"+(getValue('melting')+9968)+"]\n" +
-                "	[BOILING_POINT:"+(getValue('boiling')+9968)+"]\n"
+                "	[SPEC_HEAT:"+getValue('spec_heat')+"]\n"
     var holyCrapABigStringTwo="	[SOLID_DENSITY:"+getValue('solid_density')+"]\n" +
                 "	[LIQUID_DENSITY:"+getValue('liquid_density')+"]\n" +
                 "	[MOLAR_MASS:"+getValue('molar')+"]\n" +
@@ -460,8 +472,13 @@ function makeMat() {
 	            "	[BENDING_STRAIN_AT_YIELD:"+young+"]\n" +
 	            "	[MAX_EDGE:"+getValue("max_edge")+"]\n" +
                 "	[STATE_COLOR:ALL:"+getValue('color')+"]"
+                
     var igniteString=(!isChecked("ignition_point_exists")) ? "" : ("	[IGNITE_POINT:"+(getValue('ignition')+9968+"]\n"))
-    setValueInnerHTML('result',holyCrapABigStringOne+igniteString+holyCrapABigStringTwo)
+    var heatdamString=(!isChecked("heatdam_point_exists")) ? "" : ("    [HEATDAM_POINT:"+(getValue('heatdam')+9968+"]\n"))
+    var colddamString=(!isChecked("colddam_point_exists")) ? "" : ("    [COLDDAM_POINT:"+(getValue('colddam')+9968+"]\n")) 
+    var meltingString=(!isChecked("melting_point_exists")) ? "" : ("	[MELTING_POINT:"+(getValue('melting')+9968+"]\n"))
+    var boilingString=(!isChecked("boiling_point_exists")) ? "" : ("	[BOILING_POINT:"+(getValue('boiling')+9968+"]\n"))
+    setValueInnerHTML('result',holyCrapABigStringOne+meltingString+boilingString+igniteString+heatdamString+colddamString+holyCrapABigStringTwo)
 }
 
 //Google analytics code snippet
