@@ -6,6 +6,8 @@
 <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" type="text/css" href="style.css">
 <meta name=viewport content="width=device-width, initial-scale=1">
+<meta name="description" content="An application for converting real-life material data to Dwarf Fortress.">
+
 </head>
 <body>
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -35,7 +37,7 @@ If any properties are unavailable the game will use placeholders. However, if th
 
 Materials in dwarf fortress are made with the assumption that IMPACT values should be equal to COMPRESSIVE, which is incorrect; YIELD and FRACTURE should be equal to BENDING or COMPRESSIVE, whichever's less (which is always BENDING in vanilla DF). However, forcing this on whoever makes the materials would be dumb, since it is the game that we're talking about. So: <br>
 Realistic IMPACT values: <input type="checkbox" id="realistic_impact" tabindex=1 onChange="makeMat()"> <br><br>
-Similarly, <a href="https://en.wikipedia.org/wiki/Von_Mises_yield_criterion#Reduced_von_Mises_equation_for_different_stress_conditions">shear stress at yield is √3 times lower than tensile stress</a> while the game considers it to be 1:1, so another checkbox: <br>
+Similarly, <a href="https://en.wikipedia.org/wiki/Von_Mises_yield_criterion#Reduced_von_Mises_equation_for_different_stress_conditions">shear stress at yield is v3 times lower than tensile stress</a> while the game considers it to be 1:1, so another checkbox: <br>
 Realistic SHEAR values: <input type="checkbox" id="realistic_shear" tabindex=2 onChange="makeMat()"><br><br>
 <a href="https://en.wikipedia.org/wiki/Temperature">Temperature values</a>:
 <div class="input_category">
@@ -272,7 +274,7 @@ function convertElasticModuli() {
     var E=getValue("young") //also because that's actually how they're usually notated
     var L=getValue("lamé") //technically should be lambda but ILLEGAL
     var G=getValue("shear") 
-    var v=getValue("poisson") //okay so technically it should be ν but I'm not that evil
+    var v=getValue("poisson") //okay so technically it should be ? but I'm not that evil
     var M=getValue("p-wave")
     if (K) {
         if (E) {
