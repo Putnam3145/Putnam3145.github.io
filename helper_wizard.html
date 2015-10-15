@@ -51,8 +51,7 @@
     <section>
         <p>What kind of material is this? (Affects placeholders later on)</p>
         <p><input type="radio" name="mat_type" id="metal" checked onChange="setMatType('metal')">Metal</p>
-        <p><input type="radio" name="mat_type" id="gem" onChange="setMatType('gem')">Gem</p>
-        <p><input type="radio" name="mat_type" id="rock" onChange="setMatType('rock')">Rock</p>
+        <p><input type="radio" name="mat_type" id="mineral" onChange="setMatType('mineral')">Mineral</p>
         <p><input type="radio" name="mat_type" id="wood" onChange="setMatType('wood')">Wood</p>
         <p><input type="radio" name="mat_type" id="amorphous" onChange="setMatType('amorphous')">Amorphous non-metal (glass etc.)</p>
         <p><input type="radio" name="mat_type" id="magic" onChange="setMatType('magic')">Magic</p>
@@ -62,7 +61,7 @@
         <p>Is the material <a href="https://en.wikipedia.org/wiki/Ductility">ductile</a> or <a href="https://en.wikipedia.org/wiki/Brittleness">brittle</a>? (Still affects placeholders)</p>
         <p><input type="radio" name="brittleness" id="ductile" onChange="setBrittleness('ductile')">Ductile</p>
         <p><input type="radio" name="brittleness" id="brittle" onChange="setBrittleness('brittle')">Brittle</p>
-        <p><input type="radio" name="brittleness" id="unsure_whether_brittle" checked onChange="setBrittleness('unsure_whether_brittle')">Don't know</p>
+        <p><input type="radio" name="brittleness" id="unsure" checked onChange="setBrittleness('unsure')">Don't know</p>
     </section>
     <h3>Dwarf Fortress values</h3>
     <section>
@@ -70,23 +69,23 @@
           <div class="input_category">
       <div class="input_box">
         <a href="http://dwarffortresswiki.org/index.php/DF2014:Material_definition_token#USE_MATERIAL_TEMPLATE">Material template</a><br>
-        <input type="text" id="mat_name" placeholder="METAL_TEMPLATE" tabindex=7>
+        <input type="text" id="mat_template" value="METAL_TEMPLATE" tabindex=7>
       </div>
       <div class="input_box">
         <a href="http://dwarffortresswiki.org/index.php/DF2014:Material_definition_token#STATE_NAME_ADJ">Name</a><br>
-        <input type="text" id="mat_name" placeholder="iron" tabindex=7>
+        <input type="text" id="mat_name" tabindex=7>
       </div>
       <div class="input_box">
          <a href="http://dwarffortresswiki.org/index.php/DF2014:Color#Color_tokens">Color<br>
-         <input type="text" id="color" placeholder="GRAY" tabindex=8></a>
+         <input type="text" id="color" tabindex=8></a>
       </div>
       <div class="input_box">
         <a href="http://dwarffortresswiki.org/index.php/DF2014:Item_value#Material_multipliers">Value</a><br>
-        <input type="number" id="mat_value" placeholder="10" tabindex=9>
+        <input type="number" id="mat_value" tabindex=9>
       </div>
       <div class="input_box">
         <a href="http://dwarffortresswiki.org/index.php/DF2014:Material_definition_token#MAX_EDGE">MAX_EDGE</a><br>
-        <input type="number" id="max_edge" placeholder="10000" tabindex=10>
+        <input type="number" id="max_edge" value="10000" tabindex=10>
       </div>
           </div>
     </section>
@@ -96,37 +95,37 @@
                 <div class="input_category">
         <div class="input_box">
           <a href="https://en.wikipedia.org/wiki/Melting_point">Melting point</a><br>
-            <input type="number" id="melting_c" placeholder="1538" tabindex=3 oninput="celciusConversion('melting')"> (celcius)<br>
-            <input type="number" id="melting" placeholder="2800" oninput="fahrenheitConversion('melting')"> (fahrenheit)<br>
+            <input type="number" id="melting_c" tabindex=3 oninput="celciusConversion('melting')"> (celcius)<br>
+            <input type="number" id="melting" oninput="fahrenheitConversion('melting')"> (fahrenheit)<br>
             <input type="checkbox" checked id="melting_point_exists"> Has melting point
           </div>
           <div class="input_box">
             <a href="https://en.wikipedia.org/wiki/Boiling_point">Boiling point</a><br>
-            <input type="number" id="boiling_c" placeholder="2862" tabindex=4 oninput="celciusConversion('boiling')"> (celcius)<br>
-            <input type="number" id="boiling" placeholder="5184" oninput="fahrenheitConversion('boiling')"> (fahrenheit)<br>
+            <input type="number" id="boiling_c" tabindex=4 oninput="celciusConversion('boiling')"> (celcius)<br>
+            <input type="number" id="boiling" oninput="fahrenheitConversion('boiling')"> (fahrenheit)<br>
             <input type="checkbox" checked id="boiling_point_exists"> Has boiling point
           </div>
           <div class="input_box">
             <a href="https://en.wikipedia.org/wiki/Autoignition_temperature">Ignition point</a><br>
-            <input type="number" id="ignition_c" placeholder="-1" tabindex=5 oninput="celciusConversion('ignition')"> (celcius)<br>
-            <input type="number" id="ignition" placeholder="-1" oninput="fahrenheitConversion('ignition')"> (fahrenheit)<br>
+            <input type="number" id="ignition_c" tabindex=5 oninput="celciusConversion('ignition')"> (celcius)<br>
+            <input type="number" id="ignition" oninput="fahrenheitConversion('ignition')"> (fahrenheit)<br>
             <input type="checkbox" id="ignition_point_exists"> Has ignition point
           </div>
           <div class="input_box">
             <a href="https://en.wikipedia.org/wiki/Thermal_degradation">Heat damage point</a><br>
-            <input type="number" id="heatdam_c" placeholder="-1" tabindex=5 oninput="celciusConversion('heatdam')"> (celcius)<br>
-            <input type="number" id="heatdam" placeholder="-1" oninput="fahrenheitConversion('heatdam')"> (fahrenheit)<br>
+            <input type="number" id="heatdam_c" tabindex=5 oninput="celciusConversion('heatdam')"> (celcius)<br>
+            <input type="number" id="heatdam" oninput="fahrenheitConversion('heatdam')"> (fahrenheit)<br>
             <input type="checkbox" id="heatdam_point_exists"> Has heat damage point
           </div>
           <div class="input_box">
             <a href="https://en.wikipedia.org/wiki/Thermal_degradation">Cold damage point</a><br>
-            <input type="number" id="colddam_c" placeholder="-1" tabindex=5 oninput="celciusConversion('colddam')"> (celcius)<br>
-            <input type="number" id="colddam" placeholder="-1" oninput="fahrenheitConversion('colddam')"> (fahrenheit)<br>
+            <input type="number" id="colddam_c" tabindex=5 oninput="celciusConversion('colddam')"> (celcius)<br>
+            <input type="number" id="colddam" oninput="fahrenheitConversion('colddam')"> (fahrenheit)<br>
             <input type="checkbox" id="colddam_point_exists"> Has cold damage point
           </div>
           <div class="input_box">
             <a href="https://en.wikipedia.org/wiki/Heat_capacity">Specific Heat</a><br>
-            <input type="number" id="spec_heat" placeholder="450" tabindex=6> (Joules per kilograms kelvin)
+            <input type="number" id="spec_heat" tabindex=6> (Joules per kilograms kelvin)
         </div>
                 </div>
     </section>
@@ -135,12 +134,12 @@
           <div class="input_category">
       <div class="input_box">
         <a href="https://en.wikipedia.org/wiki/Density">Density</a> (kilogram/meter<sup>3</sup>):<br>
-        <input type="number" id="solid_density" placeholder="7850" tabindex=11> Solid <br>
-        <input type="number" id="liquid_density" placeholder="6980" tabindex=12> Liquid
+        <input type="number" id="solid_density" tabindex=11> Solid <br>
+        <input type="number" id="liquid_density" tabindex=12> Liquid
       </div>
       <div class="input_box">
         <a href="https://en.wikipedia.org/wiki/Molar_mass">Molar mass</a><br>
-        <input type="number" id="molar" placeholder="55845" tabindex=13> (kg/mole)
+        <input type="number" id="molar" tabindex=13> (kg/mole)
       </div>
           </div>
     </section>
@@ -150,29 +149,30 @@
     <div class="input_category">
       <div class="input_box">
         <a href="https://en.wikipedia.org/wiki/Yield_(engineering)">Tensile yield</a> (KPa)<br>
-        <input type="number" id="tensile_yield" placeholder="155000" tabindex=14>
+        <input type="number" class="tensile yield" id="tensile_yield" tabindex=14>
       </div>
       <div class="input_box">
         <a href="https://en.wikipedia.org/wiki/Ultimate_tensile_strength">Ultimate tensile strength</a> (KPa)<br>
-        <input type="number" id="ultimate_tensile" placeholder="310000" tabindex=15>
+        <input type="number" class="tensile fracture" id="ultimate_tensile" tabindex=15>
       </div>
       <div class="input_box">
         <a href="https://en.wikipedia.org/wiki/Yield_(engineering)">Shear yield</a> (KPa)<br>
-        <input type="number" id="shear_yield" placeholder="155000" tabindex=16>
+        <input type="number" class="shear yield" id="shear_yield" tabindex=16>
       </div>
       <div class="input_box">
         <a href="https://en.wikipedia.org/wiki/Shear_strength">Shear strength</a> (KPa)<br>
-        <input type="number" id="ultimate_shear" placeholder="310000" tabindex=17>
+        <input type="number" class="shear fracture" id="ultimate_shear" tabindex=17>
       </div>
       <div class="input_box">
         <a href="https://en.wikipedia.org/wiki/Yield_(engineering)"> Compressive yield</a> (KPa)<br>
-        <input type="number" id="compressive_yield" placeholder="542500" tabindex=18>
+        <input type="number" class="compressive yield" id="compressive_yield" tabindex=18>
       </div>
       <div class="input_box">
         <a href="https://en.wikipedia.org/wiki/Compressive_strength"> Compressive strength</a> (KPa)<br>
-        <input type="number" id="ultimate_compressive" placeholder="1085000" tabindex=19>
+        <input type="number" class="compressive fracture" id="ultimate_compressive" tabindex=19>
       </div>
       <button tabindex=20 onclick="strengthPlaceholders()">Fill in the rest with placeholders</button>
+	  <p>If you really don't know any of the above... this should technically give you the proper 
     </div>
     </section>
     <h3>Elasticity values</h3>
@@ -180,27 +180,27 @@
         <div class="input_category">
       <div class="input_box">
          <a href="https://en.wikipedia.org/wiki/Bulk_modulus">Bulk modulus</a> (MPa)<br>
-         <input type="number" id="bulk" placeholder="170000" tabindex=21>
+         <input type="number" id="bulk" tabindex=21>
       </div>
       <div class="input_box">
          <a href="https://en.wikipedia.org/wiki/Young%27s_modulus">Young's modulus</a> (MPa)<br>
-         <input type="number" id="young" placeholder="211000" tabindex=22>
+         <input type="number" id="young" tabindex=22>
       </div>
       <div class="input_box">
         <a href="https://en.wikipedia.org/wiki/Shear_modulus">Shear modulus</a> (MPa)<br>
-        <input type="number" id="shear" placeholder="82000" tabindex=23>
+        <input type="number" id="shear" tabindex=23>
       </div>
       <div class="input_box">
-        <a href="https://en.wikipedia.org/wiki/Lam%C3%A9_parameters">Lamé's First Parameter</a> (MPa) <br>
-        <input type="number" id="lamé" placeholder="115000" tabindex=24>
+        <a href="https://en.wikipedia.org/wiki/Lam%C3%A9_parameters">Lamé¨³ First Parameter</a> (MPa) <br>
+        <input type="number" id="lamé¢ tabindex=24>
       </div>
       <div class="input_box">
         <a href="https://en.wikipedia.org/wiki/Poisson%27s_ratio">Poisson's Ratio</a> (ratio) <br>
-        <input type="number" id="poisson" placeholder="0.293" tabindex=25>
+        <input type="number" id="poisson" tabindex=25>
       </div>
       <div class="input_box">
         <a href="https://en.wikipedia.org/wiki/P-wave_modulus">P-wave modulus</a> (MPa) <br>
-        <input type="number" id="p-wave" placeholder="279000" tabindex=26>
+        <input type="number" id="p-wave" tabindex=26>
       </div>
       <button tabindex=27 onclick="convertElasticModuli()">Fill in the rest</button>
     </div>
@@ -215,37 +215,70 @@
         });
 </script>
  
+<button onclick="makeMat()">Make the material</button>
  
 <pre id='result'></pre>
  
 <script>
 //The programming proper
 
+$('input').each(function(index) { 
+	if (!$(this).attr('onInput')) {
+		$(this).attr('onInput','makeMat()') //wow jquery is friggin incomprehensible, this makes anything with no onInput attribute have an onInput that calls makeMat()
+	}
+})
+
 function setMatType(matType) {
+	var brittlenessRadio=$('input:radio[name=brittleness]')
+	brittlenessRadio.prop('checked',false)
     switch (matType) {
         case "metal":
-            $('#ductile').attr('checked',true)
+            $('#ductile').prop('checked',true)
             $('#gemwarning').attr('innerHTML','')
+			$('#mat_template').attr('value','METAL_TEMPLATE')
             break;
-        case "gem":
-            $('#brittle').attr('checked',true)
-            $('#gemwarning').attr('innerHTML','Gems tend not to be isotropic materials, but Dwarf Fortress doesn\'t recognize materials that are not isotropic; you may want to simply use whatever plane is weakest.')
-            break;
-        case "rock":
-            $('#brittle').attr('checked',true);
-            $('#poisson').attr('placeholder','0.25');
+        case "mineral":
+            $('#brittle').prop('checked',true);
+            $('#poisson').attr('value',0.25);
+			$('#gemwarning').attr('innerHTML','Minerals tend not to be isotropic materials, but Dwarf Fortress doesn\'t recognize materials that are not isotropic; you may want to simply use whatever plane is weakest.')
+			$('#mat_template').attr('value','STONE_TEMPLATE')
             break;
         case "wood":
-            $('#ductile').attr('checked',true);
-            $('#poisson').attr('placeholder',0.45)l
+            $('#ductile').prop('checked',true);
+            $('#poisson').attr('value',0.45);
+			$('#mat_template').attr('value','WOOD_TEMPLATE')
             break;
         case "amorphous":
-            $('ductile').attr('checked',true);
+            $('#ductile').prop('checked',true);
+			$('#mat_template').attr('value','remove me')
             break;
         case "magic":
-            $('unsure_whether_brittle').attr('checked',true)
+            $('#unsure').prop('checked',true)
+			$('#mat_template').attr('value','METAL_TEMPLATE')
             break;
     }
+	setBrittleness(brittlenessRadio.filter(':checked').attr('id'))
+	makeMat()
+}
+function setBrittleness(brittleness) {
+	switch (brittleness) {
+		case "brittle":
+			$('#ultimate_tensile').attr('placeholder',$('#tensile_yield').attr('placeholder'))
+			$('#ultimate_shear').attr('placeholder',$('#shear_yield').attr('placeholder'))
+			$('#ultimate_compressive').attr('placeholder',$('#compressive_yield').attr('placeholder'))
+			$('.brittle_only').prop('hidden',false)
+			break;
+		case "ductile":
+			$('#ultimate_tensile').attr('placeholder',parseInt($('#tensile_yield').attr('placeholder'))*2)
+			$('#ultimate_shear').attr('placeholder',parseInt($('#shear_yield').attr('placeholder'))*2)
+			$('#ultimate_compressive').attr('placeholder',parseInt($('#compressive_yield').attr('placeholder'))*2)
+			$('.brittle_only').prop('hidden',true)
+			break;
+		case "unsure":
+			$('.fracture').attr('placeholder','?')
+			break;
+	}
+	makeMat()
 }
 
 function getValue(id) {
@@ -311,6 +344,7 @@ function strengthPlaceholders(not_again) {
     var ultimateShear=getValue('ultimate_shear')
     var ultimateCompressive=getValue('ultimate_compressive')
     var shearCoefficient = isChecked('realistic_shear') ? Math.sqrt(3) : 1
+	var brittlenessCoefficient = isChecked('brittle') ? 1 : isChecked('ductile') ? 2 : 1.5
     if (tensileYield) {
         setIfNotAlreadySet('shear_yield',sigFigs(tensileYield/shearCoefficient,getSigFig(tensileYield)))
         setIfNotAlreadySet('compressive_yield',tensileYield*3.5)
@@ -319,9 +353,9 @@ function strengthPlaceholders(not_again) {
             setIfNotAlreadySet('ultimate_compressive',ultimateTensile*3.5)
         }
         else {        
-            setIfNotAlreadySet('ultimate_tensile',tensileYield*2)
-            setIfNotAlreadySet('ultimate_shear',getValue('shear_yield')*2)
-            setIfNotAlreadySet('ultimate_compressive',tensileYield*7)
+            setIfNotAlreadySet('ultimate_tensile',tensileYield*brittlenessCoefficient)
+            setIfNotAlreadySet('ultimate_shear',getValue('shear_yield')*brittlenessCoefficient)
+            setIfNotAlreadySet('ultimate_compressive',tensileYield*3.5*brittlenessCoefficient)
         }
     }
     else if (shearYield) {
@@ -331,13 +365,13 @@ function strengthPlaceholders(not_again) {
         setIfNotAlreadySet('tensile_yield',compressiveYield/3.5)
     }
     else if (ultimateTensile) {
-        setIfNotAlreadySet('tensile_yield',ultimateTensile/2)
+        setIfNotAlreadySet('tensile_yield',ultimateTensile/brittlenessCoefficient)
     }
     else if (ultimateShear) {
-        setIfNotAlreadySet('tensile_yield',sigFigs(ultimateShear*(shearCoefficient/2),getSigFig(ultimateShear)))
+        setIfNotAlreadySet('tensile_yield',sigFigs(ultimateShear*(shearCoefficient/brittlenessCoefficient),getSigFig(ultimateShear)))
     }
     else if (ultimateCompressive) {
-        setIfNotAlreadySet('tensile_yield',ultimateCompressive/7)
+        setIfNotAlreadySet('tensile_yield',ultimateCompressive/(3.5*brittlenessCoefficient))
     }
     if (!not_again) {
         strengthPlaceholders(true)
@@ -347,14 +381,14 @@ function strengthPlaceholders(not_again) {
 function convertElasticModuli() {
     var K=getValue("bulk") //silly variable names primarily to make math slightly more readable
     var E=getValue("young") //also because that's actually how they're usually notated
-    var L=getValue("lamé") //technically should be lambda but ILLEGAL
+    var L=getValue("lamé¢© //technically should be lambda but ILLEGAL
     var G=getValue("shear")
     var v=getValue("poisson") //okay so technically it should be ? but I'm not that evil
     var M=getValue("p-wave")
     if (K) {
         if (E) {
             var sigfig=Math.min(getSigFig(K),getSigFig(E))
-            setValue("lamé",sigFigs((3*K*(3*K-E))/(9*K-E),sigfig))
+            setValue("lamé¢¬sigFigs((3*K*(3*K-E))/(9*K-E),sigfig))
             setValue("shear",sigFigs((3*K*E)/(9*K-E),sigfig))
             setValue("poisson",sigFigs((3*K-E)/(6*K),sigfig))
             setValue("p-wave",sigFigs((3*K*(3*K+E))/(9*K-E),sigfig))
@@ -369,21 +403,21 @@ function convertElasticModuli() {
         else if (G) {
             var sigfig=Math.min(getSigFig(K),getSigFig(G))
             setValue("young",sigFigs((9*K*G)/(3*K+G),sigfig))
-            setValue("lamé",sigFigs(K-((2*G)/3),sigfig))
+            setValue("lamé¢¬sigFigs(K-((2*G)/3),sigfig))
             setValue("poisson",sigFigs((3*K-2*g)/(2*(3*K+G)),sigfig))
             setValue("p-wave",sigFigs(K+((4*G)/3),sigfig))
         }
         else if (v) {
             var sigfig=Math.min(getSigFig(K),getSigFig(v))
             setValue("young",sigFigs(3*K*(1-2*v),sigfig))
-            setValue("lamé",sigFigs((3*K*v)/(1+v),sigfig))
+            setValue("lamé¢¬sigFigs((3*K*v)/(1+v),sigfig))
             setValue("shear",sigFigs((3*K*(1-2*v))/(2*(1+v)),sigfig))
             setValue("p-wave",sigFigs((3*K*(1-v))/(1+v),sigfig))
         }
         else if (M) {
             var sigfig=Math.min(getSigFig(K),getSigFig(M))
             setValue("young",sigFigs((9*K*(M-K))/(3*K+M),sigfig))
-            setValue("lamé",sigFigs((3*K-M)/2,sigfig))
+            setValue("lamé¢¬sigFigs((3*K-M)/2,sigfig))
             setValue("shear",sigFigs((3*(M-K))/4,sigfig))
             setValue("poisson",sigFigs((3*K-M)/(3*K+M),sigfig))
         }
@@ -400,14 +434,14 @@ function convertElasticModuli() {
         else if (G) {
             var sigfig=Math.min(getSigFig(E),getSigFig(G))
             setValue("bulk",sigFigs((E*G)/(3*(3*G-E)),sigfig))
-            setValue("lamé",sigFigs((G*(E-2*G))/(3*G-E),sigfig))
+            setValue("lamé¢¬sigFigs((G*(E-2*G))/(3*G-E),sigfig))
             setValue("poisson",sigFigs((E/(2*G))-1,sigfig))
             setValue("p-wave",sigFigs((G*(4*G-E))/(3*G-E),sigfig))
         }
         else if (v) {
             var sigfig=Math.min(getSigFig(E),getSigFig(v))
             setValue("bulk",sigFigs(E/(3*(1-2*v)),sigfig))
-            setValue("lamé",sigFigs((E*v)/((1+v)*(1-2*v)),sigfig))
+            setValue("lamé¢¬sigFigs((E*v)/((1+v)*(1-2*v)),sigfig))
             setValue("shear",sigFigs(E/(2*(1+v)),sigfig))
             setValue("p-wave",sigFigs((E*(1-v))/((1+v)*(1-2*v)),sigfig))
         }
@@ -415,7 +449,7 @@ function convertElasticModuli() {
             var sigfig=Math.min(getSigFig(E),getSigFig(M))
             var S=Math.sqrt(Math.pow(E,2)+9*Math.pow(M,2)-10*E*M)
             setValue("bulk",sigFigs((3*M-E+S)/6,sigfig))
-            setValue("lamé",sigFigs((M-E+S)/4,sigfig))
+            setValue("lamé¢¬sigFigs((M-E+S)/4,sigfig))
             setValue("shear",sigFigs((3*M+E-S)/8,sigfig))
             setValue("poisson",sigFigs((E-M+S)/(4*M),sigfig))
         }
@@ -448,14 +482,14 @@ function convertElasticModuli() {
             var sigfig=Math.min(getSigFig(G),getSigFig(v))
             setValue("bulk",sigFigs((2*G*(1+v))/(3*(1-2*v)),sigfig))
             setValue("young",sigFigs(2*G*(1+v),sigfig))
-            setValue("lamé",sigFigs((2*G*v)/(1-2*v),sigfig))
+            setValue("lamé¢¬sigFigs((2*G*v)/(1-2*v),sigfig))
             setValue("p-wave",sigFigs((2*G*(1-v))/(1-2*v),sigfig))
             }
         else if (M){
             var sigfig=Math.min(getSigFig(G),getSigFig(M))
             setValue("bulk",sigFigs(M-((4*G)/3),sigfig))
             setValue("young",sigFigs((G*(3*M-4*G))/(M-G),sigfig))
-            setValue("lamé",sigFigs(M-2*G,sigfig))
+            setValue("lamé¢¬sigFigs(M-2*G,sigfig))
             setValue("poisson",sigFigs((M-2*G)/(2*M-2*G),sigfig))
         }
     }
@@ -464,7 +498,7 @@ function convertElasticModuli() {
             var sigfig=Math.min(getSigFig(v),getSigFig(M))
             setValue("bulk",sigFigs((M*(1+v))/(3*(1-v)),sigfig))
             setValue("young",sigFigs((M*(1+v)*(1-2*v))/(1-v),sigfig))
-            setValue("lamé",sigFigs((M*v)/(1-v),sigfig))
+            setValue("lamé¢¬sigFigs((M*v)/(1-v),sigfig))
             setValue("shear",sigFigs((M*(1-2*v))/(2*(1-v)),sigfig))
         }
     }
@@ -511,7 +545,8 @@ function makeMat() {
     var impactFracture=isChecked('realistic_impact') ? Math.min(ultimateTensile,ultimateCompressive) : ultimateCompressive
     var bendingYield=Math.min(tensileYield,compressiveYield)
     var bendingFracture=Math.min(ultimateTensile,ultimateCompressive)
-    var holyCrapABigStringOne="    [STATE_NAME_ADJ:ALL_SOLID:"+tempName('solid')+"]\n" + //would you believe that this whole segment was copied from python and only minorly edited?
+    var holyCrapABigStringOne="    [USE_MATERIAL_TEMPLATE:"+getValue('mat_template')+"]\n" +
+                "    [STATE_NAME_ADJ:ALL_SOLID:"+tempName('solid')+"]\n" + //would you believe that this whole segment was copied from python and only minorly edited?
                 "    [STATE_NAME_ADJ:LIQUID:"+tempName('liquid')+"]\n" +
                 "    [STATE_NAME_ADJ:GAS:"+tempName('gas')+"]\n" +
                 "    [DISPLAY_COLOR:0:7:1]\n" +
