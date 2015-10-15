@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>DF Material Helper</title>
+<meta charset="UTF-8">
+<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="style.css">
+<link rel="stylesheet" type="text/css" href="jquery-steps.css">
+<meta name=viewport content="width=device-width, initial-scale=1">
+<meta name="description" content="An application for converting real-life material data to Dwarf Fortress.">
+<script language="JavaScript" type="text/javascript" src="jquery-1.11.2.min.js" ></script>
+<script language="JavaScript" type="text/javascript" src="jquery.steps.min.js" ></script>
+</head>
+<body>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- material helper -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-7291652649323472"
+     data-ad-slot="2525620146"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+">
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form>
+ 
+<div id="wizardly_material_maker">
+    <h3>Information</h3>
+    <section>
+    <p>Good sources for data on materials are:</p>
+    <p><a href="http://www.matweb.com/index.aspx">Matweb</a></p>
+    <p><a href="http://www.wolframalpha.com/">Wolfram Alpha</a></p>
+    <p><a href="https://en.wikipedia.org/wiki/Main_Page">Wikipedia</a></p>
+    <p><a href="http://www.webelements.com/">WebElements</a></p>
+    <p>If any properties are unavailable the game will use placeholders. However, if those properties happen to be strength, it would be best to estimate to the best of your ability, such as by using a similar material (E.G iron for cobalt). Even if you can find only one elastic modulus, this is no problem; Poisson's ratio can only be between -1 and 0.5 in DF terms, and a general rule of thumb can be followed: metals 0.3, woods 0.45, rock 0.25. Young's modulus tends to be available, but if it isn't... guess.</p>
+    </section>
+    <h3>Weird DF Crap</h3>
+    <section>
+        <p>Materials in dwarf fortress are made with the assumption that IMPACT values should be equal to COMPRESSIVE, which is incorrect; YIELD and FRACTURE should be equal to BENDING or COMPRESSIVE, whichever's less (which is always BENDING in vanilla DF). However, forcing this on whoever makes the materials would be dumb, since it is the game that we're talking about. So: </p>
+        <p>Realistic IMPACT values: <input type="checkbox" id="realistic_impact" tabindex=1"></p>
+        <p>Similarly, <a href="https://en.wikipedia.org/wiki/Von_Mises_yield_criterion#Reduced_von_Mises_equation_for_different_stress_conditions">shear stress at yield is often 1/v3 times tensile stress in isotropic materials</a> while the game considers it to be 1:1, so another checkbox: </p>
+        <p>Realistic SHEAR values: <input type="checkbox" id="realistic_shear" tabindex=2></p>
+    </section>
+    <h3>Starting material info</h3>
+    <section>
+        <p>What kind of material is this? (Affects placeholders later on)</p>
+        <p><input type="radio" name="mat_type" id="metal" checked onChange="setMatType('metal')">Metal</p>
+        <p><input type="radio" name="mat_type" id="gem" onChange="setMatType('gem')">Gem</p>
+        <p><input type="radio" name="mat_type" id="rock" onChange="setMatType('rock')">Rock</p>
+        <p><input type="radio" name="mat_type" id="wood" onChange="setMatType('wood')">Wood</p>
+        <p><input type="radio" name="mat_type" id="amorphous" onChange="setMatType('amorphous')">Amorphous non-metal (glass etc.)</p>
+        <p><input type="radio" name="mat_type" id="magic" onChange="setMatType('magic')">Magic</p>
+    </section>
+    <h3>Other important information</h3>
+    <section>
+        <p>Is the material <a href="https://en.wikipedia.org/wiki/Ductility">ductile</a> or <a href="https://en.wikipedia.org/wiki/Brittleness">brittle</a>? (Still affects placeholders)</p>
+        <p><input type="radio" name="brittleness" id="ductile" onChange="setBrittleness('ductile')">Ductile</p>
+        <p><input type="radio" name="brittleness" id="brittle" onChange="setBrittleness('brittle')">Brittle</p>
+        <p><input type="radio" name="brittleness" id="unsure_whether_brittle" checked onChange="setBrittleness('unsure_whether_brittle')">Don't know</p>
+    </section>
+    <h3>Dwarf Fortress values</h3>
+    <section>
+      <p>Important <a href="http://dwarffortresswiki.org/index.php/DF2014:Material_definition_token">material definition tokens</a> with no direct analogue to reality.</p>
+          <div class="input_category">
+      <div class="input_box">
+        <a href="http://dwarffortresswiki.org/index.php/DF2014:Material_definition_token#USE_MATERIAL_TEMPLATE">Material template</a><br>
+        <input type="text" id="mat_name" placeholder="METAL_TEMPLATE" tabindex=7>
+      </div>
+      <div class="input_box">
+        <a href="http://dwarffortresswiki.org/index.php/DF2014:Material_definition_token#STATE_NAME_ADJ">Name</a><br>
+        <input type="text" id="mat_name" placeholder="iron" tabindex=7>
+      </div>
+      <div class="input_box">
+         <a href="http://dwarffortresswiki.org/index.php/DF2014:Color#Color_tokens">Color<br>
+         <input type="text" id="color" placeholder="GRAY" tabindex=8></a>
+      </div>
+      <div class="input_box">
+        <a href="http://dwarffortresswiki.org/index.php/DF2014:Item_value#Material_multipliers">Value</a><br>
+        <input type="number" id="mat_value" placeholder="10" tabindex=9>
+      </div>
+      <div class="input_box">
+        <a href="http://dwarffortresswiki.org/index.php/DF2014:Material_definition_token#MAX_EDGE">MAX_EDGE</a><br>
+        <input type="number" id="max_edge" placeholder="10000" tabindex=10>
+      </div>
+          </div>
+    </section>
+    <h3>Temperature information</h3>
+    <section>
+        <p>Heh, sorry, placeholders not really a thing here.</p>
+                <div class="input_category">
+        <div class="input_box">
+          <a href="https://en.wikipedia.org/wiki/Melting_point">Melting point</a><br>
+            <input type="number" id="melting_c" placeholder="1538" tabindex=3 oninput="celciusConversion('melting')"> (celcius)<br>
+            <input type="number" id="melting" placeholder="2800" oninput="fahrenheitConversion('melting')"> (fahrenheit)<br>
+            <input type="checkbox" checked id="melting_point_exists"> Has melting point
+          </div>
+          <div class="input_box">
+            <a href="https://en.wikipedia.org/wiki/Boiling_point">Boiling point</a><br>
+            <input type="number" id="boiling_c" placeholder="2862" tabindex=4 oninput="celciusConversion('boiling')"> (celcius)<br>
+            <input type="number" id="boiling" placeholder="5184" oninput="fahrenheitConversion('boiling')"> (fahrenheit)<br>
+            <input type="checkbox" checked id="boiling_point_exists"> Has boiling point
+          </div>
+          <div class="input_box">
+            <a href="https://en.wikipedia.org/wiki/Autoignition_temperature">Ignition point</a><br>
+            <input type="number" id="ignition_c" placeholder="-1" tabindex=5 oninput="celciusConversion('ignition')"> (celcius)<br>
+            <input type="number" id="ignition" placeholder="-1" oninput="fahrenheitConversion('ignition')"> (fahrenheit)<br>
+            <input type="checkbox" id="ignition_point_exists"> Has ignition point
+          </div>
+          <div class="input_box">
+            <a href="https://en.wikipedia.org/wiki/Thermal_degradation">Heat damage point</a><br>
+            <input type="number" id="heatdam_c" placeholder="-1" tabindex=5 oninput="celciusConversion('heatdam')"> (celcius)<br>
+            <input type="number" id="heatdam" placeholder="-1" oninput="fahrenheitConversion('heatdam')"> (fahrenheit)<br>
+            <input type="checkbox" id="heatdam_point_exists"> Has heat damage point
+          </div>
+          <div class="input_box">
+            <a href="https://en.wikipedia.org/wiki/Thermal_degradation">Cold damage point</a><br>
+            <input type="number" id="colddam_c" placeholder="-1" tabindex=5 oninput="celciusConversion('colddam')"> (celcius)<br>
+            <input type="number" id="colddam" placeholder="-1" oninput="fahrenheitConversion('colddam')"> (fahrenheit)<br>
+            <input type="checkbox" id="colddam_point_exists"> Has cold damage point
+          </div>
+          <div class="input_box">
+            <a href="https://en.wikipedia.org/wiki/Heat_capacity">Specific Heat</a><br>
+            <input type="number" id="spec_heat" placeholder="450" tabindex=6> (Joules per kilograms kelvin)
+        </div>
+                </div>
+    </section>
+    <h3>Mass values</h3>
+    <section>
+          <div class="input_category">
+      <div class="input_box">
+        <a href="https://en.wikipedia.org/wiki/Density">Density</a> (kilogram/meter<sup>3</sup>):<br>
+        <input type="number" id="solid_density" placeholder="7850" tabindex=11> Solid <br>
+        <input type="number" id="liquid_density" placeholder="6980" tabindex=12> Liquid
+      </div>
+      <div class="input_box">
+        <a href="https://en.wikipedia.org/wiki/Molar_mass">Molar mass</a><br>
+        <input type="number" id="molar" placeholder="55845" tabindex=13> (kg/mole)
+      </div>
+          </div>
+    </section>
+    <h3>Strength values</h3>
+    <section>
+    <p id="gem warning"></p>
+    <div class="input_category">
+      <div class="input_box">
+        <a href="https://en.wikipedia.org/wiki/Yield_(engineering)">Tensile yield</a> (KPa)<br>
+        <input type="number" id="tensile_yield" placeholder="155000" tabindex=14>
+      </div>
+      <div class="input_box">
+        <a href="https://en.wikipedia.org/wiki/Ultimate_tensile_strength">Ultimate tensile strength</a> (KPa)<br>
+        <input type="number" id="ultimate_tensile" placeholder="310000" tabindex=15>
+      </div>
+      <div class="input_box">
+        <a href="https://en.wikipedia.org/wiki/Yield_(engineering)">Shear yield</a> (KPa)<br>
+        <input type="number" id="shear_yield" placeholder="155000" tabindex=16>
+      </div>
+      <div class="input_box">
+        <a href="https://en.wikipedia.org/wiki/Shear_strength">Shear strength</a> (KPa)<br>
+        <input type="number" id="ultimate_shear" placeholder="310000" tabindex=17>
+      </div>
+      <div class="input_box">
+        <a href="https://en.wikipedia.org/wiki/Yield_(engineering)"> Compressive yield</a> (KPa)<br>
+        <input type="number" id="compressive_yield" placeholder="542500" tabindex=18>
+      </div>
+      <div class="input_box">
+        <a href="https://en.wikipedia.org/wiki/Compressive_strength"> Compressive strength</a> (KPa)<br>
+        <input type="number" id="ultimate_compressive" placeholder="1085000" tabindex=19>
+      </div>
+      <button tabindex=20 onclick="strengthPlaceholders()">Fill in the rest with placeholders</button>
+    </div>
+    </section>
+    <h3>Elasticity values</h3>
+    <section>
+        <div class="input_category">
+      <div class="input_box">
+         <a href="https://en.wikipedia.org/wiki/Bulk_modulus">Bulk modulus</a> (MPa)<br>
+         <input type="number" id="bulk" placeholder="170000" tabindex=21>
+      </div>
+      <div class="input_box">
+         <a href="https://en.wikipedia.org/wiki/Young%27s_modulus">Young's modulus</a> (MPa)<br>
+         <input type="number" id="young" placeholder="211000" tabindex=22>
+      </div>
+      <div class="input_box">
+        <a href="https://en.wikipedia.org/wiki/Shear_modulus">Shear modulus</a> (MPa)<br>
+        <input type="number" id="shear" placeholder="82000" tabindex=23>
+      </div>
+      <div class="input_box">
+        <a href="https://en.wikipedia.org/wiki/Lam%C3%A9_parameters">Lamé's First Parameter</a> (MPa) <br>
+        <input type="number" id="lamé" placeholder="115000" tabindex=24>
+      </div>
+      <div class="input_box">
+        <a href="https://en.wikipedia.org/wiki/Poisson%27s_ratio">Poisson's Ratio</a> (ratio) <br>
+        <input type="number" id="poisson" placeholder="0.293" tabindex=25>
+      </div>
+      <div class="input_box">
+        <a href="https://en.wikipedia.org/wiki/P-wave_modulus">P-wave modulus</a> (MPa) <br>
+        <input type="number" id="p-wave" placeholder="279000" tabindex=26>
+      </div>
+      <button tabindex=27 onclick="convertElasticModuli()">Fill in the rest</button>
+    </div>
+    </section>
+</div>
+ 
+<script>$("#wizardly_material_maker").steps({
+    headerTag: "h3",
+    bodyTag: "section",
+    transitionEffect: "slideLeft",
+    autoFocus: true,
+        });
+</script>
+ 
+ 
+<pre id='result'></pre>
+ 
+<script>
+//The programming proper
+
+function setMatType(matType) {
+    switch (matType) {
+        case "metal":
+            $('#ductile').attr('checked',true)
+            $('#gemwarning').attr('innerHTML','')
+            break;
+        case "gem":
+            $('#brittle').attr('checked',true)
+            $('#gemwarning').attr('innerHTML','Gems tend not to be isotropic materials, but Dwarf Fortress doesn\'t recognize materials that are not isotropic; you may want to simply use whatever plane is weakest.')
+            break;
+        case "rock":
+            $('#brittle').attr('checked',true);
+            $('#poisson').attr('placeholder','0.25');
+            break;
+        case "wood":
+            $('#ductile').attr('checked',true);
+            $('#poisson').attr('placeholder',0.45)l
+            break;
+        case "amorphous":
+            $('ductile').attr('checked',true);
+            break;
+        case "magic":
+            $('unsure_whether_brittle').attr('checked',true)
+            break;
+    }
+}
+
+function getValue(id) {
+    var curValue=document.getElementById(id).value
+    return parseInt(curValue) ? parseInt(curValue) : parseFloat(curValue) ? parseFloat(curValue) : curValue
+}
+function isChecked(id) {
+    return document.getElementById(id).checked
+}
+function getSigFig(num) {
+    if (!num) {
+        return num
+    }
+    if (Math.abs(num)>1) {
+        zeroes=0
+        while(Math.floor(num/Math.pow(10,zeroes))==num/Math.pow(10,zeroes)) {
+            zeroes++
+        }
+        return Math.floor(Math.log10(num))-(zeroes-2)
+    }
+    else {
+        trailers=0
+        while(Math.floor(num*Math.pow(10,trailers))!=num*Math.pow(10,trailers)) {
+            trailers++
+       }
+       return trailers
+    }
+}
+function sigFigs(n, sig) { //http://blog.magnetiq.com/post/497605344/rounding-to-a-certain-significant-figures-in
+    var mult = Math.pow(10,
+        sig - Math.floor(Math.log(n) / Math.LN10) - 1);
+    return Math.round(n * mult) / mult;
+}
+   
+function setValue(id,value) {
+    document.getElementById(id).value=value
+    return id
+}
+function setValueInnerHTML(id,value) {
+    document.getElementById(id).innerHTML=value
+    return id
+}
+function setIfNotAlreadySet(id,value) {
+    if (!getValue(id)) {
+        setValue(id,value)
+    }
+}
+function celciusConversion(nameOfThing) {
+    var celcius=getValue(nameOfThing+"_c")
+    setValue(nameOfThing,Math.round((1.8*celcius)+32))
+    makeMat()
+}
+function fahrenheitConversion(nameOfThing) {
+    var fahrenheit=getValue(nameOfThing)
+    setValue(nameOfThing+'_c',Math.round((5*(fahrenheit-32))/9))
+    makeMat()
+}
+function strengthPlaceholders(not_again) {
+    var tensileYield=getValue('tensile_yield')
+    var shearYield=getValue('shear_yield')
+    var compressiveYield=getValue('compressive_yield')
+    var ultimateTensile=getValue('ultimate_tensile')
+    var ultimateShear=getValue('ultimate_shear')
+    var ultimateCompressive=getValue('ultimate_compressive')
+    var shearCoefficient = isChecked('realistic_shear') ? Math.sqrt(3) : 1
+    if (tensileYield) {
+        setIfNotAlreadySet('shear_yield',sigFigs(tensileYield/shearCoefficient,getSigFig(tensileYield)))
+        setIfNotAlreadySet('compressive_yield',tensileYield*3.5)
+        if (ultimateTensile) {
+            setIfNotAlreadySet('ultimate_shear',sigFigs(ultimateTensile/shearCoefficient,getSigFig(ultimateTensile)))
+            setIfNotAlreadySet('ultimate_compressive',ultimateTensile*3.5)
+        }
+        else {        
+            setIfNotAlreadySet('ultimate_tensile',tensileYield*2)
+            setIfNotAlreadySet('ultimate_shear',getValue('shear_yield')*2)
+            setIfNotAlreadySet('ultimate_compressive',tensileYield*7)
+        }
+    }
+    else if (shearYield) {
+        setIfNotAlreadySet('tensile_yield',sigFigs(shearYield*shearCoefficient,getSigFig(shearYield)))
+    }
+    else if (compressiveYield) {
+        setIfNotAlreadySet('tensile_yield',compressiveYield/3.5)
+    }
+    else if (ultimateTensile) {
+        setIfNotAlreadySet('tensile_yield',ultimateTensile/2)
+    }
+    else if (ultimateShear) {
+        setIfNotAlreadySet('tensile_yield',sigFigs(ultimateShear*(shearCoefficient/2),getSigFig(ultimateShear)))
+    }
+    else if (ultimateCompressive) {
+        setIfNotAlreadySet('tensile_yield',ultimateCompressive/7)
+    }
+    if (!not_again) {
+        strengthPlaceholders(true)
+    }
+    makeMat()
+}
+function convertElasticModuli() {
+    var K=getValue("bulk") //silly variable names primarily to make math slightly more readable
+    var E=getValue("young") //also because that's actually how they're usually notated
+    var L=getValue("lamé") //technically should be lambda but ILLEGAL
+    var G=getValue("shear")
+    var v=getValue("poisson") //okay so technically it should be ? but I'm not that evil
+    var M=getValue("p-wave")
+    if (K) {
+        if (E) {
+            var sigfig=Math.min(getSigFig(K),getSigFig(E))
+            setValue("lamé",sigFigs((3*K*(3*K-E))/(9*K-E),sigfig))
+            setValue("shear",sigFigs((3*K*E)/(9*K-E),sigfig))
+            setValue("poisson",sigFigs((3*K-E)/(6*K),sigfig))
+            setValue("p-wave",sigFigs((3*K*(3*K+E))/(9*K-E),sigfig))
+        }
+        else if (L) {
+            var sigfig=Math.min(getSigFig(K),getSigFig(L))
+            setValue("young",sigFigs((9*K*(K-L))/(3*K-L),sigfig))
+            setValue("shear",sigFigs((3*(K-L))/2,sigfig))
+            setValue("poisson",sigFigs(L/(3*K-L),sigfig))
+            setValue("p-wave",sigFigs(3*K-2*L,sigfig))
+        }
+        else if (G) {
+            var sigfig=Math.min(getSigFig(K),getSigFig(G))
+            setValue("young",sigFigs((9*K*G)/(3*K+G),sigfig))
+            setValue("lamé",sigFigs(K-((2*G)/3),sigfig))
+            setValue("poisson",sigFigs((3*K-2*g)/(2*(3*K+G)),sigfig))
+            setValue("p-wave",sigFigs(K+((4*G)/3),sigfig))
+        }
+        else if (v) {
+            var sigfig=Math.min(getSigFig(K),getSigFig(v))
+            setValue("young",sigFigs(3*K*(1-2*v),sigfig))
+            setValue("lamé",sigFigs((3*K*v)/(1+v),sigfig))
+            setValue("shear",sigFigs((3*K*(1-2*v))/(2*(1+v)),sigfig))
+            setValue("p-wave",sigFigs((3*K*(1-v))/(1+v),sigfig))
+        }
+        else if (M) {
+            var sigfig=Math.min(getSigFig(K),getSigFig(M))
+            setValue("young",sigFigs((9*K*(M-K))/(3*K+M),sigfig))
+            setValue("lamé",sigFigs((3*K-M)/2,sigfig))
+            setValue("shear",sigFigs((3*(M-K))/4,sigfig))
+            setValue("poisson",sigFigs((3*K-M)/(3*K+M),sigfig))
+        }
+    }
+    else if (E) {
+        if (L) {
+            var sigfig=Math.min(getSigFig(E),getSigFig(L))
+            var R=Math.sqrt(Math.pow(E,2)+9*Math.pow(L,2)+2*E*L)
+            setValue("bulk",sigFigs((E+3*L+R)/6,sigfig))
+            setValue("shear",sigFigs((E-3*L+R)/4,sigfig))
+            setValue("poisson",sigFigs((2*L)/(E+L+R),sigfig))
+            setValue("p-wave",sigFigs((E-L+R)/2,sigfig))
+        }
+        else if (G) {
+            var sigfig=Math.min(getSigFig(E),getSigFig(G))
+            setValue("bulk",sigFigs((E*G)/(3*(3*G-E)),sigfig))
+            setValue("lamé",sigFigs((G*(E-2*G))/(3*G-E),sigfig))
+            setValue("poisson",sigFigs((E/(2*G))-1,sigfig))
+            setValue("p-wave",sigFigs((G*(4*G-E))/(3*G-E),sigfig))
+        }
+        else if (v) {
+            var sigfig=Math.min(getSigFig(E),getSigFig(v))
+            setValue("bulk",sigFigs(E/(3*(1-2*v)),sigfig))
+            setValue("lamé",sigFigs((E*v)/((1+v)*(1-2*v)),sigfig))
+            setValue("shear",sigFigs(E/(2*(1+v)),sigfig))
+            setValue("p-wave",sigFigs((E*(1-v))/((1+v)*(1-2*v)),sigfig))
+        }
+        else if (M) {
+            var sigfig=Math.min(getSigFig(E),getSigFig(M))
+            var S=Math.sqrt(Math.pow(E,2)+9*Math.pow(M,2)-10*E*M)
+            setValue("bulk",sigFigs((3*M-E+S)/6,sigfig))
+            setValue("lamé",sigFigs((M-E+S)/4,sigfig))
+            setValue("shear",sigFigs((3*M+E-S)/8,sigfig))
+            setValue("poisson",sigFigs((E-M+S)/(4*M),sigfig))
+        }
+    }
+    else if (L) {
+        if (G){
+            var sigfig=Math.min(getSigFig(L),getSigFig(G))
+            setValue("bulk",sigFigs(L+((2*G)/3),sigfig))
+            setValue("young",sigFigs((G*(3*L+2*G))/(L+G),sigfig))
+            setValue("poisson",sigFigs(L/(2*(L+G)),sigfig))
+            setValue("p-wave",sigFigs((L*(1-v))/v,sigfig))
+        }
+        else if (v){
+            var sigfig=Math.min(getSigFig(L),getSigFig(v))
+            setValue("bulk",sigFigs((L*(1+v))/(3*v),sigfig))
+            setValue("young",sigFigs((L*(1+v)*(1-2*v))/v,sigfig))
+            setValue("shear",sigFigs((L*(1-2*v))/(2*v),sigfig))
+            setValue("p-wave",sigFigs((L*(1-v))/v,sigfig))
+        }
+        else if (M){
+            var sigfig=Math.min(getSigFig(L),getSigFig(M))
+            setValue("bulk",sigFigs((M+2*L)/3,sigfig))
+            setValue("young",sigFigs(((M-L)*(M+2*L))/(M+L),sigfig))
+            setValue("shear",sigFigs((M-L)/2,sigfig))
+            setValue("poisson",sigFigs(L/(M+L),sigfig))
+        }
+    }
+    else if (G) {
+        if (v){
+            var sigfig=Math.min(getSigFig(G),getSigFig(v))
+            setValue("bulk",sigFigs((2*G*(1+v))/(3*(1-2*v)),sigfig))
+            setValue("young",sigFigs(2*G*(1+v),sigfig))
+            setValue("lamé",sigFigs((2*G*v)/(1-2*v),sigfig))
+            setValue("p-wave",sigFigs((2*G*(1-v))/(1-2*v),sigfig))
+            }
+        else if (M){
+            var sigfig=Math.min(getSigFig(G),getSigFig(M))
+            setValue("bulk",sigFigs(M-((4*G)/3),sigfig))
+            setValue("young",sigFigs((G*(3*M-4*G))/(M-G),sigfig))
+            setValue("lamé",sigFigs(M-2*G,sigfig))
+            setValue("poisson",sigFigs((M-2*G)/(2*M-2*G),sigfig))
+        }
+    }
+    else if (v) {
+        if (M) {
+            var sigfig=Math.min(getSigFig(v),getSigFig(M))
+            setValue("bulk",sigFigs((M*(1+v))/(3*(1-v)),sigfig))
+            setValue("young",sigFigs((M*(1+v)*(1-2*v))/(1-v),sigfig))
+            setValue("lamé",sigFigs((M*v)/(1-v),sigfig))
+            setValue("shear",sigFigs((M*(1-2*v))/(2*(1-v)),sigfig))
+        }
+    }
+    makeMat()
+}
+function tempName(state) {
+    switch(state) {
+        case 'solid':
+            if (getValue('melting')<64) {
+                return 'frozen '+getValue('mat_name')
+            } else {
+                return getValue('mat_name')
+            }
+            break;
+        case 'liquid':
+            if (getValue('melting')>64) {
+                return 'molten '+getValue('mat_name')
+            } else {
+                return getValue('mat_name')
+            }
+            break;
+        case 'gas':
+            if (getValue('boiling')>64) {
+                return 'boiling '+getValue('mat_name')
+            } else {
+                return getValue('mat_name')
+            }
+            break;
+        default:
+            break;
+    }
+}
+function makeMat() {
+    var young=Math.round(getValue('tensile_yield')*100/(getValue('young')))
+    var bulk=Math.round((100*getValue('compressive_yield'))/(getValue('bulk')))
+    var shear=Math.round((100*getValue('shear_yield'))/(getValue('shear')))
+    var tensileYield=getValue('tensile_yield')
+    var compressiveYield=getValue('compressive_yield')
+    var shearYield=getValue('shear_yield')
+    var ultimateTensile=getValue('ultimate_tensile')
+    var ultimateCompressive=getValue('ultimate_compressive')
+    var ultimateShear=getValue('ultimate_shear')
+    var impactYield=isChecked('realistic_impact') ? Math.min(tensileYield,compressiveYield) : compressiveYield
+    var impactFracture=isChecked('realistic_impact') ? Math.min(ultimateTensile,ultimateCompressive) : ultimateCompressive
+    var bendingYield=Math.min(tensileYield,compressiveYield)
+    var bendingFracture=Math.min(ultimateTensile,ultimateCompressive)
+    var holyCrapABigStringOne="    [STATE_NAME_ADJ:ALL_SOLID:"+tempName('solid')+"]\n" + //would you believe that this whole segment was copied from python and only minorly edited?
+                "    [STATE_NAME_ADJ:LIQUID:"+tempName('liquid')+"]\n" +
+                "    [STATE_NAME_ADJ:GAS:"+tempName('gas')+"]\n" +
+                "    [DISPLAY_COLOR:0:7:1]\n" +
+                "    [BUILD_COLOR:0:7:1]\n" +
+                "    [MATERIAL_VALUE:"+getValue('mat_value')+"]\n" +
+                "    [SPEC_HEAT:"+getValue('spec_heat')+"]\n"
+    var holyCrapABigStringTwo="    [SOLID_DENSITY:"+getValue('solid_density')+"]\n" +
+                "    [LIQUID_DENSITY:"+getValue('liquid_density')+"]\n" +
+                "    [MOLAR_MASS:"+getValue('molar')+"]\n" +
+                "    [IMPACT_YIELD:"+impactYield+"]\n" +
+                "    [IMPACT_FRACTURE:"+impactFracture+"]\n" +
+                "    [IMPACT_STRAIN_AT_YIELD:"+bulk+"]\n" +
+                "    [COMPRESSIVE_YIELD:"+compressiveYield+"]\n" +
+                "    [COMPRESSIVE_FRACTURE:"+ultimateCompressive+"]\n" +
+                "    [COMPRESSIVE_STRAIN_AT_YIELD:"+bulk+"] bulk modulus "+ getValue('bulk')/1000 + " GPa\n" +
+                "    [TENSILE_YIELD:"+tensileYield+"]\n" +
+                "    [TENSILE_FRACTURE:"+ultimateTensile+"]\n" +
+                "    [TENSILE_STRAIN_AT_YIELD:"+young+"] young's modulus "+ getValue('young')/1000 + " GPa\n" +
+                "    [TORSION_YIELD:"+shearYield+"]\n" +
+                "    [TORSION_FRACTURE:"+ultimateShear+"]\n" +
+                "    [TORSION_STRAIN_AT_YIELD:"+shear+"]\n" +
+                "    [SHEAR_YIELD:"+shearYield+"]\n" +
+                "    [SHEAR_FRACTURE:"+ultimateShear+"]\n" +
+                "    [SHEAR_STRAIN_AT_YIELD:"+shear+"] shear modulus " +getValue('shear')/1000+ " GPa\n" +
+                "    [BENDING_YIELD:"+bendingYield+"]\n" +
+                "    [BENDING_FRACTURE:"+bendingFracture+"]\n" +
+                "    [BENDING_STRAIN_AT_YIELD:"+young+"]\n" +
+                "    [MAX_EDGE:"+getValue("max_edge")+"]\n" +
+                "    [STATE_COLOR:ALL:"+getValue('color')+"]"
+               
+    var igniteString=(!isChecked("ignition_point_exists")) ? "" : ("    [IGNITE_POINT:"+(getValue('ignition')+9968+"]\n"))
+    var heatdamString=(!isChecked("heatdam_point_exists")) ? "" : ("    [HEATDAM_POINT:"+(getValue('heatdam')+9968+"]\n"))
+    var colddamString=(!isChecked("colddam_point_exists")) ? "" : ("    [COLDDAM_POINT:"+(getValue('colddam')+9968+"]\n"))
+    var meltingString=(!isChecked("melting_point_exists")) ? "" : ("    [MELTING_POINT:"+(getValue('melting')+9968+"]\n"))
+    var boilingString=(!isChecked("boiling_point_exists")) ? "" : ("    [BOILING_POINT:"+(getValue('boiling')+9968+"]\n"))
+    setValueInnerHTML('result',holyCrapABigStringOne+meltingString+boilingString+igniteString+heatdamString+colddamString+holyCrapABigStringTwo)
+}
+//Google analytics code snippet
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-61577221-1', 'auto');
+  ga('send', 'pageview');
+</script>
+ 
+</body>
+</html>
