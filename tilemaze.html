@@ -105,7 +105,7 @@ this doesn't work yet, it just happens to require being on the internet to test
                 var adjacentTiles=maze.getAdjacentTiles(tile.pos)
                 for (idx in adjacentTiles) {
                     var newtile=adjacentTiles[idx]
-                    console.log(newtile,newtile.pos)
+                    console.log(newtile,newtile.pos || Position(-1,-1))
                     if (typeof(newtile)!='undefined' && !this.discoveredPositions[newtile.pos.x][newtile.pos.y]) {
                         if (newtile.on_step(this)) {
                             return this.searchTilePath(newtile)
