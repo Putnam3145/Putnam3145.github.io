@@ -99,6 +99,7 @@
                 }
                 var adjacentTiles=maze.getAdjacentTiles(tile.pos)
                 for (idx in adjacentTiles) {
+                    console.log(this)
                     var newtile=adjacentTiles[idx]
                     if (typeof(newtile)!='undefined' && !this.discoveredPositions[newtile.pos.x][newtile.pos.y] && newtile.on_step(this)) {
                         return this.searchTilePath(newtile)
