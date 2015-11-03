@@ -92,6 +92,7 @@
                 if (!pos in tile) { return false }
                 this.discoveredPositions[tile.pos.x][tile.pos.y]=true
                 if (tile.pos.x==maze.width-1) {
+                    console.log('solvable!')
                     return true
                 }
                 var adjacentTiles=maze.getAdjacentTiles(tile.pos)
@@ -240,7 +241,6 @@
                         }
                     }
                 }
-                console.log('did it work?')
                 this.render()
             } while (maze.isUnpathable())
             this.render()
