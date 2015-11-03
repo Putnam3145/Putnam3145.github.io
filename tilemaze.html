@@ -40,7 +40,7 @@ this doesn't work yet, it just happens to require being on the internet to test
                 return new Position(this.x,this.y)
             }
             this.normalize=function() {
-                var divisor=Math.max(this.x,this.y)
+                var divisor=(Math.absolute(x)>Math.absolute(y)) ? x : y
                 return new Position(Math.floor(this.x/divisor),Math.floor(this.y/divisor))
             }
         }
