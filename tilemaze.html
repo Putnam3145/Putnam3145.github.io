@@ -99,10 +99,11 @@
                 }
                 var adjacentTiles=maze.getAdjacentTiles(tile.pos)
                 for (idx in adjacentTiles) {
-                    console.log(this)
                     var newtile=adjacentTiles[idx]
-                    if (typeof(newtile)!='undefined' && !this.discoveredPositions[newtile.pos.x][newtile.pos.y] && newtile.on_step(this)) {
-                        return this.searchTilePath(newtile)
+                    if (typeof(newtile)!='undefined' && !this.discoveredPositions[newtile.pos.x][newtile.pos.y])) {
+                        if (newtile.on_step(this)) {
+                            return this.searchTilePath(newtile)
+                        }
                     }
                 }
                 if (!tile.on_step(this)) { //would only happen if orange-scented and going back to blue tile; depth-first search isn't so much backtracking in this case as resetting time to previous, heh
