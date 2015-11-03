@@ -225,7 +225,7 @@
         maze.generate=function() {
             this.width=parseInt(document.getElementById('maze_width').value)
             this.height=parseInt(document.getElementById('maze_height').value)
-            this.maze.graphics.characters=new PIXI.Container()
+            this.graphics.characters=new PIXI.Container()
             var tileTypes=["red","yellow","green","orange","blue","purple","pink"]
             do {
                 this.tiles = {}
