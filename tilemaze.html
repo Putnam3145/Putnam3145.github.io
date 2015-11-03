@@ -79,6 +79,9 @@
                 return this.pos
             }
             this.getPos=function() {
+                if (this.pos.x == NaN || this.pos.y == NaN) {
+                    this.pos=maze.getStartPos()
+                }
                 return this.pos
             }
             this.setScent=function(scent) {
