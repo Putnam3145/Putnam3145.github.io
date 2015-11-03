@@ -161,7 +161,7 @@
                         var oldPos=stepper.getPos()
                         var direction=this.pos.subtract(oldPos).negate()
                         console.log('purpling')
-                        console.log(oldPos,direction)
+                        console.log(oldPos,this.pos,direction)
                         if (maze.getTileAtPos(this.pos.add(direction)).on_step(stepper)) {
                             return true
                         } else {
