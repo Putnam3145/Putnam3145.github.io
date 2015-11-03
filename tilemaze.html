@@ -282,22 +282,22 @@ this doesn't work yet, it just happens to require being on the internet to test
             this.graphics.characters=new PIXI.Container()
             var tileTypes=["red","yellow","green","orange","blue","purple","pink"]
             var safeTiles=["red","yellow","green","orange","blue","pink"]
-            do {
-                this.tiles = {}
-                for (x=0;x<this.width;x++) {
-                    this.tiles[x]={}
-                    for (y=0;y<this.height;y++) {
-                        if (x==this.width-1 || y==this.height-1 || x==0 || y==0)
-                        {
-                            this.tiles[x][y]=new Tile(safeTiles[Math.floor(Math.random() * 6)],new Position(x,y))
-                        } else {
-                            this.tiles[x][y]=new Tile(tileTypes[Math.floor(Math.random() * 7)],new Position(x,y))
-                        }
+            this.tiles = {}
+            for (x=0;x<this.width;x++) {
+                this.tiles[x]={}
+                for (y=0;y<this.height;y++) {
+                    if (x==this.width-1 || y==this.height-1 || x==0 || y==0)
+                    {
+                        this.tiles[x][y]=new Tile(safeTiles[Math.floor(Math.random() * 6)],new Position(x,y))
+                    } else {
+                        this.tiles[x][y]=new Tile(tileTypes[Math.floor(Math.random() * 7)],new Position(x,y))
                     }
                 }
-                this.render()
-            } while (maze.isUnpathable())
+            }
             this.render()
+            if (this.isUnpathable()) {
+                setTimeout(this.generate,100)
+            }
         }
         maze.getStartPos=function() {
             var dummyStepper=new PathBot(new Position(1,1))
