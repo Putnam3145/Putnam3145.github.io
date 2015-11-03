@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>DF Material Helper</title>
+<meta charset="UTF-8">
+<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="style.css">
+<meta name=viewport content="width=device-width, initial-scale=1">
+<meta name="description" content="Undertale tile maze">
+
+</head>
+<body>
+    <input type="number" id="maze_height" value="5" tabindex=1 >
+    <input type="number" id="maze_width" value="20" tabindex=2 >
+    <button tabindex=3 onclick="maze.generate()">Generate a maze</button><br>
+    <script src="pixi.min.js"></script>
+    <script>
+        function Position(x,y) {
+            if (x==NaN) {x=0}
+            if (y==NaN) {y=0}
+            this.x=Math.floor(x)
+            this.y=Math.floor(y)
+            this.add=function(otherPos) {
+                return new Position(this.x+otherPos.x,this.y+otherPos.y)
+            }
+            this.subtract=function(otherPos) {
+                return new Position(this.x-otherPos.x,this.y-otherPos.y)
+            }
+            this.negate=function() {
+                return new Position(0-this.x,0-this.y)
+            }
+            this.equals=function(otherPos) {
+                return (otherPos.x==this.x && otherPos.y==this.y)
+            }
+        }
+        function Player(pos) {
+            this.pos = new Position(pos)
+            this.sprite=new PIXI.Sprite.fromImage('character.png')
+            maze.graphics.characters.addChild(this.sprite)
+            for (x=0;x<maze.width;x++) {
+                this.discoveredPositions[x]={}
+                for (y=0;y<maze.height;y++) {
+                    this.discoveredPositions[x][y]=false
+                }
+            }
+            this.setPos=function(pos) {
+                this.pos.x=pos.x
+                this.pos.y=pos.y
+                return this.pos
+            }
+            this.getPos=function() {
+                return this.pos
+            }
+            this.setScent=function(scent) {
+                self.scent=scent
+                return this.scent
+            }
+            this.getScent=function() {
+                return this.scent
+            }
+        }
+        function PathBot(pos) {
+            this.pos = new Position(pos)
+            this.discoveredPositions={}
+            this.sprite=new PIXI.Sprite.fromImage('character.png')
+            maze.graphics.characters.addChild(this.sprite)
+            for (x=0;x<maze.width;x++) {
+                this.discoveredPositions[x]={}
+                for (y=0;y<maze.height;y++) {
+                    this.discoveredPositions[x][y]=false
+                }
+            }
+            this.setPos=function(pos) {
+                this.pos.x=pos.x
+                this.pos.y=pos.y
+                this.sprite.x=pos.x*32
+                this.sprite.y=pos.y*32
+                return this.pos
+            }
+            this.getPos=function() {
+                return this.pos
+            }
+            this.setScent=function(scent) {
+                self.scent=scent
+                return this.scent
+            }
+            this.getScent=function() {
+                return this.scent
+            }
+            this.searchTilePath=function(tile) {
+                if (!pos in tile) { return false }
+                this.discoveredPositions[tile.pos.x][tile.pos.y]=true
+                if (tile.pos.x==maze.width-1) {
+                    return true
+                }
+                var adjacentTiles=maze.getAdjacentTiles(tile.pos)
+                for (idx in adjacentTiles) {
+                    var newtile=adjacentTiles[idx]
+                    if (typeof(newtile)!='undefined' && !this.discoveredPositions[newtile.pos.x][newtile.pos.y] && newtile.on_step(this)) {
+                        return this.searchTilePath(newtile)
+                    }
+                }
+                if (!tile.on_step(this)) { //would only happen if orange-scented and going back to blue tile; depth-first search isn't so much backtracking in this case as resetting time to previous, heh
+                    this.setScent('lemon')
+                }
+                tile.on_step(this)
+                return false
+            }
+            
+        }
+        function Tile(tileType,pos) {
+            switch(tileType) {
+                case "red": 
+                    this.color=0xdf3005
+                    this.on_step=function(stepper) {
+                        return false
+                    }
+                    break
+                case "yellow":
+                    this.color=0xe9e400
+                    this.on_step=function(stepper) {
+                        return false
+                    }
+                    break
+                case "green":
+                    this.color=0x18c400
+                    this.on_step=function(stepper) {
+                        stepper.setPos(this.pos) //yeah, movement is handled by the tile object, it's not a complex game
+                        return true
+                    }
+                    break
+                case "orange":
+                    this.color=0xe4a338
+                    this.on_step=function(stepper) {
+                        stepper.setPos(this.pos)
+                        stepper.setScent('orange')
+                        return true
+                    }
+                    break
+                case "blue":
+                    this.color=0x1118ff
+                    this.on_step=function(stepper) {
+                        if (stepper.getScent()!='orange') {
+                            for (tile in maze.getAdjacentTiles(this.pos)) {
+                                if (tile.type=='yellow') {
+                                    return false
+                                }
+                            }
+                            stepper.setPos(this.pos)
+                            return true
+                        }
+                        return false
+                    }
+                    break
+                case "purple":
+                    this.color=0x792387
+                    this.on_step=function(stepper) {
+                        stepper.setScent('lemon')
+                        var oldPos=stepper.getPos()
+                        var direction=this.pos.subtract(oldPos).negate()
+                        console.log(direction)
+                        if (maze.getTileAtPos(this.pos.add(direction)).on_step(stepper)) {
+                            return true
+                        } else {
+                            stepper.setPos(oldPos)
+                            return false
+                        }
+                    }
+                    break
+                default: //will count for pink
+                    this.color=0xe47a60
+                    this.on_step=function(stepper) {
+                        stepper.setPos(this.pos)
+                        return true
+                    }
+                    break
+            }
+            this.type=tileType
+            this.pos=pos || new Position(-1,-1)
+            this.render=function(graphics) {
+                graphics.beginFill(this.color)
+                graphics.lineStyle(1,this.color,1)
+                graphics.drawRect(this.pos.x*32,this.pos.y*32,32,32)
+            }
+            this.on_step=this.on_step || function(stepper) {
+                stepper.setPos(this.pos)
+                return true
+            }
+        }
+        var maze=maze || {}
+        maze.graphics=maze.graphics || {}
+        maze.graphics.stage=new PIXI.Container()
+        maze.graphics.world=new PIXI.Container()
+        maze.graphics.characters=new PIXI.Container()
+        maze.graphics.stage.addChild(maze.graphics.world);
+        maze.graphics.stage.addChild(maze.graphics.characters);
+        maze.graphics.stage.interactive=true
+        maze.graphics.renderer=PIXI.autoDetectRenderer(800,600)
+        maze.graphics.renderer.backgroundColor=0x0a0500
+        maze.graphics.drawer=new PIXI.Graphics()
+        maze.graphics.world.addChild(maze.graphics.drawer)
+        document.body.appendChild(maze.graphics.renderer.view)
+        maze.graphics.renderer.render(maze.graphics.stage)
+        maze.tiles={}
+        maze.width=20
+        maze.height=5
+        maze.getTileAtPos=function(pos) {
+            if (pos.x<0 || pos.y<0 || pos.x>=this.width || pos.y>=this.height) {
+                return Tile('red',pos)
+            } else {
+                console.log(pos)
+                return this.tiles[pos.x][pos.y]
+            }
+        }
+        maze.getTile=function(x,y) {
+            if (x<0 || y<0 || x>=this.width || y>=this.height) {
+                return Tile('red',new Position(x,y))
+            } else {
+                return this.tiles[x][y]
+            }
+        }
+        maze.getAdjacentTiles=function(pos) {
+            return [this.getTile(pos.x-1,pos.y),this.getTile(pos.x+1,pos.y),this.getTile(pos.x,pos.y-1),this.getTile(pos.x,pos.y+1)]
+        }
+        maze.generate=function() {
+            this.width=parseInt(document.getElementById('maze_width').value)
+            this.height=parseInt(document.getElementById('maze_height').value)
+            var tileTypes=["red","yellow","green","orange","blue","purple","pink"]
+            do {
+                this.tiles = {}
+                for (x=0;x<this.width;x++) {
+                    this.tiles[x]={}
+                    for (y=0;y<this.height;y++) {
+                        this.tiles[x][y]=new Tile(tileTypes[Math.floor(Math.random() * 7)],new Position(x,y))
+                    }
+                }
+                this.render()
+            } while (maze.isUnpathable())
+            this.render()
+        }
+        maze.getStartPos=function() {
+            var dummyStepper=new PathBot(new Position(1,1))
+            for (tileY in maze.tiles[0]) {
+                dummyStepper.setScent('melon') //not a typo
+                var tile=maze.tiles[0][tileY]
+                if (tile.on_step(dummyStepper)) {
+                    return tile.pos
+                }
+            }
+            return false
+        }
+        maze.isUnpathable=function() {
+            var startPos=this.getStartPos()
+            if (!startPos) { return true }
+            new Position(0,Math.floor(this.height/2))
+            var stepper=new PathBot(startPos)
+            return stepper.searchTilePath(maze.getTile(startPos.x,startPos.y))
+        }
+        maze.render=function() {
+            this.graphics.drawer.clear()
+            for (column in this.tiles) {
+                var realColumn=this.tiles[column]
+                for (tile in realColumn) {
+                    var realTile=realColumn[tile]
+                    realTile.render(this.graphics.drawer)
+                }
+            }
+            maze.graphics.renderer.render(maze.graphics.stage)
+        }
+    </script>
+</body>
