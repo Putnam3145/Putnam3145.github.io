@@ -36,17 +36,33 @@ this doesn't work yet, it just happens to require being on the internet to test
             this.toString=function() {
                 return '('+this.x+','+this.y+')'
             }
+            this.copy=function() {
+                return new Position(this.x,this.y)
+            }
         }
+        function FakeStepper(pos) {
+            this.pos = new Position(pos)
+            this.setPos=function(pos) {
+                this.pos.x=pos.x
+                this.pos.y=pos.y
+                return this.pos
+            }
+            this.getPos=function() {
+                return this.pos
+            }
+            this.setScent=function(scent) {
+                self.scent=scent
+                return this.scent
+            }
+            this.getScent=function() {
+                return this.scent
+            }
+        }
+
         function Player(pos) {
             this.pos = new Position(pos)
             this.sprite=new PIXI.Sprite.fromImage('character.png')
             maze.graphics.characters.addChild(this.sprite)
-            for (x=0;x<maze.width;x++) {
-                this.discoveredPositions[x]={}
-                for (y=0;y<maze.height;y++) {
-                    this.discoveredPositions[x][y]=false
-                }
-            }
             this.setPos=function(pos) {
                 this.pos.x=pos.x
                 this.pos.y=pos.y
@@ -169,11 +185,21 @@ this doesn't work yet, it just happens to require being on the internet to test
                     this.on_step=function(stepper) {
                         stepper.setScent('lemon')
                         var oldPos=stepper.getPos()
+                        var fakeStepper=new FakeStepper(oldPos.copy())
                         var direction=this.pos.subtract(oldPos).negate()
-                        if (maze.getTileAtPos(this.pos.add(direction)).on_step(stepper)) {
-                            return true
+                        var nextTile=maze.getTileAtPos(this.pos.add(direction))
+                        fakeStepper.setPos(this.pos.copy())
+                        if (nextTile.on_step(fakeStepper)) {
+                            if (nextTile.type!='purple') {
+                                return nextTile.on_step(stepper)
+                            } else {
+                                if (nextTile.on_step(fakeStepper)) {
+                                    return nextTile.on_step(stepper)
+                                } else {
+                                    return false
+                                }
+                            }
                         } else {
-                            stepper.setPos(oldPos)
                             return false
                         }
                     }
