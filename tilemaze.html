@@ -210,11 +210,7 @@
         maze.width=20
         maze.height=5
         maze.getTileAtPos=function(pos) {
-            console.log(pos)
-            if (typeof(pos)=='undefined') {
-                return Tile('red',Position(1,1))
-            }
-            if (pos.x==NaN || pos.y==NaN || pos.x<0 || pos.y<0 || pos.x>=this.width || pos.y>=this.height) {
+            if (isNaN(pos.x) || isNaN(pos.y) || pos.x<0 || pos.y<0 || pos.x>=this.width || pos.y>=this.height) {
                 return Tile('red',pos)
             } else {
                 return this.tiles[pos.x][pos.y]
