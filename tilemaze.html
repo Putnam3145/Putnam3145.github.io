@@ -17,8 +17,8 @@ this doesn't work yet, it just happens to require being on the internet to test
     <script src="pixi.min.js"></script>
     <script>
         function Position(x,y) {
-            if (x==NaN) {x=0}
-            if (y==NaN) {y=0}
+            if (isNaN(x)) {x=0}
+            if (isNaN(y)) {y=0}
             this.x=Math.floor(x)
             this.y=Math.floor(y)
             this.add=function(otherPos) {
@@ -80,7 +80,7 @@ this doesn't work yet, it just happens to require being on the internet to test
                 return this.pos
             }
             this.getPos=function() {
-                if (this.pos.x == NaN || this.pos.y == NaN) {
+                if (isNaN(this.pos.x) || isNaN(this.pos.y)) {
                     this.pos=maze.getStartPos()
                 }
                 return this.pos
