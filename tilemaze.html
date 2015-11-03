@@ -230,7 +230,7 @@ this doesn't work yet, it just happens to require being on the internet to test
             this.render=function(graphics) {
                 graphics.beginFill(this.color)
                 graphics.lineStyle(0,this.color,0)
-                graphics.drawRect(this.pos.x*32,this.pos.y*32,32,32)
+                graphics.drawRect(this.pos.x*16,this.pos.y*16,16,16)
             }
             this.on_step=this.on_step || function(stepper) {
                 stepper.setPos(this.pos)
