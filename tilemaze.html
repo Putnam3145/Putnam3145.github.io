@@ -75,6 +75,7 @@
                 this.pos.y=pos.y
                 this.sprite.x=pos.x*32
                 this.sprite.y=pos.y*32
+                maze.graphics.renderer.render(maze.graphics.stage)
                 return this.pos
             }
             this.getPos=function() {
@@ -208,7 +209,6 @@
             if (pos.x==NaN || pos.y==NaN || pos.x<0 || pos.y<0 || pos.x>=this.width || pos.y>=this.height) {
                 return Tile('red',pos)
             } else {
-                console.log(pos)
                 return this.tiles[pos.x][pos.y]
             }
         }
