@@ -105,8 +105,9 @@ this doesn't work yet, it just happens to require being on the internet to test
                 for (idx in adjacentTiles) {
                     var newtile=adjacentTiles[idx]
                     if (typeof(newtile)!='undefined' && !this.discoveredPositions[newtile.pos.x][newtile.pos.y]) {
-                        if (newtile.on_step(this)) {
-                            console.log(newtile,newtile.pos)
+                        var steppable=newtile.on_step(this)
+                        if (steppable) {
+                            console.log(newtile,newtile.pos,steppable)
                             return this.searchTilePath(newtile)
                         }
                     }
