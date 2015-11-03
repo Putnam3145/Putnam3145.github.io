@@ -254,7 +254,11 @@ this doesn't work yet, it just happens to require being on the internet to test
             if (isNaN(pos.x) || isNaN(pos.y) || pos.x<0 || pos.y<0 || pos.x>=this.width || pos.y>=this.height) {
                 return Tile('red',pos)
             } else {
-                return this.tiles[pos.x][pos.y]
+                var tile=this.tiles[pos.x][pos.y]
+                if (typeof(tile)=='undefined') {
+                    return Tile('red',pos)
+                }
+                return tile
             }
         }
         maze.getTile=function(x,y) {
