@@ -92,8 +92,7 @@
                 if (!pos in tile) { return false }
                 this.discoveredPositions[tile.pos.x][tile.pos.y]=true
                 if (tile.pos.x==maze.width-1) {
-                    console.log('solvable!')
-                    return true
+                    return false
                 }
                 var adjacentTiles=maze.getAdjacentTiles(tile.pos)
                 for (idx in adjacentTiles) {
@@ -106,7 +105,7 @@
                     this.setScent('lemon')
                 }
                 tile.on_step(this)
-                return false
+                return true
             }
             
         }
