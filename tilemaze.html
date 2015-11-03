@@ -127,7 +127,6 @@ this doesn't work yet, it just happens to require being on the internet to test
                     if (typeof(newtile)!='undefined' && !this.discoveredPositions[newtile.pos.x][newtile.pos.y]) {
                         var steppable=newtile.on_step(this)
                         if (steppable) {
-                            console.log(newtile,newtile.pos,steppable)
                             return this.searchTilePath(newtile)
                         }
                     }
@@ -319,7 +318,6 @@ this doesn't work yet, it just happens to require being on the internet to test
             return solvable
         }
         maze.render=function() {
-            console.log('rendering')
             this.graphics.drawer.clear()
             for (column in this.tiles) {
                 var realColumn=this.tiles[column]
