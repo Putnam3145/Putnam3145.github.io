@@ -33,6 +33,9 @@ this doesn't work yet, it just happens to require being on the internet to test
             this.equals=function(otherPos) {
                 return (otherPos.x==this.x && otherPos.y==this.y)
             }
+            this.toString=function() {
+                return '('+this.x+','+this.y+')'
+            }
         }
         function Player(pos) {
             this.pos = new Position(pos)
