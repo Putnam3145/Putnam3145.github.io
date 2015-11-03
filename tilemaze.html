@@ -160,8 +160,6 @@
                         stepper.setScent('lemon')
                         var oldPos=stepper.getPos()
                         var direction=this.pos.subtract(oldPos).negate()
-                        console.log('purpling')
-                        console.log(oldPos,this.pos,direction)
                         if (maze.getTileAtPos(this.pos.add(direction)).on_step(stepper)) {
                             return true
                         } else {
@@ -246,7 +244,7 @@
             for (tileY in maze.tiles[0]) {
                 dummyStepper.setScent('melon') //not a typo
                 var tile=maze.tiles[0][tileY]
-                if (tile.on_step(dummyStepper)) {
+                if (tile.type!='purple' && tile.on_step(dummyStepper)) {
                     return tile.pos
                 }
             }
