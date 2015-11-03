@@ -27,6 +27,7 @@
                 return new Position(this.x-otherPos.x,this.y-otherPos.y)
             }
             this.negate=function() {
+                console.log(this.x,this.y,0-this.x,0-this.y)
                 return new Position(0-this.x,0-this.y)
             }
             this.equals=function(otherPos) {
@@ -159,7 +160,6 @@
                         stepper.setScent('lemon')
                         var oldPos=stepper.getPos()
                         var direction=this.pos.subtract(oldPos).negate()
-                        console.log(direction)
                         if (maze.getTileAtPos(this.pos.add(direction)).on_step(stepper)) {
                             return true
                         } else {
