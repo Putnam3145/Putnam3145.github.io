@@ -226,17 +226,18 @@
             this.height=parseInt(document.getElementById('maze_height').value)
             this.graphics.characters=new PIXI.Container()
             var tileTypes=["red","yellow","green","orange","blue","purple","pink"]
-            var safeTiles=["green","orange","blue","pink"]
+            var safeTiles=["red","yellow","green","orange","blue","pink"]
             do {
                 this.tiles = {}
-                this.tiles[0]={}
-                for (y=0;y<this.height;y++) {
-                    this.tiles[0][y]=new Tile(safeTiles[Math.floor(Math.random() * 4)],new Position(0,y))
-                }
                 for (x=1;x<this.width;x++) {
                     this.tiles[x]={}
                     for (y=0;y<this.height;y++) {
-                        this.tiles[x][y]=new Tile(tileTypes[Math.floor(Math.random() * 7)],new Position(x,y))
+                        if (x==this.width-1 || y==this.height-1 || x==0 || y==0)
+                        {
+                            this.tiles[x][y]=new Tile(safeTiles[Math.floor(Math.random() * 6)],new Position(x,y))
+                        } else {
+                            this.tiles[x][y]=new Tile(tileTypes[Math.floor(Math.random() * 7)],new Position(x,y))
+                        }
                     }
                 }
                 this.render()
