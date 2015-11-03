@@ -188,6 +188,7 @@ this doesn't work yet, it just happens to require being on the internet to test
                         var fakeStepper=new FakeStepper(oldPos.copy())
                         var direction=this.pos.subtract(oldPos).negate()
                         var nextTile=maze.getTileAtPos(this.pos.add(direction))
+                        console.log('purple',nextTile)
                         fakeStepper.setPos(this.pos.copy())
                         if (nextTile.on_step(fakeStepper)) {
                             if (nextTile.type!='purple') {
@@ -302,6 +303,7 @@ this doesn't work yet, it just happens to require being on the internet to test
             return solvable
         }
         maze.render=function() {
+            console.log('rendering')
             this.graphics.drawer.clear()
             for (column in this.tiles) {
                 var realColumn=this.tiles[column]
