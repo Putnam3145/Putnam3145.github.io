@@ -206,6 +206,7 @@ this doesn't work yet, it just happens to require being on the internet to test
                         var newTile=maze.getTileAtPos(this.pos.add(direction))
                         console.log('purple',direction,this.pos.add(direction),newTile)
                         if (newTile.is_pathable_from_purple(direction)) {
+                            stepper.setPos(this.pos)
                             newTile.on_step(stepper)
                         }
                     }
