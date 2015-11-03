@@ -104,7 +104,7 @@ this doesn't work yet, it just happens to require being on the internet to test
             }
             this.getPos=function() {
                 if (isNaN(this.pos.x) || isNaN(this.pos.y)) {
-                    this.pos=maze.getStartPos()
+                    this.pos=new Position(0,2)
                 }
                 return this.pos
             }
@@ -276,8 +276,8 @@ this doesn't work yet, it just happens to require being on the internet to test
             return [this.getTile(pos.x-1,pos.y),this.getTile(pos.x+1,pos.y),this.getTile(pos.x,pos.y-1),this.getTile(pos.x,pos.y+1)]
         }
         maze.generate=function() {
-            this.width=parseInt(document.getElementById('maze_width').value)
-            this.height=parseInt(document.getElementById('maze_height').value)
+            this.width=Math.max(parseInt(document.getElementById('maze_width').value),3)
+            this.height=Math.max(parseInt(document.getElementById('maze_height').value),3)
             this.graphics.characters=new PIXI.Container()
             var tileTypes=["red","yellow","green","orange","blue","purple","pink"]
             var safeTiles=["red","yellow","green","orange","blue","pink"]
@@ -293,25 +293,15 @@ this doesn't work yet, it just happens to require being on the internet to test
                     }
                 }
             }
+            this.tiles[0][2]=new Tile('pink',new Position(0,2))
             this.render()
             if (this.isUnpathable()) {
                 setTimeout(function() {maze.generate()},100)
             }
         }
-        maze.getStartPos=function() {
-            var dummyStepper=new PathBot(new Position(1,1))
-            for (tileY in maze.tiles[0]) {
-                dummyStepper.setScent('melon') //not a typo
-                var tile=maze.tiles[0][tileY]
-                if (tile.type!='purple' && tile.on_step(dummyStepper)) {
-                    return tile.pos
-                }
-            }
-            return false
         }
         maze.isUnpathable=function() {
-            var startPos=this.getStartPos()
-            if (!startPos) { return true }
+            var startPos=new Position(0,2)
             new Position(0,Math.floor(this.height/2))
             var stepper=new PathBot(startPos)
             var solvable=stepper.searchTilePath(maze.getTile(startPos.x,startPos.y))
