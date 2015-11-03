@@ -186,7 +186,7 @@ this doesn't work yet, it just happens to require being on the internet to test
                         stepper.setScent('lemon')
                         var oldPos=stepper.getPos()
                         var fakeStepper=new FakeStepper(oldPos.copy())
-                        var direction=this.pos.subtract(oldPos).negate()
+                        var direction=this.pos.subtract(oldPos)
                         console.log('purple',this.pos.add(direction),this.pos.add(direction.negate()))
                         var nextTile=maze.getTileAtPos(this.pos.add(direction))
                         fakeStepper.setPos(this.pos.copy())
