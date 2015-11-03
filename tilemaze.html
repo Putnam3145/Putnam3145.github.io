@@ -203,8 +203,7 @@ this doesn't work yet, it just happens to require being on the internet to test
                     this.on_step=function(stepper) {
                         stepper.setScent('lemon')
                         var direction=this.pos.subtract(stepper.getPos())
-                        console.log('purple',stepper.pos,this.pos,direction)
-                        var newTile=maze.getTileAtPos(this.pos.add(this.direction))
+                        var newTile=maze.getTileAtPos(this.pos.add(direction))
                         if (newTile.is_pathable_from_purple(direction)) {
                             newTile.on_step(stepper)
                         }
