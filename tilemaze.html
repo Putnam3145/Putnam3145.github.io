@@ -230,7 +230,7 @@
             do {
                 this.tiles = {}
                 this.tiles[0]={}
-                for y=0;y<this.height;y++ {
+                for (y=0;y<this.height;y++) {
                     this.tiles[0][y]=new Tile(safeTiles[Math.floor(Math.random() * 4)],new Position(0,y))
                 }
                 for (x=1;x<this.width;x++) {
