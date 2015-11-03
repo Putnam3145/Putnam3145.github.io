@@ -99,7 +99,6 @@ this doesn't work yet, it just happens to require being on the internet to test
                 if (!pos in tile) { return false }
                 this.discoveredPositions[tile.pos.x][tile.pos.y]=true
                 if (tile.pos.x==maze.width-1) {
-                    console.log('solvable')
                     return false
                 }
                 var adjacentTiles=maze.getAdjacentTiles(tile.pos)
@@ -271,7 +270,9 @@ this doesn't work yet, it just happens to require being on the internet to test
             if (!startPos) { return true }
             new Position(0,Math.floor(this.height/2))
             var stepper=new PathBot(startPos)
-            return stepper.searchTilePath(maze.getTile(startPos.x,startPos.y))
+            var solvable=stepper.searchTilePath(maze.getTile(startPos.x,startPos.y))
+            console.log(solvable)
+            return solvable
         }
         maze.render=function() {
             this.graphics.drawer.clear()
