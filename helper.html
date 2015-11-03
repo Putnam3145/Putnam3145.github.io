@@ -169,7 +169,7 @@ Realistic SHEAR values: <input type="checkbox" id="realistic_shear" tabindex=2 o
 
 The below graphic depicts what the material will look like up to its yield point. (Warning: will probably be exceedingly boring for most sufficiently stiff materials) <br><p id="cur_force"></p> <p id="cur_type"></p>
 
-<script src="pixi.js"></script>
+<script src="pixi.min.js"></script>
 
 <script>
 //The programming proper
@@ -483,15 +483,16 @@ function makeMat() {
   ga('send', 'pageview');
 //rendering stuff
 var mat_shower = mat_shower || {}
-mat_shower.stage=new PIXI.Stage(0x0a0500,true)
+mat_shower.stage=new PIXI.Container()
 mat_shower.renderer=PIXI.autoDetectRenderer(500, 400)
+mat_shower.renderer.backgroundColor=0x0a0500
 mat_shower.graphics=new PIXI.Graphics()
 mat_shower.stage.addChild(mat_shower.graphics)
 mat_shower.force=0 //in kilopascals
 mat_shower.mode=1
 mat_shower.step=1000000
 document.body.appendChild(mat_shower.renderer.view)
-requestAnimFrame( animate );
+requestAnimationFrame( animate );
 function calculateForceDeformation(force) {
     var force = force || mat_shower.force
     var deformation = deformation
@@ -514,26 +515,26 @@ function animate() {
         mat_shower.force=0
         mat_shower.mode=1
         mat_shower.step=Math.floor(getValue('compressive_yield')/100)
-        setTimeout(function() {requestAnimFrame( animate )}, 100)
+        setTimeout(function() {requestAnimationFrame( animate )}, 100)
     }
     else if (mat_shower.mode==1 && mat_shower.force>getValue('compressive_yield')) {
         mat_shower.force=0
         mat_shower.mode=2
         mat_shower.step=Math.floor(getValue('shear_yield')/100)
-        setTimeout(function() {requestAnimFrame( animate )}, 100)
+        setTimeout(function() {requestAnimationFrame( animate )}, 100)
     } 
     else if (mat_shower.mode==2 && mat_shower.force>getValue('shear_yield')) {
         mat_shower.force=0
         mat_shower.mode=0
         mat_shower.step=Math.floor(getValue('tensile_yield')/100)
-        setTimeout(function() {requestAnimFrame( animate )}, 100)
+        setTimeout(function() {requestAnimationFrame( animate )}, 100)
     }
     else if (mat_shower.step<1) {
         mat_shower.step=1000000
-        setTimeout(function() {requestAnimFrame( animate )}, 100)
+        setTimeout(function() {requestAnimationFrame( animate )}, 100)
     } 
     else if (!getValue('bulk') || !getValue('young') || !getValue('compressive_yield') || !getValue('tensile_yield')) {
-        setTimeout(function() {requestAnimFrame( animate )}, 1000)
+        setTimeout(function() {requestAnimationFrame( animate )}, 1000)
     }
     else if (mat_shower.mode==0 || mat_shower.mode==1) {
         var deformation=calculateForceDeformation()
@@ -551,7 +552,7 @@ function animate() {
         mat_shower.force+=mat_shower.step
         setValueInnerHTML('cur_force',mat_shower.force + ' kilopascals')
         setValueInnerHTML('cur_type',mat_shower.mode==0 ? 'Tensile force' : 'Compressive force')
-        setTimeout(function() {requestAnimFrame( animate )}, 100)
+        setTimeout(function() {requestAnimationFrame( animate )}, 100)
     } else {
         var deformation=calculateForceDeformation()
         var ends=[100+deformation,200+deformation]
@@ -565,7 +566,7 @@ function animate() {
         mat_shower.force+=mat_shower.step
         setValueInnerHTML('cur_force',mat_shower.force + ' kilopascals')
         setValueInnerHTML('cur_type','Shear force')
-        setTimeout(function() {requestAnimFrame( animate )}, 100)
+        setTimeout(function() {requestAnimationFrame( animate )}, 100)
     }
 }
 </script>
