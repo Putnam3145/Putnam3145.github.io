@@ -297,8 +297,9 @@ this doesn't work yet, it just happens to require being on the internet to test
             this.tiles[0][2]=new Tile('pink',new Position(0,2))
             if (this.isUnpathable()) {
                 setTimeout(function() {maze.generate()},100)
+            } else {
+                this.render()
             }
-            this.render()
         }
         maze.isUnpathable=function() {
             var startPos=new Position(0,2)
