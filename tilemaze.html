@@ -313,6 +313,7 @@ this doesn't work yet, it just happens to require being on the internet to test
                 setTimeout(function() {maze.generate()},100)
             } else {
                 this.player=new Player(new Position(0,2))
+                this.player.setPos(0,2)
                 this.controllable=true
                 this.render()
             }
