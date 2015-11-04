@@ -41,7 +41,7 @@
                 return new Position(this.x,this.y)
             }
             this.normalize=function() {
-                var divisor=(Math.abs(x)>Math.abs(y)) ? x : y
+                var divisor=Math.max(Math.abs(x),Math.abs(y))
                 return new Position(Math.floor(this.x/divisor),Math.floor(this.y/divisor))
             }
         }
@@ -218,7 +218,6 @@
                         stepper.setScent('lemon')
                         var direction=this.pos.subtract(stepper.getPos()).normalize()
                         var newTile=maze.getTileAtPos(this.pos.add(direction))
-                        console.log('purple debug',direction,newTile)
                         if (newTile.is_pathable_from_purple(direction)) {
                             stepper.setPos(this.pos)
                             newTile.on_step(stepper)
