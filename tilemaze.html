@@ -274,7 +274,7 @@ this doesn't work yet, it just happens to require being on the internet to test
         }
         maze.getTile=function(x,y) {
             if (x<0 || y<0 || x>=this.width || y>=this.height) {
-                return Tile('red',new Position(x,y))
+                return new Tile('red',new Position(x,y))
             } else {
                 return this.tiles[x][y]
             }
