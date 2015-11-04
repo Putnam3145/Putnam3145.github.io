@@ -13,7 +13,7 @@
     <input type="number" id="maze_height" value="6" tabindex=1 >
     <input type="number" id="maze_width" value="8" tabindex=2 >
     <button tabindex=3 onclick="maze.generate()">Generate a maze</button><br>
-    <p id="maze_status"></p>
+    <p id="maze_status">character graphics don't show up until you move once for reasons unknown; don't worry if you don't see yourself</p>
     <script src="pixi.min.js"></script>
     <script>
         function Position(x,y) {
@@ -293,6 +293,7 @@
             return [this.getTile(pos.x-1,pos.y),this.getTile(pos.x+1,pos.y),this.getTile(pos.x,pos.y-1),this.getTile(pos.x,pos.y+1)]
         }
         maze.generate=function() {
+            document.getElementById('maze_status').innerHTML='Generating...'
             this.width=Math.max(parseInt(document.getElementById('maze_width').value),3)
             this.height=Math.max(parseInt(document.getElementById('maze_height').value),3)
             this.player={}
@@ -321,7 +322,7 @@
                 this.player.setPos(new Position(0,2))
                 this.controllable=true
                 this.render()
-                maze.graphics.renderer.render(maze.graphics.stage) //um??? maybe??? help with the character sprite???
+                document.getElementById('maze_status').innerHTML='(No scent)'
             }
         }
         maze.isUnpathable=function() {
