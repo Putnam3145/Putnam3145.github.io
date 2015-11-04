@@ -67,7 +67,7 @@ this doesn't work yet, it just happens to require being on the internet to test
             this.pos = new Position(pos)
             this.sprite=new PIXI.Sprite.fromImage('character.png')
             maze.graphics.characters.addChild(this.sprite)
-            maze.graphics.renderer.render(maze.graphics.characters)
+            maze.graphics.renderer.render(maze.graphics.stage)
             this.setPos=function(pos) {
                 this.pos.x=pos.x
                 this.pos.y=pos.y
@@ -244,8 +244,8 @@ this doesn't work yet, it just happens to require being on the internet to test
         maze.graphics.stage=new PIXI.Container()
         maze.graphics.world=new PIXI.Container()
         maze.graphics.characters=new PIXI.Container()
-        maze.graphics.stage.addChild(maze.graphics.world);
         maze.graphics.stage.addChild(maze.graphics.characters);
+        maze.graphics.stage.addChild(maze.graphics.world);
         maze.graphics.stage.interactive=true
         maze.graphics.renderer=PIXI.autoDetectRenderer(800,600)
         maze.graphics.renderer.backgroundColor=0x0a0500
@@ -254,8 +254,8 @@ this doesn't work yet, it just happens to require being on the internet to test
         document.body.appendChild(maze.graphics.renderer.view)
         maze.graphics.renderer.render(maze.graphics.stage)
         maze.tiles={}
-        maze.width=20
-        maze.height=5
+        maze.width=8
+        maze.height=6
         maze.getTileAtPos=function(pos) {
             if (isNaN(pos.x) || isNaN(pos.y) || pos.x<0 || pos.y<0 || pos.x>=this.width || pos.y>=this.height) {
                 return new Tile('red',pos)
