@@ -71,6 +71,9 @@ this doesn't work yet, it just happens to require being on the internet to test
             this.setPos=function(pos) {
                 this.pos.x=pos.x
                 this.pos.y=pos.y
+                this.sprite.x=pos.x*16
+                this.sprite.y=pos.y*16
+                maze.graphics.renderer.render(maze.graphics.stage)
                 return this.pos
             }
             this.getPos=function() {
@@ -85,14 +88,11 @@ this doesn't work yet, it just happens to require being on the internet to test
             }
             this.move=function(x,y) {
                 maze.getTileAtPos(this.pos.add(new Position(x,y))).on_step(this)
-                maze.graphics.renderer.render(maze.graphics.characters)
             }
         }
         function PathBot(pos) {
             this.pos = new Position(pos)
             this.discoveredPositions={}
-            this.sprite=new PIXI.Sprite.fromImage('character.png')
-            maze.graphics.characters.addChild(this.sprite)
             for (x=0;x<maze.width;x++) {
                 this.discoveredPositions[x]={}
                 for (y=0;y<maze.height;y++) {
@@ -102,9 +102,6 @@ this doesn't work yet, it just happens to require being on the internet to test
             this.setPos=function(pos) {
                 this.pos.x=pos.x
                 this.pos.y=pos.y
-                this.sprite.x=pos.x*32
-                this.sprite.y=pos.y*32
-                maze.graphics.renderer.render(maze.graphics.stage)
                 return this.pos
             }
             this.getPos=function() {
@@ -332,15 +329,19 @@ this doesn't work yet, it just happens to require being on the internet to test
             if (maze.controllable) {
                 switch(e.keyCode) {
                     case 37: 
+                        e.preventDefault()
                         maze.player.move(-1,0)
                         break
                     case 38:
+                        e.preventDefault()
                         maze.player.move(0,-1)
                         break
                     case 39:
+                        e.preventDefault()
                         maze.player.move(1,0)
                         break
                     case 40:
+                        e.preventDefault()
                         maze.player.move(0,1)
                         break
                 }
