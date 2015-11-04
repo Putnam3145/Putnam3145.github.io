@@ -67,6 +67,7 @@ this doesn't work yet, it just happens to require being on the internet to test
             this.pos = new Position(pos)
             this.sprite=new PIXI.Sprite.fromImage('character.png')
             maze.graphics.characters.addChild(this.sprite)
+            maze.graphics.renderer.render(maze.graphics.characters)
             this.setPos=function(pos) {
                 this.pos.x=pos.x
                 this.pos.y=pos.y
@@ -84,6 +85,7 @@ this doesn't work yet, it just happens to require being on the internet to test
             }
             this.move=function(x,y) {
                 maze.getTileAtPos(this.pos.add(new Position(x,y))).on_step(this)
+                maze.graphics.renderer.render(maze.graphics.characters)
             }
         }
         function PathBot(pos) {
@@ -259,11 +261,11 @@ this doesn't work yet, it just happens to require being on the internet to test
         maze.height=5
         maze.getTileAtPos=function(pos) {
             if (isNaN(pos.x) || isNaN(pos.y) || pos.x<0 || pos.y<0 || pos.x>=this.width || pos.y>=this.height) {
-                return Tile('red',pos)
+                return new Tile('red',pos)
             } else {
                 var tile=this.tiles[pos.x][pos.y]
                 if (typeof(tile)=='undefined') {
-                    return Tile('red',pos)
+                    return new Tile('red',pos)
                 }
                 return tile
             }
