@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>DF Material Helper</title>
+<title>Undertale Tile Maze</title>
 <meta charset="UTF-8">
 <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" type="text/css" href="style.css">
@@ -66,6 +66,8 @@
         function Player(pos) {
             this.pos = new Position(pos)
             this.sprite=new PIXI.Sprite.fromImage('character.png')
+            this.sprite.x=pos.x*16
+            this.sprite.y=pos.y*16
             maze.graphics.characters.addChild(this.sprite)
             maze.graphics.renderer.render(maze.graphics.characters)
             this.setPos=function(pos) {
