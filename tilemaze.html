@@ -89,7 +89,7 @@
             }
             this.move=function(x,y) {
                 maze.getTileAtPos(this.pos.add(new Position(x,y))).on_step(this)
-                if (this.pos==maze.width-1) {
+                if (this.pos.x==maze.width-1) {
                     document.getElementById('maze_status').innerHTML='You won!'
                 }
             }
