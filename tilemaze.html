@@ -218,6 +218,7 @@
                         stepper.setScent('lemon')
                         var direction=this.pos.subtract(stepper.getPos()).normalize()
                         var newTile=maze.getTileAtPos(this.pos.add(direction))
+                        console.log('purple debug',direction,newTile)
                         if (newTile.is_pathable_from_purple(direction)) {
                             stepper.setPos(this.pos)
                             newTile.on_step(stepper)
