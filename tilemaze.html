@@ -82,6 +82,9 @@ this doesn't work yet, it just happens to require being on the internet to test
             this.getScent=function() {
                 return this.scent
             }
+            this.move=function(x,y) {
+                maze.getTileAtPos(this.pos.add(new Position(x,y))).on_step(this)
+            }
         }
         function PathBot(pos) {
             this.pos = new Position(pos)
@@ -278,6 +281,8 @@ this doesn't work yet, it just happens to require being on the internet to test
         maze.generate=function() {
             this.width=Math.max(parseInt(document.getElementById('maze_width').value),3)
             this.height=Math.max(parseInt(document.getElementById('maze_height').value),3)
+            this.player={}
+            this.controllable=false
             this.graphics.characters=new PIXI.Container()
             var tileTypes=["red","yellow","green","orange","blue","purple","pink"]
             var safeTiles=["red","yellow","green","orange","blue","pink"]
@@ -298,6 +303,8 @@ this doesn't work yet, it just happens to require being on the internet to test
             if (this.isUnpathable()) {
                 setTimeout(function() {maze.generate()},100)
             } else {
+                this.player=new Player(new Position(0,2))
+                this.controllable=true
                 this.render()
             }
         }
@@ -318,6 +325,24 @@ this doesn't work yet, it just happens to require being on the internet to test
                 }
             }
             maze.graphics.renderer.render(maze.graphics.stage)
+        }
+        document.onkeydown=function(e) {
+            if (maze.controllable) {
+                switch(e.keyCode) {
+                    case 37: 
+                        maze.player.move(-1,0)
+                        break
+                    case 38:
+                        maze.player.move(0,-1)
+                        break
+                    case 39:
+                        maze.player.move(1,0)
+                        break
+                    case 40:
+                        maze.player.move(0,1)
+                        break
+                }
+            }
         }
     </script>
 </body>
