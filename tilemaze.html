@@ -286,6 +286,7 @@ this doesn't work yet, it just happens to require being on the internet to test
             this.player={}
             this.controllable=false
             this.graphics.characters=new PIXI.Container()
+            this.graphics.stage.addChild(maze.graphics.characters);
             var tileTypes=["red","yellow","green","orange","blue","purple","pink"]
             var safeTiles=["red","yellow","green","orange","blue","pink"]
             this.tiles = {}
