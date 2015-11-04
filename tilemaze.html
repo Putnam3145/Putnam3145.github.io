@@ -87,7 +87,6 @@ this doesn't work yet, it just happens to require being on the internet to test
                 return this.scent
             }
             this.move=function(x,y) {
-                console.log('moving',this.pos)
                 maze.getTileAtPos(this.pos.add(new Position(x,y))).on_step(this)
             }
         }
@@ -248,8 +247,8 @@ this doesn't work yet, it just happens to require being on the internet to test
         maze.graphics.stage=new PIXI.Container()
         maze.graphics.world=new PIXI.Container()
         maze.graphics.characters=new PIXI.Container()
-        maze.graphics.characters.z=1
-        maze.graphics.world.z=2
+        maze.graphics.characters.z=2
+        maze.graphics.world.z=1
         maze.graphics.stage.addChild(maze.graphics.world);
         maze.graphics.stage.addChild(maze.graphics.characters);
         maze.graphics.stage.children.sort(function(a,b) { if (a.z<b.z) {return -1} else if (a.z > b.z) { return 1 } else return 0 })
