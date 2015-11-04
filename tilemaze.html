@@ -126,7 +126,7 @@ this doesn't work yet, it just happens to require being on the internet to test
                 var adjacentTiles=maze.getAdjacentTiles(tile.pos)
                 for (idx in adjacentTiles) {
                     var newtile=adjacentTiles[idx]
-                    if (typeof(newtile)!='undefined' && !this.discoveredPositions[newtile.pos.x][newtile.pos.y]) {
+                    if (!newtile.invalid && !this.discoveredPositions[newtile.pos.x][newtile.pos.y]) {
                         var steppable=newtile.on_step(this)
                         if (steppable) {
                             return this.searchTilePath(newtile)
@@ -185,8 +185,8 @@ this doesn't work yet, it just happens to require being on the internet to test
                     this.on_step=function(stepper) {
                         if (stepper.getScent()!='orange') {
                             var adjacentTiles=maze.getAdjacentTiles(this.pos)
-                            for (tile in adjacentTiles) {
-                                if (adjacentTiles[tile].type=='yellow') {
+                            for (idx in adjacentTiles) {
+                                if (adjacentTiles[idx].type=='yellow') {
                                     return false
                                 }
                             }
@@ -197,8 +197,8 @@ this doesn't work yet, it just happens to require being on the internet to test
                     }
                     this.is_pathable_from_purple=function(stepper) {
                         var adjacentTiles=maze.getAdjacentTiles(this.pos)
-                        for (tile in adjacentTiles) {
-                            if (adjacentTiles[tile].type=='yellow') {
+                        for (idx in adjacentTiles) {
+                            if (adjacentTiles[idx].type=='yellow') {
                                 return false
                             }
                         }
@@ -263,7 +263,9 @@ this doesn't work yet, it just happens to require being on the internet to test
         maze.height=6
         maze.getTileAtPos=function(pos) {
             if (isNaN(pos.x) || isNaN(pos.y) || pos.x<0 || pos.y<0 || pos.x>=this.width || pos.y>=this.height) {
-                return new Tile('red',pos)
+                var newtile = new Tile('red',pos)
+                newtile.invalid=true
+                return newtile
             } else {
                 var tile=this.tiles[pos.x][pos.y]
                 if (typeof(tile)=='undefined') {
@@ -274,7 +276,9 @@ this doesn't work yet, it just happens to require being on the internet to test
         }
         maze.getTile=function(x,y) {
             if (x<0 || y<0 || x>=this.width || y>=this.height) {
-                return new Tile('red',new Position(x,y))
+                var newtile = new Tile('red',new Position(x,y))
+                newtile.invalid=true
+                return newtile
             } else {
                 return this.tiles[x][y]
             }
