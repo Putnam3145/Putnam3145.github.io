@@ -293,11 +293,12 @@ this doesn't work yet, it just happens to require being on the internet to test
                     }
                 }
             }
-            this.tiles[0][2]=new Tile('pink',new Position(0,2))
             this.render()
+            this.tiles[0][2]=new Tile('pink',new Position(0,2))
             if (this.isUnpathable()) {
                 setTimeout(function() {maze.generate()},100)
             }
+            this.render()
         }
         maze.isUnpathable=function() {
             var startPos=new Position(0,2)
