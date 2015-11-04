@@ -184,8 +184,9 @@ this doesn't work yet, it just happens to require being on the internet to test
                     this.color=0x1118ff
                     this.on_step=function(stepper) {
                         if (stepper.getScent()!='orange') {
-                            for (tile in maze.getAdjacentTiles(this.pos)) {
-                                if (tile.type=='yellow') {
+                            var adjacentTiles=maze.getAdjacentTiles(this.pos)
+                            for (tile in adjacentTiles) {
+                                if (adjacentTiles[tile].type=='yellow') {
                                     return false
                                 }
                             }
@@ -195,8 +196,9 @@ this doesn't work yet, it just happens to require being on the internet to test
                         return false
                     }
                     this.is_pathable_from_purple=function(stepper) {
-                        for (tile in maze.getAdjacentTiles(this.pos)) {
-                            if (tile.type=='yellow') {
+                        var adjacentTiles=maze.getAdjacentTiles(this.pos)
+                        for (tile in adjacentTiles) {
+                            if (adjacentTiles[tile].type=='yellow') {
                                 return false
                             }
                         }
