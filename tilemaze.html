@@ -87,6 +87,7 @@ this doesn't work yet, it just happens to require being on the internet to test
                 return this.scent
             }
             this.move=function(x,y) {
+                console.log('moving',this.pos)
                 maze.getTileAtPos(this.pos.add(new Position(x,y))).on_step(this)
             }
         }
