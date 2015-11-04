@@ -183,6 +183,7 @@ this doesn't work yet, it just happens to require being on the internet to test
                 case "blue":
                     this.color=0x1118ff
                     this.on_step=function(stepper) {
+                        console.log(stepper.getScent())
                         if (stepper.getScent()!='orange') {
                             var adjacentTiles=maze.getAdjacentTiles(this.pos)
                             for (idx in adjacentTiles) {
