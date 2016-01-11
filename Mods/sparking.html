@@ -30,7 +30,6 @@ A place to put the downloads for SPARKING!!! so I don't have to edit multiple si
   function update_latest_release(latest_sparking_release)
   {
     if (typeof latest_sparking_release.responseJSON=='undefined') {
-        console.log('test')
         setTimeout(function() {update_latest_release(latest_sparking_release)},5 )
     } else {
       var latest_release_DOM=$('#stable_release')
