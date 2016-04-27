@@ -436,6 +436,7 @@ function makeMat() {
     var impactFracture=isChecked('realistic_impact') ? Math.min(ultimateTensile,ultimateCompressive) : ultimateCompressive
     var bendingYield=Math.min(tensileYield,compressiveYield)
     var bendingFracture=Math.min(ultimateTensile,ultimateCompressive)
+	var bendingStrainAtYield=Math.floor((shear*Math.min(1,shearYield/bendingYield))+0.5)
     var holyCrapABigStringOne="	[STATE_NAME_ADJ:ALL_SOLID:"+tempName('solid')+"]\n" + //would you believe that this whole segment was copied from python and only minorly edited?
                 "	[STATE_NAME_ADJ:LIQUID:"+tempName('liquid')+"]\n" + 
                 "	[STATE_NAME_ADJ:GAS:"+tempName('gas')+"]\n" +
@@ -463,7 +464,7 @@ function makeMat() {
 	            "	[SHEAR_STRAIN_AT_YIELD:"+shear+"] shear modulus " +getValue('shear')/1000+ " GPa\n" +
 	            "	[BENDING_YIELD:"+bendingYield+"]\n" +
 	            "	[BENDING_FRACTURE:"+bendingFracture+"]\n" +
-	            "	[BENDING_STRAIN_AT_YIELD:"+young+"]\n" +
+	            "	[BENDING_STRAIN_AT_YIELD:"+bendingStrainAtYield+"]\n" +
 	            "	[MAX_EDGE:"+getValue("max_edge")+"]\n" +
                 "	[STATE_COLOR:ALL:"+getValue('color')+"]"
                 
