@@ -149,7 +149,7 @@ function makeKnockback() {
         var w = getValue("weight")
         var s = getValue("kbg")
         var b = getValue("bkb")
-        var magnitude = ((((((p/10)+((p*d)/20))*(200/(w+100))*1.4)+18)*s)+b)
+        var magnitude = ((((((p/10)+((p*d)/20))*(200/(w+100))*1.4)+18)*s)+b)/100
         var r=isChecked("crouch_cancel") ? (isChecked("melee") ? 0.67 : 0.85) : isChecked("smash_charge") ? 1.2 : 1
         var defhandicap = isChecked("handicap_on") ? defhandicap_values_melee[Math.floor(Math.min(9,Math.max(getValue("defhandicap",1)))+0.5)-1] : 1
         var atthandicap = isChecked("handicap_on") ? atthandicap_values[Math.floor(Math.min(9,Math.max(getValue("atthandicap",1)))+0.5)-1] : 1 //listen if you're poking through here, better just read the wiki
@@ -163,6 +163,27 @@ function makeKnockback() {
         }
         magnitude=magnitude*r
         var angle = getValue("angle")/(180/Math.PI)
+        if (angle == 361/(180/Math.PI)) {
+            if (isChecked("melee")) {
+                angle=(magnitude<32) ? 0 : Math.PI/4
+            } else if (isChecked("brawl")) {
+                if (magnitude < 60) {
+                    angle=0
+                } else if (magnitude < 88) {
+                    angle=((magnitude-60)*(37/28)/(180/Math.PI))
+                } else {
+                    angle=37
+                }
+            } else {
+                if (magnitude < 66) {
+                    angle=0
+                } else if (magnitude < 88) {
+                    angle=(((magnitude-66)*(40/22))/(180/Math.PI))
+                } else {
+                    angle=40
+                }
+            }
+        }
         var knockbackActual = [angle,magnitude]
         if (isChecked('4') || isChecked("brawl")) {
             var g = getValue("gravity")
