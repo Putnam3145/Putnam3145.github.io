@@ -1,0 +1,279 @@
+<head>
+<title>Smash 4 Knockback Calculator</title>
+<meta charset="UTF-8">
+<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css" href="style.css">
+<meta name=viewport content="width=device-width, initial-scale=1">
+<meta name="description" content="An application for converting real-life material data to Dwarf Fortress.">
+
+</head>
+
+<body>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- material helper -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-7291652649323472"
+     data-ad-slot="2525620146"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+">
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form>
+
+<script src="pixi.min.js"></script>
+
+All examples are from NTSC Melee Fox and his up smash.<br><br>
+
+<div class="input category">
+  <div class="input_box">
+Game:<br>
+  <form>
+    <input type="radio" name="game" id="64"> 64<br>
+    <input type="radio" name="game" id="melee"> Melee<br>
+    <input type="radio" name="game" id="brawl"> Brawl<br>
+    <input type="radio" name="game" id="4" checked> 4<br>
+  </form>
+  </div>
+  <div class="input_box">
+  Enemy character properties<br>
+    Weight: <input type="number" id="weight" placeholder="75" tabindex=1 oninput="makeKnockback()"><br>
+    Percent: <input type="number" id="percent" placeholder="10" tabindex=2 oninput="makeKnockback()"><br>
+    Gravity: <input type="number" id="gravity" placeholder="0.23" tabindex=3 oninput="makeKnockback()"><br>
+    Handicap: <input type="number" id="defhandicap" placeholder="5" tabindex=4 oninput="makeKnockback()"><br>
+    Crouching: <input type="checkbox" id ="crouch_cancel" tabindex=5 oninput="makeKnockback()"><br>
+    Charging smash: <input type="checkbox" id ="smash_charge" tabindex=6 oninput="makeKnockback()"><br>
+    Aerial guard (V-cancel): <input type="checkbox" id ="v_cancel" tabindex=7 oninput="makeKnockback()"><br>
+  </div>
+  <div class="input_box">
+  Attack properties<br>
+    Damage: <input type="number" id="damage" placeholder="18" tabindex=8 oninput="makeKnockback()"><br>
+    Base Knockback: <input type="number" id="bkb" placeholder="30" tabindex=9 oninput="makeKnockback()"><br>
+    Knockback Growth: <input type="number" id="kbg" placeholder="112" tabindex=10 oninput="makeKnockback()"><br>
+    Angle: <input type="number" id="angle" placeholder="80" tabindex=11 oninput="makeKnockback()"><br>
+    Handicap: <input type="number" id="atthandicap" placeholder="5" tabindex=12 oninput="makeKnockback()"><br>
+    Rage:  <input type="number" id="rage" placeholder="1" tabindex=13 oninput="makeKnockback()"><br>
+  </div>
+  <div class="input_box">
+  Match properties<br>
+    Handicap enabled: <input type="checkbox" id ="handicap_on" tabindex=14 oninput="makeKnockback()"><br>
+    Damage ratio: <input type="number" id="damage_ratio" value=1 tabindex=15 oninput="makeKnockback()"><br>
+  </div>
+  <div class="input_box">
+  Game properties<br>
+    Vectoring percentage: <input type="number" id="vector_perc" value=5 tabindex=16 oninput="makeKnockback()"><br>
+    I could find no information on the actual value of the above. I'm assuming it's 5%, since that's approximately the DI percentage (I.E. how much DI can change direction).
+  </div>
+</div>
+
+<pre id='result'></pre>
+
+<script>
+function getValue(id) { // lmao i don't wanna load jquery for this
+    var curValue=document.getElementById(id).value
+    return parseInt(curValue) ? parseInt(curValue) : parseFloat(curValue) ? parseFloat(curValue) : curValue
+}
+function isChecked(id) {
+    return document.getElementById(id).checked
+}
+function setValue(id,value) {
+    document.getElementById(id).value=value
+    return id
+}
+function setValueInnerHTML(id,value) {
+    document.getElementById(id).innerHTML=value
+    return id
+}
+function setIfNotAlreadySet(id,value) {
+    if (!getValue(id)) {
+        setValue(id,value)
+    }
+}
+
+//i'm not going to pretend that putting all of these globals into an object is better than just defining them here lol
+
+defhandicap_values_melee=[2.86,2.5,2.17,1.89,1.64,1.43,1.25,0.52,0.93]
+
+defhandicap_values_64=[2.86,2.5,2.17,1.89,1.64,1.43,1.25,1.07,0.93] //no indication as to whether it's not the same in 64 but it seems like a bug in melee so will assume it's different
+
+atthandicap_values=[0.35,0.4,0.46,0.53,0.61,0.7,0.8,0.93,1.07]
+
+var globalAngle=0
+
+function actualRadians(y,x) {
+    var theFakeAtan=Math.atan2(y,x)
+    return theFakeAtan < 0 ? theFakeAtan+Math.PI*2 : theFakeAtan
+}
+
+function vec_to_coord(vec) {
+    return [vec[1]*Math.sin(vec[0]),vec[1]*Math.cos(vec[0])]
+}
+
+function vec_to_polar(vec) {
+    return [actualRadians(vec[1],vec[0]),Math.sqrt(Math.pow(vec[0],2)+Math.pow(vec[1],2))]
+}
+
+function add_vectors(vec1,vec2) {
+    var vec1coords=vec_to_coord(vec1)
+    var vec2coords=vec_to_coord(vec2)
+    var vec3coords=[vec1coords[0]+vec2coords[0],vec1coords[1]+vec2coords[1]]
+    return vec_to_polar(vec3coords)
+}
+
+function makeKnockback() {
+    if (isChecked("64")) {
+        var p = getValue("percent")
+        var d = getValue("damage")
+        var w = getValue("weight")
+        var s = getValue("kbg")
+        var b = getValue("bkb")
+        var magnitude = (((((((p/10))+((p*d)/20))*w*1.4)+18)*s)+b)
+        var r = isChecked("crouch_cancel") ? 0.67 : 1
+        var defhandicap = isChecked("handicap_on") ? defhandicap_values_64[Math.floor(Math.min(9,Math.max(getValue("defhandicap",1)))+0.5)-1] : 1
+        var atthandicap = isChecked("handicap_on") ? atthandicap_values[Math.floor(Math.min(9,Math.max(getValue("atthandicap",1)))+0.5)-1] : 1
+        r = isChecked("handicap_on") ? r*defhandicap*atthandicap : r
+        r = r*getValue("damage_ratio")
+        magnitude=magnitude*r
+        var angle = getValue("angle")/(180/Math.PI)
+        globalAngle=angle
+        setValueInnerHTML("result",magnitude)
+    } else {
+        var p = getValue("percent")
+        var d = getValue("damage")
+        var w = getValue("weight")
+        var s = getValue("kbg")
+        var b = getValue("bkb")
+        var magnitude = ((((((p/10)+((p*d)/20))*(200/(w+100))*1.4)+18)*s)+b)
+        var r=isChecked("crouch_cancel") ? (isChecked("melee") ? 0.67 : 0.85) : isChecked("smash_charge") ? 1.2 : 1
+        var defhandicap = isChecked("handicap_on") ? defhandicap_values_melee[Math.floor(Math.min(9,Math.max(getValue("defhandicap",1)))+0.5)-1] : 1
+        var atthandicap = isChecked("handicap_on") ? atthandicap_values[Math.floor(Math.min(9,Math.max(getValue("atthandicap",1)))+0.5)-1] : 1 //listen if you're poking through here, better just read the wiki
+        r = isChecked("handicap_on") ? r*defhandicap*atthandicap : r
+        if (isChecked("4")) {
+            r=r*getValue("rage")
+        }
+        r=r*getValue("damage_ratio")
+        if (isChecked('melee') && isChecked("v_cancel")) {
+            r=r*.95
+        }
+        magnitude=magnitude*r
+        var angle = getValue("angle")/(180/Math.PI)
+        var knockbackActual = [angle,magnitude]
+        if (isChecked('4') || isChecked("brawl")) {
+            var g = getValue("gravity")
+            var g_vector = [1.5*Math.PI,(g-0.075)*5]
+            console.log("gravity")
+            console.log("before/after:")
+            console.log(knockbackActual)
+            console.log(g_vector)
+            knockbackActual=add_vectors(knockbackActual,g_vector)
+            console.log(knockbackActual)
+        }
+        console.log(knockbackActual)
+        if (isChecked('4')) {
+            var DI_Directions=[(knockbackActual[0]+Math.PI/2)%Math.PI*2,(knockbackActual[0]-Math.PI/2)%Math.PI*2]
+            var vector_influence = vec_to_polar([(angle_shower.analog_knob.x-100)*(getValue("vector_perc")/100),0])
+            console.log(vector_influence)
+            knockbackActual=add_vectors(knockbackActual,vector_influence)
+            console.log(knockbackActual)
+            var analogStick = vec_to_polar([angle_shower.analog_knob.x-100,100-angle_shower.analog_knob.y])
+            var knockbackReverse=[(Math.PI+knockbackActual[0])%(Math.PI*2),knockbackActual[1]]
+            console.log(knockbackActual)
+            console.log(knockbackReverse)
+            if (Math.abs(analogStick[0]-knockbackActual[0])<Math.abs(analogStick[0]-knockbackReverse[0])) {
+                var directional_influence=(analogStick[0]-knockbackActual[0])/5
+                console.log(directional_influence)
+                knockbackActual[0]=(knockbackActual[0]+directional_influence)%(Math.PI*2)
+            } else {
+                var directional_influence=(analogStick[0]-knockbackReverse[0])/5
+                console.log(directional_influence)
+                knockbackActual[0]=(knockbackActual[0]-directional_influence)%(Math.PI*2)
+            }
+        } else {
+            var analogStick = vec_to_polar([angle_shower.analog_knob.x-100,100-angle_shower.analog_knob.y])
+            var knockbackReverse=[(Math.PI+knockbackActual[0])%(Math.PI*2),knockbackActual[1]]
+            console.log(knockbackActual)
+            console.log(knockbackReverse)
+            if (Math.abs(analogStick[0]-knockbackActual[0])<Math.abs(analogStick[0]-knockbackReverse[0])) {
+                var directional_influence=(analogStick[0]-knockbackActual[0])/5
+                console.log(directional_influence)
+                knockbackActual[0]=(knockbackActual[0]+directional_influence)%(Math.PI*2)
+            } else {
+                var directional_influence=(analogStick[0]-knockbackReverse[0])/5
+                console.log(directional_influence)
+                knockbackActual[0]=(knockbackActual[0]-directional_influence)%(Math.PI*2)
+            }
+        }
+        console.log(knockbackActual)
+        setValueInnerHTML("result",knockbackActual[1])
+        globalAngle=knockbackActual[0]
+    }
+}
+
+var angle_shower = angle_shower || {}
+angle_shower.stage=new PIXI.Container()
+angle_shower.renderer=PIXI.autoDetectRenderer(500, 400)
+angle_shower.renderer.backgroundColor=0x0a0500
+angle_shower.graphics=new PIXI.Graphics()
+angle_shower.graphics.interactive=true
+angle_shower.stage.addChild(angle_shower.graphics)
+document.body.appendChild(angle_shower.renderer.view)
+
+angle_shower.di_circle=new PIXI.Circle(100,100,100)
+
+angle_shower.kb_direction_circle=new PIXI.Circle(300,300,100)
+
+angle_shower.analog_knob=new PIXI.Circle(100,100,10)
+
+angle_shower.DI_text=new PIXI.Text("Analog stick position\non hit",{fill:0xffffff})
+
+angle_shower.angle_text=new PIXI.Text("Knockback\nangle",{fill:0xffffff})
+
+angle_shower.stage.addChild(angle_shower.DI_text)
+
+angle_shower.DI_text.position.x=201
+
+angle_shower.DI_text.position.y=60
+
+angle_shower.angle_text.position.x=50
+
+angle_shower.angle_text.position.y=270
+
+angle_shower.stage.addChild(angle_shower.angle_text)
+
+angle_shower.graphics.on("mousedown",onDisplayClick).on("touchstart",onDisplayClick)
+
+requestAnimationFrame(animate)
+
+function animate() {
+    angle_shower.graphics.clear()
+    angle_shower.graphics.beginFill(0xa6a6a6)
+    angle_shower.graphics.drawShape(angle_shower.di_circle)
+    angle_shower.graphics.drawShape(angle_shower.kb_direction_circle)
+    angle_shower.graphics.lineStyle(2,0x0afcfc,1)
+    angle_shower.graphics.moveTo(angle_shower.di_circle.x,angle_shower.di_circle.y)
+    angle_shower.graphics.lineTo(angle_shower.analog_knob.x,angle_shower.analog_knob.y)
+    angle_shower.graphics.moveTo(angle_shower.kb_direction_circle.x,angle_shower.kb_direction_circle.y)
+    angle_shower.graphics.lineStyle(2,0x0afcfc,1)
+    angle_shower.graphics.lineTo(300+100*Math.cos(globalAngle),300-100*Math.sin(globalAngle))
+    angle_shower.graphics.beginFill(0xff0000)
+    angle_shower.graphics.drawShape(angle_shower.analog_knob)
+    angle_shower.renderer.render(angle_shower.stage)
+    setTimeout(function() {requestAnimationFrame( animate )}, 100)
+}
+
+function onDisplayClick(event) {
+    if (angle_shower.di_circle.contains(event.data.global.x,event.data.global.y)) {
+        angle_shower.analog_knob.x=event.data.global.x
+        angle_shower.analog_knob.y=event.data.global.y
+        makeKnockback()
+    }
+}
+
+</script>
+</body>
