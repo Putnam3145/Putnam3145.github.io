@@ -17,7 +17,7 @@
         <input type="checkbox" id="grid_based" checked onchange="onCheck()"/>Movement entirely on a grid<br/>
         <input type="checkbox" id="ASCII" checked onchange="onCheck()"/>ASCII graphics as an option or default<br/>
     </div>
-    <p id="score">Roguelike</p>
+    <p id="score">Classic(-style) Roguelike</p>
 </body>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -42,7 +42,7 @@
         console.log(cur_score)
         if (cur_score==10 && $("#grid_based").is(":checked") && $("#ASCII").is(":checked"))
         {
-            $("#score").text("Classic roguelike")
+            $("#score").text("Classic(-style) roguelike")
         }
         else if (cur_score>7)
         {
