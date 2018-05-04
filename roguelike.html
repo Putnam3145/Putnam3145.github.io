@@ -32,25 +32,25 @@
         rpg_elements: 1
     }
     function onCheck() {
-        score=0
+        var cur_score=0
         for(var scoreType in scores) {
             if ($("#"+scoreType).is(":checked")) {
-                score+=scores[scoreType]
+                cur_score+=scores[scoreType]
             }
         }
-        if (score==11 && $("#grid_based").is(":checked") && $("#ASCII").is(":checked"))
+        if (cur_score==11 && $("#grid_based").is(":checked") && $("#ASCII").is(":checked"))
         {
             $("#score").text("Classic roguelike")
         }
-        else if (score>8)
+        else if (cur_score>8)
         {
             $("#score").text("Roguelike")
         }
-        else if (score>5)
+        else if (cur_score>5)
         {
             $("#score").text("Roguelite")
         }
-        else if (score>0)
+        else if (cur_score>0)
         {
             $("score").text("Maybe rogueish")
         }
