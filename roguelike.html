@@ -32,6 +32,7 @@
         rpg_elements: 1
     }
     function onCheck() {
+        console.log("something was checked")
         var cur_score=0
         for(var scoreType in scores) {
             if ($("#"+scoreType).is(":checked")) {
