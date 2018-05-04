@@ -40,25 +40,25 @@
             }
         }
         console.log(cur_score)
-        if (cur_score==11 && $("#grid_based").is(":checked") && $("#ASCII").is(":checked"))
+        if (cur_score==10 && $("#grid_based").is(":checked") && $("#ASCII").is(":checked"))
         {
             $("#score").text("Classic roguelike")
         }
-        else if (cur_score>8)
+        else if (cur_score>7)
         {
             $("#score").text("Roguelike")
         }
-        else if (cur_score>5)
+        else if (cur_score>4)
         {
             $("#score").text("Roguelite")
         }
         else if (cur_score>0)
         {
-            $("score").text("Maybe rogueish")
+            $("#score").text("Maybe rogueish")
         }
         else
         {
-            $("score").text("Not roguelike")
+            $("#score").text("Not roguelike")
         }
     }
 </script>
