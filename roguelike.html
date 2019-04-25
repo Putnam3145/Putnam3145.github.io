@@ -12,6 +12,7 @@
         <input type="checkbox" id="tactical" checked onchange="onCheck()"/>Highly tactical<br/>
         <input type="checkbox" id="twitchy" onchange="onCheck()"/>Requires technical skill (dodging, twitch aiming etc.)<br/>
         <input type="checkbox" id="rooms" checked onchange="onCheck()"/>Game flow organized around "floors" and/or "rooms"<br/>
+		<input type="checkbox" id="win" checked onchange="onCheck()"/>Game has "runs" which can end in a win<br/>
         <input type="checkbox" id="permadeath" checked onchange="onCheck()"/>Permadeath<br/>
         <input type="checkbox" id="death_progression" onchange="onCheck()"/>Death is a part of the game flow in a way that is not game over<br/>
         <input type="checkbox" id="rpg_elements" checked onchange="onCheck()"/>Character building with visible stats or abilities<br/>
@@ -27,6 +28,7 @@
         procgen: 3,
         tactical: 2,
         twitchy: -2,
+		win: 1,
         rooms: 1,
         permadeath: 3,
         death_progression: -3,
@@ -41,15 +43,15 @@
             }
         }
         console.log(cur_score)
-        if (cur_score==10 && $("#grid_based").is(":checked") && $("#ASCII").is(":checked"))
+        if (cur_score==11 && $("#grid_based").is(":checked") && $("#ASCII").is(":checked"))
         {
             $("#score").text("Classic(-style) roguelike")
         }
-        else if (cur_score>7)
+        else if (cur_score>8)
         {
             $("#score").text("Roguelike")
         }
-        else if (cur_score>4)
+        else if (cur_score>5)
         {
             $("#score").text("Roguelite")
         }
