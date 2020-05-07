@@ -12,13 +12,15 @@
         <input type="checkbox" id="tactical" checked onchange="onCheck()"/>Highly tactical<br/>
         <input type="checkbox" id="twitchy" onchange="onCheck()"/>Requires technical skill (dodging, twitch aiming etc.)<br/>
         <input type="checkbox" id="rooms" checked onchange="onCheck()"/>Game flow organized around "floors" and/or "rooms"<br/>
-        <input type="checkbox" id="permadeath" checked onchange="onCheck()"/>Permadeath<br/>
-        <input type="checkbox" id="death_progression" onchange="onCheck()"/>Death is a part of the game flow in a way that is not game over<br/>
+        <input type="checkbox" id="permadeath" checked onchange="onCheck()"/>Game has "runs" which end upon either death or victory<br/>
+        <input type="checkbox" id="death_progression" onchange="onCheck()"/>Death is a part of the game flow in a way that is not game over*<br/>
         <input type="checkbox" id="rpg_elements" checked onchange="onCheck()"/>Character building with visible stats or abilities<br/>
         <input type="checkbox" id="grid_based" checked onchange="onCheck()"/>Movement entirely on a grid<br/>
         <input type="checkbox" id="ASCII" checked onchange="onCheck()"/>ASCII graphics as an option or default<br/>
     </div>
     <p id="score">Classic(-style) Roguelike</p>
+
+<p id="progression_explanation">*I.e. if one must die to access some function of the game, which can affect future runs; this doesn't include The Binding Of Isaac, where unlocks happen in play independent of wins or losses past the first 11 Mom's Heart fights, but it does include Rogue Legacy, where dying is the only way to upgrade your character's various stats.</p>
 </body>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -26,9 +28,9 @@
     scores={
         procgen: 3,
         tactical: 2,
-        twitchy: -2,
+        twitchy: -3,
         rooms: 1,
-        permadeath: 3,
+        permadeath: 4,
         death_progression: -3,
         rpg_elements: 1
     }
@@ -41,17 +43,24 @@
             }
         }
         console.log(cur_score)
-        if (cur_score==10 && $("#grid_based").is(":checked") && $("#ASCII").is(":checked"))
+        if (cur_score==11 && $("#grid_based").is(":checked") && $("#ASCII").is(":checked"))
         {
             $("#score").text("Classic(-style) roguelike")
         }
-        else if (cur_score>7)
+        else if (cur_score>8)
         {
             $("#score").text("Roguelike")
         }
-        else if (cur_score>4)
+        else if (cur_score>5)
         {
-            $("#score").text("Roguelite")
+            if($("#twitchy").is(":checked"))
+            {
+                $("#score").text("Roguelite")
+            }
+            else
+            {
+                $("#score").text("Roguelike...like?")
+            }
         }
         else if (cur_score>0)
         {
@@ -62,4 +71,5 @@
             $("#score").text("Not roguelike")
         }
     }
+    onCheck()
 </script>
