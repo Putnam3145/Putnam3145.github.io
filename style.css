@@ -33,3 +33,11 @@ input[type=number] {
 	margin: 3px;
 	padding: 3px;
 }
+.work_box {
+	border:inset 2px #a0a0a0;
+	margin: 0px;
+	padding: 10px;
+}
+.work_entry {
+    padding-bottom: 8px;
+}
