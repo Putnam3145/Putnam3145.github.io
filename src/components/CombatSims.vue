@@ -26,7 +26,7 @@
 </template>
 
 <script>
-let wasm = import('@/wasm/putnam_github_io_bg')
+let wasm = import('@/wasm/pkg/putnam_github_io_bg')
 var Material = function(name, solidDensity, impactYield, impactFracture, shearYield, shearFracture, maxEdge, armor) {
     return {
         name: name,

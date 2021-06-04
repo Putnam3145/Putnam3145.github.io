@@ -1,0 +1,3 @@
+[submodule "src/wasm"]
+	path = src/wasm
+	url = https://github.com/Putnam3145/putnam3145-github-io-wasm
