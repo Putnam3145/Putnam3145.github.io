@@ -2,15 +2,17 @@
     <b-container>
         <b-row>
             <b-col>
+                <b-form-checkbox :button-variant="running ? 'danger' : 'success'" button v-model = "running">{{running ? "Stop" : "Go"}}</b-form-checkbox>
+            </b-col>
+        </b-row>
+        <b-row>
+            <b-col>
                 <b-form-input number v-model = "temp_one" ></b-form-input>
                 <b-form-input number disabled  v-model = "specHeat"></b-form-input>
             </b-col>
             <b-col>
                 <b-form-input number v-model = "temp_two" ></b-form-input>
                 <b-form-input number v-model = "other_spec_heat" placeholder = "SPEC_HEAT"></b-form-input>
-            </b-col>
-            <b-col>
-                <b-form-checkbox :button-variant="running ? 'danger' : 'success'" button v-model = "running">{{running ? "Stop" : "Go"}}</b-form-checkbox>
             </b-col>
         </b-row>
     </b-container>

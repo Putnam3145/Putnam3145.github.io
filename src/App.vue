@@ -12,4 +12,5 @@
 
 <style lang="scss">
 @import "app.scss";
+@import "../node_modules/katex/dist/katex.min.css";
 </style>

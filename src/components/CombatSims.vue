@@ -13,13 +13,30 @@
                     <b-card>
                         <b-card-text>
                             The actual simulation is a monte carlo simulation implemented in Rust, using WebAssembly. Simply put: it tests: 
-                            <b-container><b-row><b-col>4 breastplates<br/>4 -breastplates-<br/>3 +breastplates+<br/>2 *breastplates*<br/>2 ≡breastplates≡<br/>2 ☼breastplates☼<br/>1 artifact breastplate</b-col>against each individual attack you see above, multiplied by<b-col>3 weapons<br/>2 -weapons-<br/>2 +weapons+<br/>2 *weapons*<br/>2 ≡weapons≡<br/>2 ☼weapons☼.</b-col></b-row></b-container> It then does the same for helmets, For each material you see. This gives us a total of {{6*4*(4+4+3+2+2+2+1)*(3+2+2+2+2+2)*2*2}} trials. Each individual trial is between two dwarves of random body size and strength, using the very same algorithm as Dwarf Fortress does for the randomness as well as determining whether the attack "wins". The attack is assumed square, and no attack modifiers are taken into account. If you're interested, <b-link href="https://github.com/Putnam3145/putnam3145-github-io-wasm/blob/master/src/lib.rs">the Rust code is here.</b-link>
+                            <b-container><b-row><b-col>4 breastplates<br/>4 -breastplates-<br/>3 +breastplates+<br/>2 *breastplates*<br/>2 ≡breastplates≡<br/>2 ☼breastplates☼<br/>1 artifact breastplate</b-col>against each individual attack you see above, multiplied by<b-col>3 weapons<br/>2 -weapons-<br/>2 +weapons+<br/>2 *weapons*<br/>2 ≡weapons≡<br/>2 ☼weapons☼.</b-col></b-row></b-container> It then does the same for helmets, for each material you see. This gives us a total of {{6*4*(4+4+3+2+2+2+1)*(3+2+2+2+2+2)*2*2}} trials. Each individual trial is between two dwarves of random body size and strength, using the very same algorithm as Dwarf Fortress does for the randomness as well as determining whether the attack "wins". The attack is assumed square, and no attack modifiers are taken into account. If you're interested, <b-link href="https://github.com/Putnam3145/putnam3145-github-io-wasm/blob/master/src/lib.rs">the Rust code is here.</b-link>
+                            <p>Here's how the calculation works. First, we calculate the momentum like so:</p>
+                            <katex-element display-mode expression = "M = \frac{\text{size} \cdot \text{strength} \cdot \text{attack velocity}}{\frac{10000(10000+size)}{W}}"/>
+                            <p>"Attack velocity" here refers to the last number in an ATTACK token's definition.</p>
+                            <p>Now, we need to establish some terms. <katex-element expression = "a_{foo}"/> is a material property of the armor, <katex-element expression = "W_{foo}"/> is a material property of the weapon. <katex-element expression = "(M)_{x(y|f)}"/> is yield or fracture of material <katex-element expression = "M"/>; for example, <katex-element expression = "M_{sy}"/> is the shear yield.</p> 
+                            <p>Then, we check against blades, if the attack is edged:</p>
+                            <katex-element display-mode expression = "M \ge \frac{a_{sy}}{W_{sy}} + A\frac{a_{sf}}{W_{sf}}\frac{10+2Q_a}{Q_wW_e}" />
+                            <p>Where <katex-element expression = "Q_a"/> is the armor quality coefficient, <katex-element expression = "Q_w"/> is weapon sharpness quality coefficient, <katex-element expression = "W_e"/> is the max edge of the weapon divided by 10,000 and <katex-element expression = "A"/> is the contact area of the attack, which is the layer size or the attack's actual contact area, whichever is smaller. <b-link href="https://dwarffortresswiki.org/index.php/DF2014:Item_quality#Quality_grades">See here for quality grades.</b-link></p>
+                            <p>If that gets through, the following is then checked:</p>
+                            <katex-element display-mode expression = "\frac{2W_sW_{iy}}{1000} \ge Aa_\rho" />
+                            <p>Where <katex-element expression = "W_s"/> is the weapon's physical size (e.g. 800 for maces) and <katex-element expression = "M_\rho"/> is material M's density.</p>
+                            <p>If this fails, the attack is stopped short. If it succeeds, we move on to this:</p>
+                            <katex-element display-mode expression = "M \ge (\frac{2a_{if}}{10^6}-\frac{a_{iy}}{10^6})(2+0.4Q_a)A" />
+                            <p>And if that succeeds, the attack has won.</p>
+                            <p>All these equations came from <b-link href="https://dwarffortresswiki.org/index.php/DF2014:Material_science">the Dwarf Fortress wiki article on material science</b-link> as well as <b-link href="http://www.bay12forums.com/smf/index.php?topic=142372.msg5767755#msg5767755">this combat calculator</b-link></p>
                         </b-card-text>
                     </b-card>
                 </b-collapse>
             </b-tab>
             <b-tab lazy title="Values">
                 <b-table id="values-table" :items = "values" filter = ""></b-table>
+            </b-tab>
+            <b-tab title="Misc.">
+                <slot></slot>
             </b-tab>
         </b-tabs>
 </b-tabs>

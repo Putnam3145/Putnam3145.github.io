@@ -13,21 +13,35 @@
         </b-input-group>
         </b-form-group>
         <b-collapse :id="description">
-            <slot></slot>
+            <div v-if="complex">
+                <token-info :name = "name" :href = "href" :token = "token">
+                    <template #dwarf><slot name="dwarf"></slot></template>
+                    <template #science><slot name="science"></slot></template>
+                </token-info>
+            </div>
+            <div v-else>
+                <slot></slot>
+            </div>
         </b-collapse>
     </b-col>
 </template>
 
 <script>
+import TokenInfo from "./TokenInfo.vue"
+
 export default {
+    components: { TokenInfo },
     name: "Token",
     props: {
+        name: String,
+        href: String,
         description: String,
         token: String,
         tokenValue: String,
         number: Boolean,
         type: String,
-        placeholder: String
+        placeholder: String,
+        complex: Boolean
     },
 }
 </script>
