@@ -1,7 +1,7 @@
 <template>
     <span>
-        <b-link :id="id" @click="show = !show">{{text}}</b-link>
-        <b-popover :show.sync="show" placement="righttop" :target="id"><slot></slot></b-popover>
+        <b-link :id="popoverID" @click="show = !show"><sup>[{{id}}]</sup></b-link>
+        <b-popover custom-class="citation" :show.sync="show" placement="righttop" :target="popoverID"><slot></slot></b-popover>
     </span>
 </template>
 
@@ -9,11 +9,15 @@
 export default {
     props: {
         id: String,
-        text: String
     },
     data() {
         return {
             show: false
+        }
+    },
+    computed: {
+        popoverID() {
+            return "citation-popover-"+this.id
         }
     }
 }

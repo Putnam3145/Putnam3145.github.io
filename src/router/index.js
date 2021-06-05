@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Helper from '../views/Helper/Helper.vue'
 import Roguelike from '../views/Roguelike.vue'
+import Atmospherics from '../views/Atmospherics.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -28,6 +29,11 @@ const routes = [
     path: '/roguelike',
     name: 'Roguelike',
     component: Roguelike
+  },
+  {
+    path: '/atmospherics',
+    name: 'Atmospherics',
+    component: Atmospherics
   }
 ]
 

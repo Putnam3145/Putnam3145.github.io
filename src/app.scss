@@ -1,9 +1,9 @@
 $red: #f84dad;
 $green: #65c23e;
-$blue: #8A80E1;
+$blue: #a99efd;
 $yellow: #fbc239;
 $cyan: #1cd1ed;
-$white:    #111;
+$white:    #141111;
 $gray-900: #f8f9fa;
 $gray-800: #e9ecef;
 $gray-700: #dee2e6;
@@ -37,6 +37,12 @@ $yiq-text-light: $gray-900;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
   }
+.article-text {
+  text-align: left;
+}
+.citation {
+  background-color: #002103;
+}
   
   #nav {
     padding: 30px;
