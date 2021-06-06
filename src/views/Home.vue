@@ -1,6 +1,6 @@
 <template>
-  <b-container>
-    <b-row>
+  <b-container fluid>
+    <b-row no-gutters>
       <b-col>
         <b-card>
           <b-card-title>
@@ -9,6 +9,9 @@
           <b-card-sub-title>
             Programming projects worth <i>something</i>.
           </b-card-sub-title>
+      <work-entry name="Auxmos" href="https://github.com/Putnam3145/auxmos" blurb = "Multithreaded atmospherics plugin for BYOND">
+        A total rewrite of Space Station 13's atmospherics in Rust. Multithreaded, with a lot of experiments thereof in the branches. Most of my time with it has been spent on algorithmic improvements. It performs very well, but the interface with BYOND causes a lot of grief; problems with improper refcounting on the byond side lead to nights of frustration. However, overall, the project is very fun for me, and, while some of the more monolithic functions in it horrify me, I still enjoy programming it and learning new things in the process. I even wrote my own unsafe lock-free vector, which primarily works by sharding and, of course, just panicking if it might ever need to move memory, since you just can't do that without a lock. I also wrote a <b-link to="atmospherics">significantly more in-depth look at it, including the history of SS13's atmos.</b-link>
+      </work-entry>
       <work-entry name="Janet-D" href="https://github.com/Putnam3145/janet-d" blurb="Template-based bindings for a lisp-like">
         A high-level interface to the <b-link href="https://janet-lang.org/">Janet scripting language</b-link> for <b-link href="https://dlang.org/">D</b-link>. I primarily wrote this because I like D and don't particularly like Lua, so I was desparate to find another scripting language to work with. It's gone onto the backburner somewhat due to a combination of low interest and low demand, but it was and is very fun to make.
       </work-entry>
@@ -18,10 +21,7 @@
       <work-entry name="Misc. D modules" href="https://github.com/Putnam3145/D-modules" blurb="Higher-dimensional algebra, mostly">
         A few D modules I've made: a template that implements the <b-link href="https://en.wikipedia.org/wiki/Cayley%E2%80%93Dickson_construction">Cayley-Dickson construction</b-link> over the complex numbers and beyond (the template aliases itself to complex numbers at low enough recursion), a manual implementation of quaternions, and a wrapper around an arbitrary value that lets you set that value using a function called entirely in a separate thread. That last one was made when I was pretty naive with threading, so, go easy on it.
       </work-entry>
-      <work-entry name="Auxmos" href="https://github.com/Putnam3145/auxmos" blurb = "Multithreaded atmospherics plugin for BYOND">
-        A total rewrite of Space Station 13's atmospherics in Rust. Multithreaded, with a lot of experiments thereof in the branches. Most of my time with it has been spent on algorithmic improvements. It performs very well, but the interface with BYOND causes a lot of grief; problems with improper refcounting on the byond side lead to nights of frustration. However, overall, the project is very fun for me, and, while some of the more monolithic functions in it horrify me, I still enjoy programming it and learning new things in the process. I even wrote my own unsafe lock-free vector, which primarily works by sharding and, of course, just panicking if it might ever need to move memory, since you just can't do that without a lock.
-      </work-entry>
-      <work-entry name="DF material helper" href="#" blurb = "Educational modding tool">
+      <work-entry name="DF material helper" href="https://putnam3145.github.io/helper" blurb = "Educational modding tool">
         I love Dwarf Fortress, and it's sparked a mild enthusiasm in me of many subjects. This is the product of one such minor enthusiasm. This is a little online widget that helps guide you through the creation of a modded material in Dwarf Fortress, providing the physical and gameplay ramifications of various material properties. Perhaps my favorite part is the elasticity page, which uses various real properties of materials Dwarf Fortress itself doesn't quite get to, and includes an embed to an interactive graph showing how the poisson ratio can be seen as a constrained proportionality constant between the elastic moduli in isotropic homogenous materials.
       </work-entry>
         </b-card>
