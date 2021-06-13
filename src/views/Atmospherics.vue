@@ -126,8 +126,9 @@ sharer.temperature =
                     m&: \frac{1}{8}\sum_{o \in N}o\end{align*}" code="
 let m = GasMixture::new();
 for neighbor in t.neighbors {
-    m.merge(neighbor.gas)
+    m.merge(neighbor.gas);
 }
+m.multiply(0.125);
 ">
                 Take gases from all of neighbor turfs, add them together, then multiply it by 1/8.
             </code-math-prose>
