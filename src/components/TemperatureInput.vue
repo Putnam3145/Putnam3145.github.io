@@ -37,10 +37,10 @@ export default {
             temp: 1111,
             tempType: "c",
             tempTypes: [
-                { value: "f", text: "Fahrenheit"},
-                { value: "u", text: "Urists"},
                 { value: "c", text: "Celsius"},
                 { value: "k", text: "Kelvins"},
+                { value: "f", text: "Fahrenheit"},
+                { value: "u", text: "Urists"},
             ],
             exists: true,
         }
