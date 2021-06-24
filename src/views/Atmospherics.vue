@@ -135,13 +135,13 @@ m.multiply(0.125);
         As we do this, we also do the following check:
         <code-math-prose expression="\begin{align*}
         \exist o \in& N:\\
-        &|t_T - o_T| > 4 \land \\
-        &t_{tot} \ge 0.1 \lor \\
-        &\exists n \in G: |t_n-b_n| > 0.1
+        &|t_T - o_T| > 4 \land t_{tot} &\ge 0.1 \\
+        &\text{OR}\\
+        &\exists n \in G: |t_n-o_n| &> 0.1
         \end{align*}" code="
 t.neighbors.any(|neighbor| {
-  (t.temperature - t.temperature).abs() > 4 
-    && t.total_moles() > 0.1
+  ((t.temperature - t.temperature).abs() > 4 
+    && t.total_moles() > 0.1)
     || all_gases.any(
       |gas| (t.get_gas(gas) - neighbor.get_gas(gas)).abs() > 0.1
     )
@@ -157,7 +157,7 @@ t.merge(m)
             </code-math-prose>And thus we have diffused, just as LINDA does.</p>
 
         <h2>Why do things this way?</h2>
-        <p>Why <katex-element expression="\frac{1}{8}"/>, instead of <katex-element expression="\frac{1}{|N|+1}"/>? I have a few reasons. First of all, it makes the math easier to follow; if you always know gases lose exactly 1/8 of their gas per adjacent turf per tick, noticing problems is much easier. This is not a hypothetical--I had a long-running race condition solved by doing the math in my head and realizing exactly what happened. Second, <katex-element expression="\frac{F}{8}"/> always retains its exact precision in floats--precision issues are nasty to deal with, and while the error is never going to be big, it adds up over hours of doing these operations twice a second. Third, <katex-element expression="8 \ge |N|+1"/>—the largest <katex-element expression="|N|+1"/> can be in practical terms is, in fact, 8, for turfs with 6 neighbors that are on a planet. LINDA used to also have some sort of particle that makes turfs adjacent atmos-wise, but losing that is acceptable, to my eyes</p>
+        <p>Why <katex-element expression="\frac{1}{8}"/>, instead of <katex-element expression="\frac{1}{|N|+1}"/>? I have a few reasons. First of all, it makes the math easier to follow; if you always know gases lose exactly 1/8 of their gas per adjacent turf per tick, noticing problems is much easier. This is not a hypothetical--I had a long-running race condition solved by doing the math in my head and realizing exactly what happened. Second, <katex-element expression="\frac{F}{8}"/> always retains its exact precision in floats--precision issues are nasty to deal with, and while the error is never going to be big, it adds up over hours of doing these operations twice a second. Third, <katex-element expression="8 \ge |N|+1"/>—the largest <katex-element expression="|N|+1"/> can be in practical terms is, in fact, 8, for turfs with 6 neighbors that are on a planet. LINDA used to also have some sort of portal that makes turfs adjacent atmos-wise, but losing that is acceptable, to my eyes.</p>
 
         <p>Second of all, why wait until we've checked every turf?? Simply put, the fact that we create every to-merge gas mix first means that we have an archive built-in—during calculations, not a single gas mixture is modified—all modifications come in the merging step, after we’ve already calculated all of them… and, even better, we can parallelize this step, to, because each step is completely independent of all the rest.</p>
 
