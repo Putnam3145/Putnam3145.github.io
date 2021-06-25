@@ -172,7 +172,7 @@
                         <text text-anchor = "start" x = "200" y = "295" stroke = "white" fill="white">Strain (ε)</text>
                     </svg>
                     <katex-element display-mode :expression="toughness" />
-                    <p>This is, of course, the integral of the above graph, using the <b-link href="https://en.wikipedia.org/wiki/Trapezoidal_rule">trapezoidal rule</b-link> to get... well, an exact value. It has no meaning whatsoever in Dwarf Fortress... or does it? There is a sense in which it might apply: blunt defense does increase with the difference between fracture and yield, just like this value does.</p>
+                    <p>The above equation and result gives you the <b-link href="https://en.wikipedia.org/wiki/Toughness">toughness</b-link> of the material. This is, of course, calculated via the integral of the above graph, using the <b-link href="https://en.wikipedia.org/wiki/Trapezoidal_rule">trapezoidal rule</b-link> to get... well, an exact value. It has no meaning whatsoever in Dwarf Fortress... or does it? There is a sense in which it might apply: blunt defense does increase with the difference between fracture and yield, just like this value does. However, the STRAIN_AT_YIELD doesn't matter here, while you will find that changing it does change the numbers above, inversely.</p>
                 </b-tab>
                 <b-tab title="Stiffness tensor">
                     <p>This is the material's stiffness tensor in matrix form. Since all materials in DF are kinda inherently isomorphic and homogenous, it's that particular form of it. If the game allowed other kinds of materials... well, it'd get a lot <i>weirder</i>, for one thing. A tool such as this might be entirely <i>necessary</i>, even!</p>
