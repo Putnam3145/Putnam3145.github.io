@@ -1,6 +1,25 @@
 <template>
     <b-container class="article-text">
         <h1>WARNING: ROUGH DRAFT</h1>
+        <h2>Preface</h2>
+        <p>This is intended as both a primer for my fellow Space Station 13 coders in hopes that they can understand atmospherics <i>and</i> as something that can be read absent of all context thereof. Because I've often found myself annoyed by people making articles essentially reiterating things they've learned elsewhere, instead of just giving a list of the books they've read etc., here's links to a whole lot of reference material and papers regarding the topic at hand, the ones that I used to write this article. <b-button variant="info" v-b-toggle.links-dropdown>Show links</b-button></p>
+        <b-collapse id="links-dropdown">
+            <p>Yes, Wikipedia is a good reference source. This isn't a research paper, it's video games.</p>
+            <b-list-group>
+                <b-list-group-item variant="primary" href="https://www.researchgate.net/publication/2560062_Real-Time_Fluid_Dynamics_for_Games">
+                    Stam, Jos. (2003). Real-Time Fluid Dynamics for Games. 
+                </b-list-group-item>
+                <b-list-group-item variant="info" href="https://en.wikipedia.org/wiki/Iterative_Stencil_Loops">
+                    Iterative Stencil Loops (Wikipedia). The "see also" section is also all useful.
+                </b-list-group-item>
+                <b-list-group-item variant="info" href="https://en.wikipedia.org/wiki/Computational_fluid_dynamics">
+                    Computational fluid dynamics (Wikipedia)
+                </b-list-group-item>
+                <b-list-group-item variant="info" href="https://en.wikipedia.org/wiki/Discrete_Poisson_equation">
+                    Discrete Poisson equation (Wikipedia)
+                </b-list-group-item>
+            </b-list-group>
+        </b-collapse>
         <h2>Introduction</h2>
         <p>Space Station 13 is a deeply complex social deduction game. Think Among Us crossed with Dwarf Fortress, although it should be noted that it's older than either<sup><citation id="1">Yeah, older than Dwarf Fortress. That game's first release was 2006, SS13's was <b-link href="https://secure.byond.com/games/Exadv1/SpaceStation13">2003.</b-link></citation></sup>. The game is primarily famous for being something of a freeform trolling engine—due to its open source nature and complex mechanics, a lot of features have been added to it over the years that allow for a lot of strange situations. Why is a wizard attacking a space station, and why do they only seem to know how to conjure guns, and why are they just giving the guns away?<citation id="2">Actually, I <b-link href="https://gunshowcomic.com/30">know this one.</b-link></citation> That sort of thing.</p>
 
