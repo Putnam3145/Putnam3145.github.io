@@ -20,6 +20,8 @@
 
         <p>This can get hard to follow for a human rather quickly, but a computer doesn't really see the difference between something simple and something very complicated.</p>
 
+        <p>More often than not, one will implement the actual transformation thereof as an <b-link href="https://en.wikipedia.org/wiki/Iterative_Stencil_Loops">iterative stencil loop</b-link>, and, in fact, the rest of this article is about those.</p>
+
         <h2>LINDA</h2>
         <p>SS13’s original implementation of this was in a file called FEA.dm, short for “finite element analysis”. People, naturally, started calling the system itself FEA. I am not familiar with FEA, in fact; I have only worked with LINDA, /tg/station’s own atmospheric system, which has the same DNA as the research paper above, but with a lot of caveats and changes in order to ensure performance.</p>
 
