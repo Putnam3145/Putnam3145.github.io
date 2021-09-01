@@ -1,6 +1,5 @@
 <template>
     <b-container class="article-text">
-        <h1>WARNING: ROUGH DRAFT</h1>
         <h2>Preface</h2>
         <p>This is intended as both a primer for my fellow Space Station 13 coders in hopes that they can understand atmospherics <i>and</i> as something that can be read absent of all context thereof. Because I've often found myself annoyed by people making articles essentially reiterating things they've learned elsewhere, instead of just giving a list of the books they've read etc., here's links to a whole lot of reference material and papers regarding the topic at hand, the ones that I used to write this article. <b-button variant="info" v-b-toggle.links-dropdown>Show links</b-button></p>
         <b-collapse id="links-dropdown">
