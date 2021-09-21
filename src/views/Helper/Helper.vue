@@ -502,8 +502,7 @@ export default ({
         },
         strengthPlaceholders() {
             const y = this.tensileYield
-            const f = y*2
-            this.tensileFracture = f
+            const f = this.tensileFracture
             this.shearYield = y
             this.shearFracture = f
             this.compressiveYield = y*3.5
