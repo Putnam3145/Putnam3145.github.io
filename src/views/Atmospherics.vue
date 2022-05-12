@@ -160,8 +160,8 @@ m.multiply(0.125);
         &\exists n \in G: |t_n-o_n| &> 0.1
         \end{align*}" code="
 t.neighbors.any(|neighbor| {
-  ((t.temperature - t.temperature).abs() > 4 
-    && t.total_moles() > 0.1)
+  ((t.temperature - neighbor.temperature).abs() > 4 
+    && neighbor.total_moles() > 0.1)
     || all_gases.any(
       |gas| (t.get_gas(gas) - neighbor.get_gas(gas)).abs() > 0.1
     )
