@@ -2,18 +2,20 @@
 <b-tabs>
         <b-tabs pills card>
             <b-tab lazy title="Matchups">
+                <b-button variant="primary" @click="makeTable">Generate matchup chart!</b-button>
+                <b-collapse :visible = "initialized">
                 <p>Here we have a bunch of matchup charts, how well the material does against another.  It's standard matchup chart fare: 10 means it wins every time, 0 means it never wins.</p>
                 <p>Matchup chart of attacks vs plate armor <b-button variant="info" v-b-toggle.caveat>?</b-button></p>
                 <b-collapse id = "caveat"><b-card><b-card-text>Muscle numbers are going to be off because it's actually testing against a breastplate and a helmet. Solid-muscle plate armor. Very silly.</b-card-text></b-card></b-collapse>
-                <b-table id="attacks-table" :items = "attacks" filter = ""></b-table>
+                <b-table id="attacks-table" :items = "attacks" filter = "" :busy = "calculating" ></b-table>
                 <p>Matchup chart of plate armor defense</p>
-                <b-table id="defense-table" :items = "defense" filter = ""></b-table>
+                <b-table id="defense-table" :items = "defense" filter = "" :busy = "calculating" ></b-table>
                 <b-button variant="info" v-b-toggle.technical>Technical stuff/method</b-button>
                 <b-collapse id = "technical">
                     <b-card>
                         <b-card-text>
                             The actual simulation is a monte carlo simulation implemented in Rust, using WebAssembly. Simply put: it tests: 
-                            <b-container><b-row><b-col>4 breastplates<br/>4 -breastplates-<br/>3 +breastplates+<br/>2 *breastplates*<br/>2 ≡breastplates≡<br/>2 ☼breastplates☼<br/>1 artifact breastplate</b-col>against each individual attack you see above, multiplied by<b-col>3 weapons<br/>2 -weapons-<br/>2 +weapons+<br/>2 *weapons*<br/>2 ≡weapons≡<br/>2 ☼weapons☼.</b-col></b-row></b-container> It then does the same for helmets and greaves, for each material you see. This gives us a total of {18*12*3*4*6*2} trials. Each individual trial is between two dwarves of random body size and strength, using the very same algorithm as Dwarf Fortress does for the randomness as well as determining whether the attack "wins". The attack is assumed square, and no attack modifiers are taken into account. If you're interested, <b-link href="https://github.com/Putnam3145/putnam3145-github-io-wasm/blob/master/src/lib.rs">the Rust code is here.</b-link>
+                            <b-container><b-row><b-col>4 breastplates<br/>4 -breastplates-<br/>3 +breastplates+<br/>2 *breastplates*<br/>2 ≡breastplates≡<br/>2 ☼breastplates☼<br/>1 artifact breastplate</b-col>against each individual attack you see above, multiplied by<b-col>3 weapons<br/>2 -weapons-<br/>2 +weapons+<br/>2 *weapons*<br/>2 ≡weapons≡<br/>2 ☼weapons☼.</b-col></b-row></b-container> It then does the same for helmets and greaves, for each material you see. This gives us a total of {{18*12*3*4*6*2}} trials. Each individual trial is between two dwarves of random body size and strength, using the very same algorithm as Dwarf Fortress does for the randomness as well as determining whether the attack "wins". The attack is assumed square, and no attack modifiers are taken into account. If you're interested, <b-link href="https://github.com/Putnam3145/putnam3145-github-io-wasm/blob/master/src/lib.rs">the Rust code is here.</b-link>
                             <p>Here's how the calculation works. First, we calculate the momentum like so:</p>
                             <katex-element display-mode expression = "M = \frac{\text{base size} \cdot \text{strength} \cdot \text{attack velocity}}{\frac{10^{6}(1+size)}{W}}"/>
                             <p>"Attack velocity" here refers to the last number in an ATTACK token's definition.</p>
@@ -30,6 +32,7 @@
                             <p>All these equations came from <b-link href="https://dwarffortresswiki.org/index.php/DF2014:Material_science">the Dwarf Fortress wiki article on material science</b-link> as well as <b-link href="http://www.bay12forums.com/smf/index.php?topic=142372.msg5767755#msg5767755">this combat calculator.</b-link></p>
                         </b-card-text>
                     </b-card>
+                </b-collapse>
                 </b-collapse>
             </b-tab>
             <b-tab lazy title="Values">
@@ -127,6 +130,14 @@ function sanitize(n) {
 
 export default {
     name: "CombatSims",
+    data() {
+        return {
+            attacks: [{attack_stuff: "Not loaded yet!"}],
+            defense: [{defense_stuff: "Not loaded yet!"}],
+            calculating: false,
+            initialized: false,
+        }
+    },
     props: {
         name: String, solidDensity: Number, 
         impactYield: Number, impactFracture: Number, impactElasticity: Number,
@@ -151,10 +162,32 @@ export default {
         }
     },
     methods: {
-        attacks(ctx, callback) {
+        makeTable() {
             let mat = this.mat
+            this.attacks = []
+            this.defense = []
+            this.calculating = true
+            this.initialized = true
             wasm.then(m => {
-            let t = []
+            let entries = {}
+            for(const weapon of weapons) {
+                for(const other_mat of materials) {
+                    for(const attack of weapon.attacks) {
+                        const attack_name = weapon.name + " " + attack.name
+                        const score = 10.0 - m.attack_score(attack, other_mat, mat, weapon)
+                        entries[attack_name] = entries[attack_name] || {attack: attack_name, _cellVariants: {}}
+                        entries[attack_name][other_mat.name] = score
+                        if (score >= 8.0) {
+                            entries[attack_name]._cellVariants[other_mat.name] = "success" 
+                        } else if (score < 2.0) {
+                            entries[attack_name]._cellVariants[other_mat.name] = "danger"
+                        }
+                    }
+                }
+            }
+            for(const key in entries) {
+                this.defense.push(entries[key])
+            }
             for(const weapon of weapons) {
                 for(const attack of weapon.attacks) {
                     let this_entry = {attack: weapon.name + " " + attack.name, _cellVariants: {}}
@@ -168,40 +201,12 @@ export default {
                             this_entry._cellVariants[other_mat.name] = "danger"
                         }
                     }
-                    t.push(this_entry)
+                    this.attacks.push(this_entry)
                 }
             }
-            callback(t);
+            this.calculating = false
             })
             return null
-        },
-        defense(ctx, callback) {
-            let mat = this.mat
-            wasm.then(m => {
-            let entries = {}
-            for(const weapon of weapons) {
-                for(const other_mat of materials) {
-                    const weapon_weight = other_mat.solidDensity * weapon.size / 1000
-                    for(const attack of weapon.attacks) {
-                        const attack_name = weapon.name + " " + attack.name
-                        const score = 10.0 - m.attack_score(attack, other_mat, mat, weapon, weapon_weight)
-                        entries[attack_name] = entries[attack_name] || {attack: attack_name, _cellVariants: {}}
-                        entries[attack_name][other_mat.name] = score
-                        if (score >= 8.0) {
-                            entries[attack_name]._cellVariants[other_mat.name] = "success" 
-                        } else if (score < 2.0) {
-                            entries[attack_name]._cellVariants[other_mat.name] = "danger"
-                        }
-                    }
-                }
-            }
-            let t = []
-            for(const key in entries) {
-                t.push(entries[key])
-            }
-            callback(t)
-            })
-            return null;
         },
         values() {
             let entries = []
