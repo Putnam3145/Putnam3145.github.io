@@ -150,8 +150,8 @@
     </b-tab>
     <b-tab title="Facts">
         <combat-sims :name = "solidName" :solidDensity = "solidDensity"
-        :impactYield = "impactYield" :impactFracture = "impactFracture"
-        :shearYield = "shearYield" :shearFracture = "shearFracture"
+        :impactYield = "impactYield" :impactFracture = "impactFracture" :impactElasticity = "impactElasticity"
+        :shearYield = "shearYield" :shearFracture = "shearFracture" : shearElasticity = "shearElasticity"
         :maxEdge = "maxEdge">
             <b-tabs>
                 <b-tab title="Interesting properties">

@@ -129,14 +129,14 @@ export default {
     name: "CombatSims",
     props: {
         name: String, solidDensity: Number, 
-        impactYield: Number, impactFracture: Number,
-        shearYield: Number, shearFracture: Number,
+        impactYield: Number, impactFracture: Number, impactElasticity: Number,
+        shearYield: Number, shearFracture: Number, shearElasticity: Number,
         maxEdge: Number},
     computed: {
         mat() {
             return new Material(name, sanitize(this.solidDensity), 
-            sanitize(this.impactYield), sanitize(this.impactFracture), 
-            sanitize(this.shearYield), sanitize(this.shearFracture), 
+            sanitize(this.impactYield), sanitize(this.impactFracture), sanitize(this.impactElasticity),
+            sanitize(this.shearYield), sanitize(this.shearFracture), sanitize(this.shearElasticity),
             sanitize(this.maxEdge), true)
         },
     },
