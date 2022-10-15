@@ -2,9 +2,9 @@
 <b-tabs>
         <b-tabs pills card>
             <b-tab lazy title="Matchups">
-                <b-button variant="primary" @click="makeTable">Generate matchup chart!</b-button>
+                <b-button variant="success" @click="makeTable">Generate matchup chart!</b-button>
                 <b-collapse :visible = "initialized">
-                <p>Here we have a bunch of matchup charts, how well the material does against another.  It's standard matchup chart fare: 10 means it wins every time, 0 means it never wins.</p>
+                <p>These matchup charts show how well the material does against another.  It's standard matchup chart fare: 10 means it wins every time, 0 means it never wins. You'll have to regenerate it with the button above every time you change the properties; the calculations just take too long to happen every time you change a number.</p>
                 <p>Matchup chart of attacks vs plate armor <b-button variant="info" v-b-toggle.caveat>?</b-button></p>
                 <b-collapse id = "caveat"><b-card><b-card-text>Muscle numbers are going to be off because it's actually testing against a breastplate and a helmet. Solid-muscle plate armor. Very silly.</b-card-text></b-card></b-collapse>
                 <b-table id="attacks-table" :items = "attacks" filter = "" :busy = "calculating" ></b-table>
