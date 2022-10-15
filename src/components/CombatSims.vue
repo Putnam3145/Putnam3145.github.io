@@ -134,7 +134,7 @@ export default {
         maxEdge: Number},
     computed: {
         mat() {
-            return new Material(name, sanitize(this.solidDensity), 
+            return new Material(this.name, sanitize(this.solidDensity), 
             sanitize(this.impactYield), sanitize(this.impactFracture), sanitize(this.impactElasticity),
             sanitize(this.shearYield), sanitize(this.shearFracture), sanitize(this.shearElasticity),
             sanitize(this.maxEdge), true)
