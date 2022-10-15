@@ -13,9 +13,9 @@
                     <b-card>
                         <b-card-text>
                             The actual simulation is a monte carlo simulation implemented in Rust, using WebAssembly. Simply put: it tests: 
-                            <b-container><b-row><b-col>4 breastplates<br/>4 -breastplates-<br/>3 +breastplates+<br/>2 *breastplates*<br/>2 ≡breastplates≡<br/>2 ☼breastplates☼<br/>1 artifact breastplate</b-col>against each individual attack you see above, multiplied by<b-col>3 weapons<br/>2 -weapons-<br/>2 +weapons+<br/>2 *weapons*<br/>2 ≡weapons≡<br/>2 ☼weapons☼.</b-col></b-row></b-container> It then does the same for helmets, for each material you see. This gives us a total of {{6*4*(4+4+3+2+2+2+1)*(3+2+2+2+2+2)*2*2}} trials. Each individual trial is between two dwarves of random body size and strength, using the very same algorithm as Dwarf Fortress does for the randomness as well as determining whether the attack "wins". The attack is assumed square, and no attack modifiers are taken into account. If you're interested, <b-link href="https://github.com/Putnam3145/putnam3145-github-io-wasm/blob/master/src/lib.rs">the Rust code is here.</b-link>
+                            <b-container><b-row><b-col>4 breastplates<br/>4 -breastplates-<br/>3 +breastplates+<br/>2 *breastplates*<br/>2 ≡breastplates≡<br/>2 ☼breastplates☼<br/>1 artifact breastplate</b-col>against each individual attack you see above, multiplied by<b-col>3 weapons<br/>2 -weapons-<br/>2 +weapons+<br/>2 *weapons*<br/>2 ≡weapons≡<br/>2 ☼weapons☼.</b-col></b-row></b-container> It then does the same for helmets and greaves, for each material you see. This gives us a total of {18*12*3*4*6*2} trials. Each individual trial is between two dwarves of random body size and strength, using the very same algorithm as Dwarf Fortress does for the randomness as well as determining whether the attack "wins". The attack is assumed square, and no attack modifiers are taken into account. If you're interested, <b-link href="https://github.com/Putnam3145/putnam3145-github-io-wasm/blob/master/src/lib.rs">the Rust code is here.</b-link>
                             <p>Here's how the calculation works. First, we calculate the momentum like so:</p>
-                            <katex-element display-mode expression = "M = \frac{\text{size} \cdot \text{strength} \cdot \text{attack velocity}}{\frac{10000(10000+size)}{W}}"/>
+                            <katex-element display-mode expression = "M = \frac{\text{base size} \cdot \text{strength} \cdot \text{attack velocity}}{\frac{10^{6}(1+size)}{W}}"/>
                             <p>"Attack velocity" here refers to the last number in an ATTACK token's definition.</p>
                             <p>Now, we need to establish some terms. <katex-element expression = "a_{foo}"/> is a material property of the armor, <katex-element expression = "W_{foo}"/> is a material property of the weapon. <katex-element expression = "(M)_{x(y|f)}"/> is yield or fracture of material <katex-element expression = "M"/>; for example, <katex-element expression = "M_{sy}"/> is the shear yield.</p> 
                             <p>Then, we check against blades, if the attack is edged:</p>
@@ -27,7 +27,7 @@
                             <p>If this fails, the attack is stopped short. If it succeeds, we move on to this:</p>
                             <katex-element display-mode expression = "M \ge (\frac{2a_{if}}{10^6}-\frac{a_{iy}}{10^6})(2+0.4Q_a)A" />
                             <p>And if that succeeds, the attack has won.</p>
-                            <p>All these equations came from <b-link href="https://dwarffortresswiki.org/index.php/DF2014:Material_science">the Dwarf Fortress wiki article on material science</b-link> as well as <b-link href="http://www.bay12forums.com/smf/index.php?topic=142372.msg5767755#msg5767755">this combat calculator</b-link></p>
+                            <p>All these equations came from <b-link href="https://dwarffortresswiki.org/index.php/DF2014:Material_science">the Dwarf Fortress wiki article on material science</b-link> as well as <b-link href="http://www.bay12forums.com/smf/index.php?topic=142372.msg5767755#msg5767755">this combat calculator.</b-link></p>
                         </b-card-text>
                     </b-card>
                 </b-collapse>
@@ -44,14 +44,16 @@
 
 <script>
 let wasm = import('@/wasm/pkg/putnam_github_io_bg')
-var Material = function(name, solidDensity, impactYield, impactFracture, shearYield, shearFracture, maxEdge, armor) {
+var Material = function(name, solidDensity, impactYield, impactFracture, impactStrainAtYield, shearYield, shearFracture, shearStrainAtYield, maxEdge, armor) {
     return {
         name: name,
         solidDensity: solidDensity,
         impactYield: impactYield,
         impactFracture: impactFracture,
+        impactStrainAtYield: impactStrainAtYield,
         shearYield: shearYield,
         shearFracture: shearFracture,
+        shearStrainAtYield: shearStrainAtYield,
         maxEdge: maxEdge,
         armor: armor
     }
@@ -110,13 +112,13 @@ const weapons = [
 ]
 
 const materials = [
-    new Material("muscle", 1060, 10000, 10000, 20000, 20000, 0, true),
-    new Material("iron", 7850, 542500, 1085000, 155000, 310000, 10000, true),
-    new Material("copper", 8930, 245000, 770000, 70000, 220000, 10000, true),
-    new Material("bronze", 8250, 602000, 843500, 172000, 241000, 10000, true),
-    new Material("silver", 10490, 350000, 595000, 100000, 170000, 10000, false),
-    new Material("steel", 7850, 1505000, 2520000, 430000, 720000, 10000, true),
-    new Material("adamantine", 200, 5000000, 5000000, 5000000, 5000000, 100000, true),
+    new Material("muscle", 1060, 10000, 10000, 50000, 20000, 20000, 50000, 0, true),
+    new Material("iron", 7850, 542500, 1085000, 319, 155000, 310000, 189, 10000, true),
+    new Material("copper", 8930, 245000, 770000, 175, 70000, 220000, 145, 10000, true),
+    new Material("bronze", 8250, 602000, 843500, 547, 172000, 241000, 156, 10000, true),
+    new Material("silver", 10490, 350000, 595000, 350, 100000, 170000, 333, 10000, false),
+    new Material("steel", 7850, 1505000, 2520000, 940, 430000, 720000, 215, 10000, true),
+    new Material("adamantine", 200, 5000000, 5000000, 0, 5000000, 5000000, 0, 100000, true),
 ]
 
 function sanitize(n) {
@@ -154,12 +156,11 @@ export default {
             wasm.then(m => {
             let t = []
             for(const weapon of weapons) {
-                const weapon_weight = mat.solidDensity * weapon.size / 1000000
                 for(const attack of weapon.attacks) {
                     let this_entry = {attack: weapon.name + " " + attack.name, _cellVariants: {}}
                     for(const other_mat of materials) {
                         if(!other_mat.armor) continue
-                        const score = m.attack_score(attack, mat, other_mat, weapon, weapon_weight)
+                        const score = m.attack_score(attack, mat, other_mat, weapon)
                         this_entry[other_mat.name] = score
                         if (score >= 7.0) {
                             this_entry._cellVariants[other_mat.name] = "success" 
@@ -210,7 +211,8 @@ export default {
                 impact_yield: this.mat.impactYield/1000000,
                 blunt_defense: 2*(this.mat.impactFracture/1000000)-(this.mat.impactYield/1000000),
                 edge_defense: this.mat.shearFracture/1000000,
-                edge_attack: this.mat.shearFracture/1000000 * this.mat.maxEdge / 10000
+                edge_attack: this.mat.shearFracture/1000000 * this.mat.maxEdge / 10000,
+                average_mace_momentum: Math.round(1250*2/(1000000/60000 + this.mat.solidDensity*0.0008))
             })
             for(const mat of materials) {
                 entries.push({
@@ -219,7 +221,8 @@ export default {
                     impact_yield: mat.impactYield/1000000,
                     blunt_defense: 2*(mat.impactFracture/1000000)-(mat.impactYield/1000000),
                     edge_defense: mat.shearFracture/1000000,
-                    edge_attack: mat.shearFracture/1000000 * mat.maxEdge / 10000
+                    edge_attack: mat.shearFracture/1000000 * mat.maxEdge / 10000,
+                    average_mace_momentum: Math.round(1250*2/(1000000/60000 + mat.solidDensity*0.0008))
                 })
             }
             return entries;
