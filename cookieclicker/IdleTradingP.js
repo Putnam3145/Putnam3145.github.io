@@ -22,7 +22,7 @@ IdleTradingP.launch = function(){
 	
 	IdleTradingP.Logic = function(){
 		var M = Game.Objects['Bank'].minigame;
-        const level = Game.Objects['Bank'].level;
+        const level = Game.Objects['Bank'].level-1;
 		for(var iG = 0; iG < M.goodsById.length; iG++){
 			let good = M.goodsById[iG];
             let conf = IdleTrading.config.goods[iG];
