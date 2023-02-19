@@ -31,17 +31,17 @@ IdleTradingP.launch = function(){
             {
                 case 1: // rising; buy now
                 case 3:
-                    conf.sellThresh = -1
-                    conf.buyThresh = 0.999*baseline;
+                    conf.sellThresh = 1000
+                    conf.buyThresh = baseline;
                     break;
                 case 2: // falling; sell now
                 case 4:
-                    conf.buyThresh = -1
-                    conf.sellThresh = 1.001*baseline;
+                    conf.buyThresh = 1.5
+                    conf.sellThresh = baseline;
                     break;
                 default: // chaotic/stable, just try to buy high/sell low
-                    conf.buyThresh = baseline/1.2;
-                    conf.sellThresh = baseline*1.2;
+                    conf.buyThresh = baseline/1.5;
+                    conf.sellThresh = baseline*1.5;
             }
 		}
 	}
