@@ -27,20 +27,21 @@ IdleTradingP.launch = function(){
 			let good = M.goodsById[iG];
             let conf = IdleTrading.config.goods[iG];
             const baseline = 10*(iG+1)+level;
-            console.log(baseline);
             switch(good.mode)
             {
                 case 1: // rising; buy now
                 case 3:
+                    conf.sellThresh = -1
                     conf.buyThresh = 0.999*baseline;
                     break;
                 case 2: // falling; sell now
                 case 4:
+                    conf.buyThresh = -1
                     conf.sellThresh = 1.001*baseline;
                     break;
                 default: // chaotic/stable, just try to buy high/sell low
-                    conf.buyThresh = 1.2*baseline;
-                    conf.sellThresh = 1.2*baseline;
+                    conf.buyThresh = baseline/1.2;
+                    conf.sellThresh = baseline*1.2;
             }
 		}
 	}
