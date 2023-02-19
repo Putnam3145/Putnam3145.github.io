@@ -17,7 +17,7 @@ IdleTradingP.launch = function(){
 
     IdleTradingP.ReplaceNativeMarket = function() {
 		if(!Game.customMinigame['Bank'].tick) Game.customMinigame['Bank'].tick = [];
-		Game.customMinigame['Bank'].tick.push(IdleTradingP.Logic);
+		Game.customMinigame['Bank'].tick.unshift(IdleTradingP.Logic);
 	}
 	
 	IdleTradingP.Logic = function(){
@@ -28,7 +28,6 @@ IdleTradingP.launch = function(){
             let conf = IdleTrading.config.goods[iG];
             const baseline = 10*(iG+1)+level;
             console.log(baseline);
-			const price = Math.round(100 * M.getGoodPrice(good)) / 100;
             switch(good.mode)
             {
                 case 1: // rising; buy now
@@ -40,11 +39,8 @@ IdleTradingP.launch = function(){
                     conf.sellThresh = 1.001*baseline;
                     break;
                 default: // chaotic/stable, just try to buy high/sell low
-                    if(IdleTrainingP.config.chaosTrade)
-                    {
-                        conf.buyThresh = 1.2*baseline;
-                        conf.sellThresh = 1.2*baseline;
-                    }
+                    conf.buyThresh = 1.2*baseline;
+                    conf.sellThresh = 1.2*baseline;
             }
 		}
 	}
