@@ -31,11 +31,10 @@ IdleTradingP.launch = function(){
             conf.sellThresh = baseline+250
             switch(good.mode)
             {
+                case 3: // fast rise, buy more aggressively
+                    if(good.dur > 20) conf.buyThresh = baseline+250
                 case 1: // rising; buy now
                     conf.buyThresh = baseline;
-                    break;
-                case 3: // fast rise, always buy
-                    if(good.dur > 2) conf.buyThresh = baseline+250
                     break;
                 case 2: // falling; sell now
                 case 4:
