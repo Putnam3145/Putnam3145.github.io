@@ -38,10 +38,10 @@ IdleTradingP.launch = function(){
                     if(good.dur > 5) conf.buyThresh = baseline;
                     break;
                 case 4:
-                    conf.sellThresh = baseline
+                    conf.sellThresh = 1
                     break;
                 case 2: // falling; sell now
-                    if(good.dur < 5) conf.sellThresh = baseline
+                    if(good.dur > 5) conf.sellThresh = 1
                     break;
             }
 		}
