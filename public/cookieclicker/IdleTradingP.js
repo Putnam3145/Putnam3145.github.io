@@ -24,13 +24,14 @@ IdleTradingP.launch = function(){
 		var M = Game.Objects['Bank'].minigame;
         const level = Game.Objects['Bank'].level-1;
         const dollars = Game.cookies/Game.cookiesPs;
+        const expectedMax = (100+(Game.Objects['Bank'].level-1)*3)
 		for(var iG = 0; iG < M.goodsById.length; iG++){
 			let good = M.goodsById[iG];
             let conf = IdleTrading.config.goods[iG];
             const baseline = 10*(iG+1)+level;
-            const buyPrice = Math.max(1,Math.min(dollars / M.getGoodMaxStock(good), baseline));
+            const buyPrice = Math.max(1,Math.min(dollars / M.getGoodMaxStock(good), baseline, expectedMax));
             conf.buyThresh = 1
-            conf.sellThresh = baseline+250
+            conf.sellThresh = baseline+expectedMax;
             switch(good.mode)
             {
                 case 3: // fast rise, buy more aggressively
