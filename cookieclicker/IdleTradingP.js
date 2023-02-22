@@ -45,6 +45,10 @@ IdleTradingP.launch = function(){
                 case 2: // falling; sell now
                     if(good.dur > 20) conf.sellThresh = 1
                     break;
+                case 5: // chaotic, get weird with it
+                    conf.buyThresh = buyPrice/1.2;
+                    conf.sellThresh = baseline*1.2;
+                    break;
             }
 		}
 	}
