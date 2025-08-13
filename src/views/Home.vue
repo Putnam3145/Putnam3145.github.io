@@ -29,28 +29,6 @@
       <b-col>
         <b-card>
           <b-card-title>
-            Dwarf Fortress mods
-          </b-card-title>
-          <b-card-sub-title>
-            How I got started.
-          </b-card-sub-title>
-        <work-entry name="Fortbent" href="http://www.bay12forums.com/smf/index.php?topic=89267.0" blurb = "Homestuck mod, oh no!">
-          My first ever programming project, unfortunately. Also grew outside of scope, so hard that unlike the DBZ mod I no longer find myself able to support it. Features a new relationship system built by hacking on top of Dwarf Fortress's, a new in-game semi-economy based on goings-on elsewhere in your fortress's civilization, 144 hand-coded class/aspect combos (this was a mistake), procedurally generated combination attacks based on each of those (also a mistake), and an entire custom skills system built to support this, all in Lua. One may figure out why I said I dislike Lua.
-        </work-entry>
-        <work-entry name="SCP" href="http://www.bay12forums.com/smf/index.php?topic=105645.0" blurb = "SCP wiki mod">
-          Less a mod and more a series of tech demos. Demonstration of Dwarf Fortress's unused multiple-souls vector with Dr. Bright; the robustness of Dwarf Fortress's materials system with SCP-294; demonstration of how complicated behavior can be replicated with mere interactions with SCP-173; and so on and so forth. Had the beginnings of a more "management-sim" like system in the form of "trust points" that can be gained by successfully containing SCPs and spent on equipment, safer SCPs etc., but I eventually decided that if I'm going to make an SCP management sim, I'd be better of making it standalone. I haven't, primarily because the idea doesn't actually interest me that much.
-        </work-entry>
-        <work-entry name="Sparking" href="http://www.bay12forums.com/smf/index.php?topic=100799.0" blurb = "Dragon Ball mod, what?">
-          A Dragon Ball Z mod that I started when I was 17 and got waaaaaay beyond the originally planned scope. Has a fully-featured transformations system built on top of another fully-featured ki system, both written in Lua using DFHack. One may notice a pattern. The main reason this has lasted so long for me is specifically because of how much I enjoy implementing new ideas and techniques I've learned about: for a very long time, whenever I would think up a new way to interact with Dwarf Fortress, this mod is where I would do it. The overall effect is a mod that is terrifyingly fully-featured and thought-out for me; it doesn't help that I actually play it.
-        </work-entry>
-        <work-entry name="Fantastic" href="http://www.bay12forums.com/smf/index.php?topic=150752.0" blurb = "Mini-mods">
-          I just throw whatever minor things I make into this mod pack whenever I make them. Primary feature is Materials+, which used an older version of the above material helper to implement nearly every metal on the periodic table, with reasonably accurate features. Bit of a silly mod: molybdenum short swords abound. Depending on how the steam release goes, I'm likely to break this into many smaller releases.
-        </work-entry>
-        </b-card>
-      </b-col>
-      <b-col>
-        <b-card>
-          <b-card-title>
             Contributions
           </b-card-title>
           <b-card-sub-title>
@@ -83,6 +61,28 @@
           <work-entry name="Auxtools" href="https://github.com/willox/auxtools" blurb = "External tools for BYOND">
             In somewhat of the same vein as DFHack. A Rust-based project that hooks into BYOND's internals, allowing access to many of its features from within a Rust program. Used to make auxmos. I've personally contributed a few bugfixes and features to it, including the methods for accessing turf tiles.
           </work-entry>
+        </b-card>
+      </b-col>
+      <b-col>
+        <b-card>
+          <b-card-title>
+            Dwarf Fortress mods
+          </b-card-title>
+          <b-card-sub-title>
+            How I got started.
+          </b-card-sub-title>
+        <work-entry name="Fortbent" href="http://www.bay12forums.com/smf/index.php?topic=89267.0" blurb = "Homestuck mod, oh no!">
+          My first ever programming project, unfortunately. Also grew outside of scope, so hard that unlike the DBZ mod I no longer find myself able to support it. Features a new relationship system built by hacking on top of Dwarf Fortress's, a new in-game semi-economy based on goings-on elsewhere in your fortress's civilization, 144 hand-coded class/aspect combos (this was a mistake), procedurally generated combination attacks based on each of those (also a mistake), and an entire custom skills system built to support this, all in Lua. One may figure out why I said I dislike Lua.
+        </work-entry>
+        <work-entry name="SCP" href="http://www.bay12forums.com/smf/index.php?topic=105645.0" blurb = "SCP wiki mod">
+          Less a mod and more a series of tech demos. Demonstration of Dwarf Fortress's unused multiple-souls vector with Dr. Bright; the robustness of Dwarf Fortress's materials system with SCP-294; demonstration of how complicated behavior can be replicated with mere interactions with SCP-173; and so on and so forth. Had the beginnings of a more "management-sim" like system in the form of "trust points" that can be gained by successfully containing SCPs and spent on equipment, safer SCPs etc., but I eventually decided that if I'm going to make an SCP management sim, I'd be better of making it standalone. I haven't, primarily because the idea doesn't actually interest me that much.
+        </work-entry>
+        <work-entry name="Sparking" href="http://www.bay12forums.com/smf/index.php?topic=100799.0" blurb = "Dragon Ball mod, what?">
+          A Dragon Ball Z mod that I started when I was 17 and got waaaaaay beyond the originally planned scope. Has a fully-featured transformations system built on top of another fully-featured ki system, both written in Lua using DFHack. One may notice a pattern. The main reason this has lasted so long for me is specifically because of how much I enjoy implementing new ideas and techniques I've learned about: for a very long time, whenever I would think up a new way to interact with Dwarf Fortress, this mod is where I would do it. The overall effect is a mod that is terrifyingly fully-featured and thought-out for me; it doesn't help that I actually play it.
+        </work-entry>
+        <work-entry name="Fantastic" href="http://www.bay12forums.com/smf/index.php?topic=150752.0" blurb = "Mini-mods">
+          I just throw whatever minor things I make into this mod pack whenever I make them. Primary feature is Materials+, which used an older version of the above material helper to implement nearly every metal on the periodic table, with reasonably accurate features. Bit of a silly mod: molybdenum short swords abound. Depending on how the steam release goes, I'm likely to break this into many smaller releases.
+        </work-entry>
         </b-card>
       </b-col>
     </b-row>
