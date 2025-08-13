@@ -68,8 +68,14 @@
                   >Yes</b-button>
               </template>
           </b-modal>
+          <work-entry name="Dwarf Fortress" href="https://www.bay12games.com/dwarves/" blurb="Needs no introduction">
+            I am Dwarf Fortress's second programmer<citation id="1">This is the only paid work I have done in programming. It is impossible to get a job for programming unless you have connections or a degree, and preferably you want both. I happened to have connections here; as you can see on the rest of this page, I have been part of the community for well over a decade.</citation>. I joined in January 2023, a few months after the release on Steam, and, within the first year, I wrote a modular UI system (intended to eventually be hooked into scripting) applying to most of the unit lists, added multithreading and upgraded the graphics library to SDL2. In the following year, I implemented Lua scripting<citation id="2">Yes, despite the fact that I do not enjoy it; the needs of the many outweigh the needs of the few.</citation>, a process which is still, as of August 2025, ongoing. Many bugfixes have also been contributed by me, though which ones in particular are difficult to say. This is, frankly, probably the most fun I've had contributing to anything; never have I felt an "uuugh, I guess I have to do it" sort of feeling like I have for the other things, and the codebase, in general, is significantly nicer.
+          </work-entry>
           <work-entry name="Space Station 13" href="https://spacestation13.com/" blurb = "Before Among Us and Dwarf Fortress, there was this">
-            A simulationist social deduction game. I'm a maintainer for the  <b-button variant="link" v-b-modal.cit_warn>Citadel Station 13 fork.</b-button> Actual programming work done includes overhauling the "dynamic" game mode to be more responsive to changes in game state, a <b-link href="https://github.com/Putnam3145/extools">port of C++-implemented atmospherics</b-link>, the aforementioned auxmos and optimization of NSFW game systems that it seems nobody else could tolerate dealing with.
+            A simulationist social deduction game. I'm a maintainer for the  <b-button variant="link" v-b-modal.cit_warn>Citadel Station 13 fork.</b-button> Actual programming work done includes overhauling the "dynamic" game mode to be more responsive to changes in game state, a <b-link href="https://github.com/Putnam3145/extools">port of C++-implemented atmospherics</b-link>, auxmos (mentioned on the left) and optimization of NSFW game systems that it seems nobody else could tolerate dealing with.
+          </work-entry>
+          <work-entry name="Cataclysm: Dark Days Ahead" href="https://cataclysmdda.org/" blurb="Deeply simulationist zombie survival>
+            I contributed some performance improvements to Cataclysm DDA; being open source, occasionally issues fall through the cracks, and it takes someone with a profiler and a willingness to run their own compiled binary with a profiler attached to fix them. <b-link href="https://github.com/CleverRaven/Cataclysm-DDA/pulls?q=is%3Apr+author%3APutnam3145">Contributions here;</b-link> to summarize, a very hot loop was doing way more allocating than it needed to and another very hot loop was doing localization for debug text that was never shown to the player.
           </work-entry>
           <work-entry name="DFHack" href="https://github.com/DFHack/dfhack" blurb = "Memory hacking library for Dwarf Fortress">
             A high-level memory hacking library for Dwarf Fortress. All of the mods on this page use it extensively. I've contributed various scripts and occasional data structure research to it. My excessive use of DFHack in modding eventually made me come to the realization that it's less "modding" that I enjoy and more "creating systems that interact with existing systems", which is why I'm a Space Station 13 maintainer now.
@@ -84,12 +90,14 @@
 </template>
 
 <script>
+import Citation from "@/components/Citation.vue"
 import WorkEntry from "@/components/WorkEntry.vue"
 
 export default {
   name: 'Home',
   components: {
-      WorkEntry
+      WorkEntry,
+      Citation
   },
 }
 </script>
