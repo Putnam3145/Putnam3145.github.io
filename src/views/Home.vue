@@ -74,7 +74,7 @@
           <work-entry name="Space Station 13" href="https://spacestation13.com/" blurb = "Before Among Us and Dwarf Fortress, there was this">
             A simulationist social deduction game. I'm a maintainer for the  <b-button variant="link" v-b-modal.cit_warn>Citadel Station 13 fork.</b-button> Actual programming work done includes overhauling the "dynamic" game mode to be more responsive to changes in game state, a <b-link href="https://github.com/Putnam3145/extools">port of C++-implemented atmospherics</b-link>, auxmos (mentioned on the left) and optimization of NSFW game systems that it seems nobody else could tolerate dealing with.
           </work-entry>
-          <work-entry name="Cataclysm: Dark Days Ahead" href="https://cataclysmdda.org/" blurb="Deeply simulationist zombie survival>
+          <work-entry name="Cataclysm: Dark Days Ahead" href="https://cataclysmdda.org/" blurb="Deeply simulationist zombie survival">
             I contributed some performance improvements to Cataclysm DDA; being open source, occasionally issues fall through the cracks, and it takes someone with a profiler and a willingness to run their own compiled binary with a profiler attached to fix them. <b-link href="https://github.com/CleverRaven/Cataclysm-DDA/pulls?q=is%3Apr+author%3APutnam3145">Contributions here;</b-link> to summarize, a very hot loop was doing way more allocating than it needed to and another very hot loop was doing localization for debug text that was never shown to the player.
           </work-entry>
           <work-entry name="DFHack" href="https://github.com/DFHack/dfhack" blurb = "Memory hacking library for Dwarf Fortress">
